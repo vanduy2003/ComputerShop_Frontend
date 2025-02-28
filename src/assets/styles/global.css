@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap");
+
+:root {
+  --color-global: #3278f6;
+  --white: #fff;
+  --text-black: #29324e;
+  --grey-bold: #8d94ac;
+  --color-red: #fb4e4e;
+}
+
+body {
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 14px;
+}
+
+.container {
+  padding: 0px;
+  max-width: 1400px;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Đảm bảo giảm opacity mặc định */
+.v-btn--variant-elevated,
+.v-btn--variant-flat {
+  opacity: 0.3 !important;
+  transition: opacity 0.3s ease !important;
+  border-radius: 10px;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.v-btn--variant-elevated:hover,
+.v-btn--variant-flat:hover {
+  opacity: 0.8 !important;
+}
+
+.v-carousel__controls {
+  display: none !important;
+}
+
+.background-white {
+  background: #fff;
+  padding: 24px;
+}
+
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  display: none;
+}
+
+/* Giảm kích thước nút điều hướng */
+.mySwiper .swiper-button-prev,
+.mySwiper .swiper-button-next {
+  width: 35px !important;
+  height: 35px !important;
+  color: #000000;
+  background: #ffffff;
+  border-radius: 10px;
+  font-weight: bold;
+  opacity: 0.3;
+}
+
+/* Tùy chỉnh icon mũi tên */
+.mySwiper .swiper-button-prev::after,
+.mySwiper .swiper-button-next::after {
+  font-size: 16px;
+}
+
+/* Hiển thị nút điều hướng */
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  opacity: 0.8;
+}
+
