@@ -17,7 +17,8 @@
                     </router-link>
 
                     <div class="product-list">
-                        <div class="swiper-container" v-if="filteredPcGameProducts.length > 0">
+                        <div class="swiper-container"
+                            v-if="filteredPcGameProducts && filteredPcGameProducts.length > 0">
                             <swiper :slides-per-view="4" :loop="true" :navigation="true"
                                 :pagination="{ clickable: true }" :modules="modules" class="mySwiper">
                                 <swiper-slide v-for="product in filteredPcGameProducts" :key="product.productId">
@@ -33,7 +34,7 @@
                                             </span>
                                         </router-link>
                                         <div class="product-info">
-                                            <router-link :to="'/api/v1/data/products/' + product.productId"
+                                            <router-link :to="`/products/${product.productId}`"
                                                 class="product-name line-clamp-2">
                                                 {{ product.name }}
                                             </router-link>
@@ -95,7 +96,7 @@
                                             </span>
                                         </router-link>
                                         <div class="product-info">
-                                            <router-link :to="'/api/v1/data/products/' + product.productId"
+                                            <router-link :to="`/products/${product.productId}`"
                                                 class="product-name line-clamp-2">
                                                 {{ product.name }}
                                             </router-link>
@@ -157,7 +158,7 @@
                                             </span>
                                         </router-link>
                                         <div class="product-info">
-                                            <router-link :to="'/api/v1/data/products/' + product.productId"
+                                            <router-link :to="`/products/${product.productId}`"
                                                 class="product-name line-clamp-2">
                                                 {{ product.name }}
                                             </router-link>
@@ -349,8 +350,8 @@ a {
     display: inline-block;
     font-weight: 600;
     word-break: break-all;
-    height: 38px;
-    margin-bottom: 8px;
+    height: 40px;
+    margin-bottom: 5px;
     position: relative;
     z-index: 9;
 }
@@ -471,6 +472,8 @@ a {
 
 .line-clamp-2 {
     display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
 }
 

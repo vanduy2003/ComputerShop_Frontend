@@ -31,7 +31,7 @@
                                             </span>
                                         </router-link>
                                         <div class="product-info">
-                                            <router-link :to="'/api/v1/data/products/' + product.productId"
+                                            <router-link :to="`/products/${product.productId}`"
                                                 class="product-name line-clamp-2">
                                                 {{ product.name }}
                                             </router-link>
@@ -44,7 +44,7 @@
                                                     Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
                                                 <div class="d-flex align-items-center">
                                                     <b class="price">{{ Number(product.priceNew).toLocaleString('vi-VN')
-                                                    }}đ</b>
+                                                        }}đ</b>
                                                     <div class="price-saleoff">{{ product.sale }}%</div>
                                                 </div>
                                             </div>
@@ -92,7 +92,7 @@
                                             </span>
                                         </router-link>
                                         <div class="product-info">
-                                            <router-link :to="'/api/v1/data/products/' + product.productId"
+                                            <router-link :to="`/products/${product.productId}`"
                                                 class="product-name line-clamp-2">
                                                 {{ product.name }}
                                             </router-link>
@@ -105,7 +105,7 @@
                                                     Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
                                                 <div class="d-flex align-items-center">
                                                     <b class="price">{{ Number(product.priceNew).toLocaleString('vi-VN')
-                                                        }}đ</b>
+                                                    }}đ</b>
                                                     <div class="price-saleoff">{{ product.sale }}%</div>
                                                 </div>
                                             </div>
@@ -154,7 +154,7 @@
                                             </span>
                                         </router-link>
                                         <div class="product-info">
-                                            <router-link :to="'/api/v1/data/products/' + product.productId"
+                                            <router-link :to="`/products/${product.productId}`"
                                                 class="product-name line-clamp-2">
                                                 {{ product.name }}
                                             </router-link>
@@ -167,7 +167,7 @@
                                                     Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
                                                 <div class="d-flex align-items-center">
                                                     <b class="price">{{ Number(product.priceNew).toLocaleString('vi-VN')
-                                                        }}đ</b>
+                                                    }}đ</b>
                                                     <div class="price-saleoff">{{ product.sale }}%</div>
                                                 </div>
                                             </div>
@@ -200,12 +200,6 @@ export default {
         SwiperSlide,
     },
 
-    setup() {
-        return {
-            modules: [Autoplay, Navigation, Pagination], // ✅ Khai báo modules trong setup()
-        };
-    },
-
     props: {
         products: {
             type: Array,
@@ -213,9 +207,9 @@ export default {
         },
     },
 
-    data() {
+    setup() {
         return {
-
+            modules: [Autoplay, Navigation, Pagination], // ✅ Khai báo modules trong setup()
         };
     },
 
@@ -223,7 +217,9 @@ export default {
         filtereConsoleGameProducts() {
             return this.products.filter((product) => product.categoryId === 4);
         },
+
         filteredGearsProducts() {
+            console.log(this.filteredLapProducts);
             return this.products.filter((product) => product.categoryId === 3);
         },
         filteredLapProducts() {
@@ -232,6 +228,3 @@ export default {
     },
 };
 </script>
-
-
-<style></style>

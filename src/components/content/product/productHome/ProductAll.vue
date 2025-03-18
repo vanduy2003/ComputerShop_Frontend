@@ -23,7 +23,7 @@ export default {
         const { products } = storeToRefs(store);
 
         onMounted(() => {
-            store.fetchProducts(); // Gọi API chỉ khi chưa có dữ liệu
+            store.fetchProducts();
         });
 
         return { products };

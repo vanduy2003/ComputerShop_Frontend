@@ -204,21 +204,17 @@
                             <div class="choose-quantity d-flex align-items-center">
                                 <span>Số lượng</span>
                                 <div class="unit-detail-amount-control d-flex">
-                                    <a href="javascript:;" data-value="-1"><i class="mdi mdi-minus"></i></a>
-                                    <input type="text" size="3" data-total="1" value="1" id="js-buy-quantity" />
-                                    <a href="javascript:;" data-value="1"><i class="mdi mdi-plus"></i></a>
+                                    <a @click="decreaseQuantity"><i class="mdi mdi-minus"></i></a>
+                                    <input type="text" size="3" :value="quantity" />
+                                    <a @click="increaseQuantity"><i class="mdi mdi-plus"></i></a>
                                 </div>
                             </div>
                             <div class="all-btn-add-product d-flex align-items-center justify-content-between mt-3">
                                 <div class="btn-buy">
-                                    <a href="javascript:void(0)" class="buy-go-cart btn-buyNow js-add-buyNow">
-                                        Thêm vào giỏ hàng
-                                    </a>
+                                    <button @click="addToCart(product.id)">Thêm vào giỏ hàng</button>
                                 </div>
                                 <div class="btn-buy buyNow">
-                                    <a href="javascript:void(0)" class="buy-go-cart btn-buyNow js-buyNow">
-                                        Mua Ngay
-                                    </a>
+                                    <button @click="buyToCart(product.id)">Mua ngay</button>
                                 </div>
                             </div>
                         </div>
@@ -256,6 +252,10 @@
 
 <script>
 import { onMounted, onUnmounted, ref } from "vue";
+import { useCartStore } from "@/stores/cartStore";
+
+
+
 
 export default {
     props: {
@@ -266,11 +266,14 @@ export default {
         components: Array,
     },
 
-    setup() {
+    setup(props) {
         // State quản lý modal và danh sách linh kiện
         const isModalOpen = ref(false);
         const currentImageIndex = ref(0);
         const showMore = ref(false);
+        const cartStore = useCartStore();
+        const quantity = ref(1);
+
 
         // Xử lý sự kiện đóng modal khi nhấn phím ESC
         const handleEscape = (event) => {
@@ -278,6 +281,30 @@ export default {
                 isModalOpen.value = false;
             }
         };
+
+        // Xử lý sự kiện tăng giảm số lượng sản phẩm
+        const increaseQuantity = () => {
+            quantity.value++;
+        };
+
+        // Giảm số lượng sản phẩm
+        const decreaseQuantity = () => {
+            if (quantity.value > 1) {
+                quantity.value--;
+            }
+        }
+
+        // Thêm sản phẩm vào giỏ hàng
+        const addToCart = () => {
+            const productId = props.product.productId;
+            cartStore.addToCart(productId, quantity.value);
+        }
+
+        // Mua ngay
+        const buyToCart = () => {
+            const productId = props.product.productId;
+            cartStore.buyToCart(productId, quantity.value);
+        }
 
         // Lắng nghe sự kiện bàn phím
         onMounted(() => document.addEventListener("keydown", handleEscape));
@@ -287,14 +314,20 @@ export default {
             isModalOpen,
             currentImageIndex,
             showMore,
+            quantity,
 
             // Methods
             openModal: () => (isModalOpen.value = true),
             closeModal: () => (isModalOpen.value = false),
             toggleShowMore: () => (showMore.value = !showMore.value),
+            addToCart,
+            increaseQuantity,
+            decreaseQuantity,
+            buyToCart,
         };
-    },
-};
+    }
+}
+
 </script>
 
 <style>
@@ -344,7 +377,7 @@ export default {
     border: 1px solid var(--color-global);
 }
 
-.product-detail .btn-buy.buyNow a {
+.product-detail .btn-buy.buyNow button {
     color: var(--color-global);
 }
 
@@ -352,11 +385,11 @@ export default {
     background: var(--color-global);
 }
 
-.product-detail .btn-buy.buyNow:hover a {
+.product-detail .btn-buy.buyNow:hover button {
     color: #fff;
 }
 
-.btn-buy a {
+.btn-buy button {
     text-transform: capitalize;
     line-height: 50px;
     font-size: 16px;
@@ -376,7 +409,7 @@ export default {
     border: 1px solid var(--color-global);
 }
 
-.product-detail .btn-buy:hover a {
+.product-detail .btn-buy:hover button {
     color: var(--color-global);
 }
 
@@ -522,21 +555,19 @@ export default {
     white-space: nowrap;
 }
 
-.unit-detail-amount-control {
+.product-detail .unit-detail-amount-control {
     margin-left: 16px;
     width: calc(100% - 76px);
 }
 
 .unit-detail-amount-control a {
-    height: 50px;
     width: 50px;
     text-align: center;
     border: 1px solid #ccc;
 }
 
-.unit-detail-amount-control input {
+.product-detail .unit-detail-amount-control input {
     width: calc(100% - 100px);
-    height: 50px;
     border: 1px solid #ccc;
     text-align: center;
     font-size: 20px;
@@ -544,7 +575,6 @@ export default {
 }
 
 .unit-detail-amount-control i {
-    line-height: 50px;
     color: #000;
     font-size: 20px;
 }

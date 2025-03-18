@@ -5,9 +5,9 @@
                 <h2 class="title">Danh mục nổi bật</h2>
                 <div class="list">
 
-                    <div v-if="categories.length > 0" class="row  d-flex flex-wrap">
+                    <div v-if="categorys.length > 0" class="row  d-flex flex-wrap">
                         <router-link :to="`/category/${category.categoryId}`" class="col-md-3 col-sm-6 item"
-                            v-for="category in categories" :key="category.categoryId">
+                            v-for="category in categorys" :key="category.categoryId">
                             <div class="txt">
                                 <div class="name line-clamp-1">
                                     {{ category.name }}
@@ -32,28 +32,24 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { useCategoryStore } from '@/stores/categoryStore';
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 
 export default {
-    data() {
+    name: 'CategoryApp',
+    setup() {
+        const categoryStore = useCategoryStore();
+        const { categorys } = storeToRefs(categoryStore);
+
+        onMounted(() => {
+            categoryStore.fetchCategory();
+        });
         return {
-            categories: [],
+            categorys
         };
     },
-    mounted() {
-        this.fetchDataCategory();
-    },
-    methods: {
 
-        async fetchDataCategory() {
-            try {
-                const response = await axios.get('http://localhost:3000/api/v1/data/category');
-                this.categories = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-    },
 }
 </script>
 
