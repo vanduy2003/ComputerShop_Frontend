@@ -1,28 +1,36 @@
 <template>
-    <div class="product-manage wrappers">
+    <div class="manage wrappers">
         <AdminSidebar />
         <AdminNavbar />
         <div class=" content p-4">
             <h1 class="title text-white">Danh sách sản phẩm</h1>
-            <div class="btn-controll">
+            <div class="btn-controll d-flex justify-content-end">
                 <button class="btn-creat mb-1 p-2 fs-6">
                     <router-link to="/admin/products/add-product" class="text-white">
                         <v-icon>mdi mdi-package-variant-closed</v-icon>
                         <span>Thêm sản phẩm</span>
                     </router-link>
                 </button>
+                <button class="mb-1 ms-2">
+                    <div class="btn-controll">
+                        <v-select v-model="selectedCategory" :items="categoryOptions" item-title="label"
+                            item-value="value" class="custom-select" density="compact" variant="solo-filled"
+                            hide-details="true" />
+                    </div>
+                </button>
             </div>
             <v-card>
-
                 <template v-slot:text>
                     <v-text-field v-model="search" label="Tìm kiếm" prepend-inner-icon="mdi-magnify" variant="outlined"
                         hide-details single-line></v-text-field>
                 </template>
 
-                <v-data-table :headers="headers" :items="products" :search="search" class="elevation-1">
+                <v-data-table :headers="headers" :items="filteredcategory" :search="search" class="elevation-1"
+                    :sort-by="[{ key: 'priceNew', order: 'desc' }]">
+
                     <!-- Hiển thị ảnh -->
                     <template v-slot:[`item.imageUrl`]="{ item }">
-                        <v-img :src="item.imageUrl" :alt="item.name" cover width="80"></v-img>
+                        <v-img :src="item.imageUrl" cover width="80"></v-img>
                     </template>
 
                     <!-- Hiển thị số lượng -->
@@ -50,7 +58,7 @@
                         <div class="d-flex justify-center text-center">{{ item.supplierName }}</div>
                     </template>
 
-                    <!-- Hiển thị các hành động chỉnh sửa, xóa -->
+                    <!-- Hiển thị các hành động -->
                     <template v-slot:[`item.actions`]="{ item }">
                         <button class="btn-update mb-1" fab small>
                             <router-link :to="`/admin/products/edit/${item.productId}`" class="text-white">
@@ -63,6 +71,7 @@
                     </template>
                 </v-data-table>
             </v-card>
+
         </div>
     </div>
 
@@ -73,7 +82,7 @@ import { storeToRefs } from 'pinia';
 import AdminNavbar from '../Dashboard/AdminNavbar.vue';
 import AdminSidebar from '../Dashboard/AdminSidebar.vue';
 import { useProductStore } from "@/stores/productStore";
-import { onMounted, ref, onActivated } from 'vue';
+import { onMounted, ref, onActivated, computed } from 'vue';
 import { useToast } from 'vue-toastification';
 
 export default {
@@ -88,10 +97,22 @@ export default {
         const { products } = storeToRefs(productStore);
         const search = ref('');
         const toast = useToast();
+        const selectedCategory = ref(null);
+
+        const filteredcategory = computed(() => {
+            if (!selectedCategory.value) {
+                return products.value;
+            }
+            return products.value.filter((product) =>
+                product.categoryName.trim() === selectedCategory.value.trim()
+            );
+        });
+
 
         onMounted(() => {
             productStore.fetchProducts();
         })
+
         onActivated(() => {
             productStore.fetchProducts(); // Tải lại danh sách sản phẩm khi trang được kích hoạt
         });
@@ -101,7 +122,7 @@ export default {
             { title: 'Tên sản phẩm', value: 'name' },
             { title: 'Ảnh', value: 'imageUrl' },
             { title: 'Số lượng', value: 'stockQuantity' },
-            { title: 'Giá', value: 'priceNew' },
+            { title: 'Giá', value: 'priceNew', sortable: true },
             { title: 'Giảm giá', value: 'sale' },
             { title: 'Danh mục', value: 'categoryName' },
             { title: 'Nhà cung cấp', value: 'supplierName' },
@@ -121,12 +142,25 @@ export default {
             }
         };
 
+        const categoryOptions = [
+            { label: 'Tất cả sản phẩm', value: null },
+            { label: 'Laptop GAMING', value: 'LAPTOP GAMING' },
+            { label: 'PC Gaming', value: 'PC GAMING' },
+            { label: 'Gaming Gear', value: 'GAMING GEAR' },
+            { label: 'Màn hình máy tính', value: 'MÀN HÌNH MÁY TÍNH' },
+            { label: 'PC HANDHELD', value: 'PC HANDHELD' },
+            { label: 'PC văn phòng', value: 'PC VĂN PHÒNG' },
+            { label: 'Ghế Gaming', value: 'GHẾ GAMING' },
+        ];
 
         return {
             products,
             headers,
             search,
-            removeProduct
+            removeProduct,
+            categoryOptions,
+            selectedCategory,
+            filteredcategory
         }
     }
 }
@@ -137,7 +171,6 @@ export default {
     min-height: 40px;
     padding: 10px;
 }
-
 
 .wrappers {
     background: linear-gradient(314deg, #585858 0%, #6f6f6f 40%, #5d5d5d 80%);
@@ -169,12 +202,11 @@ export default {
 }
 
 .btn-creat {
-    margin-left: auto;
-    display: block;
     background-color: #10c100;
     margin-bottom: 10px;
     font-weight: bold;
     opacity: 0.8;
+    border-radius: 3px;
 }
 
 .btn-creat span {
@@ -184,8 +216,6 @@ export default {
 .btn-creat:hover {
     opacity: 1;
 }
-
-
 
 thead th {
     padding: 10px;
@@ -203,7 +233,7 @@ tbody tr:hover {
 
 }
 
-.product-manage .title {
+.manage .title {
     font-size: 24px;
     font-weight: 700;
     text-transform: uppercase;

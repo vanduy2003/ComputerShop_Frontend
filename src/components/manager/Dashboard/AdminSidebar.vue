@@ -71,7 +71,7 @@ const menuItems = ref([
         icon: "mdi mdi-cart",
 
         children: [
-            { title: "Danh sách đơn hàng", route: "/admin/orders" },
+            { title: "Danh sách đơn hàng", route: "/admin/order-list-manage" },
         ],
     },
     {
@@ -79,8 +79,7 @@ const menuItems = ref([
         icon: "mdi mdi-format-list-bulleted",
 
         children: [
-            { title: "Danh sách danh mục", route: "/admin/categories" },
-            { title: "Thêm danh mục", route: "/admin/categories/add" },
+            { title: "Danh sách danh mục", route: "/admin/category-list-manage" },
         ],
     },
     {
@@ -88,16 +87,15 @@ const menuItems = ref([
         icon: "mdi mdi-truck",
 
         children: [
-            { title: "Danh sách nhà cung cấp", route: "/admin/suppliers" },
-            { title: "Thêm nhà cung cấp", route: "/admin/suppliers/add" },
+            { title: "Danh sách nhà cung cấp", route: "/admin/supplier-list-manage" },
         ],
     },
     {
         title: "Quản Lý Tin Tức",
         icon: "mdi mdi-new-box",
         children: [
-            { title: "Danh sách tin tức", route: "/admin/news" },
-            { title: "Thêm tin tức", route: "/admin/news/add" },
+            { title: "Danh sách tin tức", route: "/admin/new-list-manage" },
+            { title: "Thêm tin tức", route: "/admin/news/add-new" },
         ]
     },
     {
@@ -110,7 +108,7 @@ const menuItems = ref([
 ]);
 
 const singleItems = ref([
-    { title: "Quản Lý Người Dùng", icon: "mdi mdi-account-group", route: "" },
+    { title: "Quản Lý Người Dùng", icon: "mdi mdi-account-group", route: "/admin/user-list-manage" },
     { title: "Cài Đặt", icon: "mdi mdi-cog", route: "" },
 ]);
 

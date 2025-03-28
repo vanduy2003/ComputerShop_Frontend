@@ -1,9 +1,17 @@
 <template>
-    <div class="product-manage wrappers">
+    <div class="manage wrappers">
         <AdminSidebar />
         <AdminNavbar />
         <div class="content p-4">
             <h1 class="title text-white">{{ isEdit ? "Cập nhật sản phẩm" : "Thêm sản phẩm" }}</h1>
+            <div class="btn-controll">
+                <button class="btn-creat btn-lish mb-1 p-2 fs-6">
+                    <router-link to="/admin/products-list-manage" class="text-white">
+                        <v-icon>mdi mdi-package-variant-closed</v-icon>
+                        <span>Danh sách sản phẩm</span>
+                    </router-link>
+                </button>
+            </div>
             <div class="form-add-product">
                 <div class="p-4 fs-6">
                     <!-- Tên + Ảnh  -->
@@ -41,7 +49,7 @@
 
                         <div class="item-input col-md-3">
                             <label>Nhóm sản phẩm<span>*</span></label>
-                            <select v-model="highlightType" class="form-select">
+                            <select v-model="highlightType" class="form-select form-control form-control">
                                 <option value="null">--- Chọn nhóm sản phẩm ---</option>
                                 <option value="Best Seller">Best Seller</option>
                                 <option value="Best Choice">Best Choice</option>
@@ -61,7 +69,7 @@
                     <div class="row mb-4">
                         <div class="item-input col-md-4">
                             <label>Danh mục sản phẩm<span>*</span></label>
-                            <select v-model="selectedCategory" class="form-select">
+                            <select v-model="selectedCategory" class="form-select form-control">
                                 <option :value="null">--- Chọn danh mục sản phẩm ---</option>
                                 <option v-for="category in categorys" :key="category.categoryId"
                                     :value="category.categoryId">
@@ -75,7 +83,7 @@
 
                         <div class="item-input col-md-4">
                             <label>Nhà cung cấp sản phẩm<span>*</span></label>
-                            <select v-model="selectedSupplier" class="form-select">
+                            <select v-model="selectedSupplier" class="form-select form-control">
                                 <option :value="null">--- Chọn nhà cung cấp sản phẩm ---</option>
                                 <option v-for="supplier in suppliers" :key="supplier.supplierId"
                                     :value="supplier.supplierId">
@@ -89,7 +97,7 @@
 
                         <div class="item-input col-md-4">
                             <label>Thương hiệu sản phẩm<span>*</span></label>
-                            <select v-model="selectedBrand" class="form-select">
+                            <select v-model="selectedBrand" class="form-select form-control">
                                 <option :value="null">--- Chọn thương hiệu sản phẩm ---</option>
                                 <option v-for="brand in brands" :key="brand.brandId" :value="brand.brandId">
                                     {{ brand.name }}
@@ -99,11 +107,12 @@
                             </div>
                         </div>
                     </div>
-                    <!--  -->
+
+                    <!-- Chọn linh kiện -->
                     <div class="row item-input mb-4">
                         <label>Chọn linh kiện<span>*</span></label>
                         <div class="item-input col-md-10">
-                            <select class="form-select" v-model="selectedComponentId">
+                            <select class="form-select form-control" v-model="selectedComponentId">
                                 <option :value="null">--- Chọn linh kiện ---</option>
                                 <option v-for="component in components" :key="component.componentId"
                                     :value="component.componentId">
@@ -114,7 +123,7 @@
                                 error.selectedComponentId }}</div>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" @click="addComponent" class="btn btn-primary">
+                            <button type="button" @click="addComponent" class="btn btn-primary fw-semibold">
                                 Thêm linh kiện
                             </button>
                         </div>
@@ -142,8 +151,37 @@
 
                     </div>
 
-                    <!--  -->
+                    <!-- Nhập ảnh chi tiết sản phẩm -->
+                    <div class="row item-input mb-4">
+                        <label>Ảnh chi tiết sản phẩm<span>*</span></label>
+                        <div class="item-input col-md-9">
+                            <input type="text" v-model="imageInput" class="form-control"
+                                placeholder="Nhập link ảnh chi tiết sản phẩm" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" @click="addImageDetail" class="btn btn-primary fw-semibold">
+                                Thêm ảnh
+                            </button>
+                        </div>
+                    </div>
 
+                    <!-- Hiển thị chi tiết ảnh sản phẩm  -->
+                    <div class="row mb-4 p-3">
+                        <div class="col-md-12">
+                            <h5 class="fs-4 fw-semibold">Ảnh chi tiết sản phẩm:</h5>
+                            <div class="row">
+                                <div class="col-md-3 mb-3" v-for="(image, index) in productImageDetail" :key="index">
+                                    <img :src="image" class="img-fluid" alt="Ảnh chi tiết sản phẩm" />
+                                    <button type="button" @click="removeImageDetail(index)"
+                                        class="btn btn-danger btn-sm mt-2">
+                                        Xóa
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
                     <div class="editor-container mt-5">
                         <div class="editor-wrapper">
                             <h3 class="fs-4 fw-semibold">Nội dung sản phẩm</h3>
@@ -192,6 +230,7 @@ import { computed, onMounted, ref } from "vue";
 import LoadingOverlay from "@/components/content/common/LoadingOverlay.vue";
 import { useToast } from "vue-toastification";
 import Editor from '@tinymce/tinymce-vue';
+import { useRouter } from "vue-router";
 
 
 
@@ -218,6 +257,7 @@ export default {
         const supplierStore = useSupplierStore();
         const productStore = useProductStore();
         const toast = useToast();
+        const router = useRouter();
         const brandStore = useBrandStore();
         const componentStore = useComponentStore();
         const { components } = storeToRefs(componentStore);
@@ -240,6 +280,21 @@ export default {
         const stockQuantity = ref("");
         const discountPercent = ref("");
         const highlightType = ref("");
+
+        const productImageDetail = ref([]); // 🆕 Danh sách ảnh chi tiết
+        const imageInput = ref(""); // 🆕 Input để nhập link ảnh
+
+        // 🟢 Thêm ảnh vào danh sách
+        const addImageDetail = () => {
+            if (imageInput.value.trim() === "") return; // Kiểm tra input không rỗng
+            productImageDetail.value.push(imageInput.value.trim()); // Thêm ảnh vào mảng
+            imageInput.value = ""; // Xóa input sau khi thêm
+        };
+
+        // 🔴 Xóa ảnh khỏi danh sách
+        const removeImageDetail = (index) => {
+            productImageDetail.value.splice(index, 1);
+        };
 
         onMounted(async () => {
             categoryStore.fetchCategory();
@@ -266,8 +321,18 @@ export default {
                 highlightType.value = product.value.highlightType;
                 descHTML.value = product.value.descHTML;
                 selectedComponents.value = product.value.components;
+                productImageDetail.value = product.value.imageDetail;
             }
 
+        });
+
+        // Định dạng giá hiển thị
+        const formattedPrice = computed({
+            get: () => productPrice.value.toLocaleString("vi-VN"),
+            set: (value) => {
+                // Chuyển chuỗi nhập vào thành số
+                productPrice.value = Number(value.replace(/\D/g, ""));
+            },
         });
 
         // Giá mới sau khi giá cũ nhân với % giảm giá
@@ -293,6 +358,7 @@ export default {
                 componentId: c.componentId,
                 quantity: c.quantity,
             })),
+            imageDetails: productImageDetail.value,
         }));
 
         // ✅ Hàm kiểm tra form
@@ -375,8 +441,9 @@ export default {
                     // Nếu là edit, gọi hàm update
                     await productStore.updateProduct(newProduct.value);
                     setTimeout(() => {
-                        toast.success("Cập nhật sản phẩm thành công");
                         isLoading.value = false; // Chỉ đặt lại loading ở đây
+                        toast.success("Cập nhật sản phẩm thành công");
+                        router.push("/admin/products-list-manage");
                     }, 2000);
                 } else {
                     await productStore.addProduct(newProduct.value);
@@ -393,6 +460,7 @@ export default {
                         highlightType.value = "";
                         descHTML.value = "";
                         selectedComponents.value = [];
+                        productImageDetail.value = [];
                         isLoading.value = false; // Chỉ đặt lại loading ở đây
                     }, 2000);
                 }
@@ -427,6 +495,11 @@ export default {
             descHTML,
             discountPercent,
             error,
+            addImageDetail,
+            removeImageDetail,
+            productImageDetail,
+            imageInput,
+            formattedPrice
 
         };
     },
@@ -434,20 +507,21 @@ export default {
 </script>
 
 <style>
+.btn-creat.btn-lish {
+    background: rgb(10, 185, 255);
+    display: block;
+    margin-left: auto;
+}
+
 .form-add-product {
     background: white;
     border-radius: 5px;
 }
 
-/* .editor-container {
-    display: flex;
-    gap: 20px;
+.form-control {
+    line-height: 1.8 !important;
 }
 
-.editor-wrapper,
-.preview-wrapper {
-    width: 50%;
-} */
 .item-input label {
     margin-bottom: 5px;
     font-weight: bold;
@@ -458,6 +532,9 @@ export default {
 }
 
 .preview-content {
+    height: 400px;
+    overflow-y: auto;
+
     border: 1px solid #ddd;
     padding: 10px;
     min-height: 400px;

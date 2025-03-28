@@ -13,14 +13,9 @@
 
                     <li class="home float-start list-unstyled">
                         <a href="/gaming-pc.html" class="text-custom">
-                            <span itemprop="name">
-                                GIỎ HÀNG
-                            </span>
-
+                            <span itemprop="name"> GIỎ HÀNG </span>
                         </a>
                     </li>
-
-
                 </ol>
             </div>
             <!-- end breadcrumb -->
@@ -29,11 +24,10 @@
                     <CartsLeft :carts="cart" />
                 </div>
                 <div class="col-md-4">
-                    <CartsRight :carts="cart" :countItems="countItems" :totalCartPrice="totalCartPrice" />
+                    <CartsRight :carts="cart" :countItems="countItems" />
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -51,15 +45,13 @@ export default {
 
     setup() {
         const cartStore = useCartStore();
-        const { cart, countItems, totalCartPrice } = storeToRefs(cartStore);
+        const { cart, countItems } = storeToRefs(cartStore);
         return {
             cart,
             countItems,
-            totalCartPrice
         };
-    }
+    },
 };
-
 </script>
 
 <style></style>

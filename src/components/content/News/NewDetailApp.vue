@@ -100,7 +100,7 @@ export default {
         // Hàm fetch dữ liệu + re-render Facebook Plugin
         const fetchData = async (newId) => {
             if (!newId) return; // Tránh lỗi nếu newId chưa có
-            await store.fetchNewDataID(newId);
+            await store.fetchNewDataByID(newId);
 
             setTimeout(() => {
                 if (window.FB) {

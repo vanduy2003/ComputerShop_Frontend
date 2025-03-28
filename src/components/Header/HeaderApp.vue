@@ -49,10 +49,10 @@
                                     <p class="line-clamp-1 fs-6 text-dark mb-0">{{ product.name }}</p>
                                     <span class="price mb-0 mt-1 me-5">{{
                                         Number(product.priceNew).toLocaleString("vi-VN")
-                                    }}đ</span>
+                                        }}đ</span>
                                     <del class="text-secondary mb-0 mt-1">{{
                                         Number(product.priceOld).toLocaleString("vi-VN")
-                                        }}đ</del>
+                                    }}đ</del>
                                 </div>
                                 <img :src="product.imageUrl" alt="" class="" />
                             </router-link>
@@ -76,14 +76,36 @@
 
                             <v-list class="custom-menu">
                                 <v-list-item @click="logout">
-                                    <v-list-item-title>Trang cá nhân</v-list-item-title>
+                                    <div class="d-flex align-center">
+                                        <v-icon class="mr-2">mdi mdi-file-account-outline</v-icon>
+                                        <v-list-item-title class="fs-6 fw-semibold">Trang Cá Nhân</v-list-item-title>
+                                    </div>
                                 </v-list-item>
+
+                                <router-link class="text-black" to="/me/list-order">
+                                    <v-list-item>
+                                        <div class="d-flex align-center">
+                                            <v-icon class="mr-2">mdi mdi-cart</v-icon>
+                                            <v-list-item-title class="fs-6 fw-semibold">Đơn hàng</v-list-item-title>
+                                        </div>
+                                    </v-list-item>
+                                </router-link>
+
+
                                 <v-list-item @click="logout">
-                                    <v-list-item-title>Cài đặt</v-list-item-title>
+                                    <div class="d-flex align-center">
+                                        <v-icon class="mr-2">mdi mdi-heart-outline</v-icon>
+                                        <v-list-item-title class="fs-6 fw-semibold">Yêu thích</v-list-item-title>
+                                    </div>
                                 </v-list-item>
+
                                 <v-list-item @click="logout" class="logout-item">
-                                    <v-list-item-title>Đăng xuất</v-list-item-title>
+                                    <div class="d-flex align-center">
+                                        <v-icon class="mr-2">mdi mdi-logout</v-icon>
+                                        <v-list-item-title class="fs-6 fw-semibold">Đăng Xuất</v-list-item-title>
+                                    </div>
                                 </v-list-item>
+
                             </v-list>
                         </v-menu>
 
@@ -113,9 +135,9 @@
                                                     item.name }}</router-link>
                                             <div class="d-flex align-items-center">
                                                 <b class="price me-3">{{ Number(item.priceNew).toLocaleString("vi-VN")
-                                                }}đ</b>
+                                                    }}đ</b>
                                                 <del class="old-price">{{ Number(item.priceNew).toLocaleString("vi-VN")
-                                                }}đ</del>
+                                                    }}đ</del>
                                             </div>
                                         </div>
                                         <div class="cart-right">
@@ -143,7 +165,7 @@
                                     </div>
                                     <div class="bnt-cart d-flex mt-3">
                                         <router-link to="/me/cart" class="btn-goCart">Xem giỏ hàng</router-link>
-                                        <a href="/cart?step=2" class="btn-goCart cart-2">Mua hàng</a>
+                                        <a href="/me/cart/cart-confirm-buy" class="btn-goCart cart-2">Mua hàng</a>
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +196,7 @@
                             <div class="menu_holder">
                                 <div class="item">
                                     <!-- Mục chính -->
-                                    <router-link :to="dsvs" class="item-cate d-flex align-items-center">
+                                    <router-link to="" class="item-cate d-flex align-items-center">
                                         <p class="cat-title">Xây dựng cấu hình PC</p>
                                         <span class="box-right">
                                             <i class="mdi mdi-chevron-right"></i>
@@ -364,7 +386,7 @@
                         </div>
                         <!-- header-bottom-right -->
                         <div class="header-bottom-right d-flex align-items-center">
-                            <router-link :to="dsvs" class="item">
+                            <router-link to="/Xaydungcauhinhpc" class="item">
                                 <span class="txt" alt="Build PC Gaming"> Xây dựng cấu hình PC </span>
                             </router-link>
                             <router-link to="/category/1" class="item">
@@ -388,11 +410,11 @@
                             <router-link to="/category/8" class="item">
                                 <span class="txt">PC Văn Phòng</span>
                             </router-link>
-                            <router-link :to="dsvs" class="item">
-                                <span class="txt">RTX 4060</span>
-                            </router-link>
-                            <router-link :to="dsvs" class="item">
+                            <router-link to="/mayin" class="item">
                                 <span class="txt">Máy in</span>
+                            </router-link>
+                            <router-link to="/contact" class="item">
+                                <span class="txt">Liên hệ</span>
                             </router-link>
                         </div>
                     </div>
@@ -439,6 +461,7 @@ import LoadingOverlay from "@/components/content/common/LoadingOverlay.vue";
 import { useToast } from "vue-toastification";
 import { useCartStore } from "@/stores/cartStore";
 import { useProductStore } from "@/stores/productStore";
+import { useRouter } from "vue-router";
 
 
 export default {
@@ -456,6 +479,7 @@ export default {
         const { cart, countItems, totalCartPrice } = storeToRefs(cartStore);
         const { products } = storeToRefs(productStore);
         const toast = useToast();
+        const router = useRouter();
 
         // State
         const isLoginDialog = ref(false);
@@ -517,22 +541,34 @@ export default {
             isForgotPassDialog.value = true;
         };
 
+        // Đóng dialog
         const closeDialog = () => {
             isLoginDialog.value = false;
             isRegisterDialog.value = false;
             isForgotPassDialog.value = false;
         };
 
-        const logout = () => {
-            isLoading.value = true;
-            toast.success("Đăng xuất thành công!");
-            setTimeout(() => {
-                userStore.logout();
-                isLoading.value = false;
-                isMenuOpen.value = false;
-            }, 2000);
+        // Đăng xuất
+        const logout = async () => {
+            try {
+                isLoading.value = true; // Bắt đầu loading
+
+                await userStore.logout(); // Thực hiện logout (có thể gọi API nếu cần)
+
+                toast.success("Đăng xuất thành công!");
+                isMenuOpen.value = false; // Đóng menu
+                router.push("/"); // Chuyển hướng về trang chủ
+            } catch (error) {
+                console.error("Lỗi khi đăng xuất:", error);
+                toast.error("Đăng xuất thất bại, vui lòng thử lại!");
+
+            } finally {
+                isLoading.value = false; // Kết thúc loading
+            }
         };
 
+
+        // Mở / đóng menu
         const toggleMenu = () => {
             isMenuOpen.value = !isMenuOpen.value;
         };
@@ -768,7 +804,7 @@ export default {
 
 /* Hover effect */
 .v-list-item:hover {
-    background: #d91b1b;
+    background: #4b9fff;
     color: #fff;
 }
 
@@ -779,7 +815,7 @@ export default {
 }
 
 .logout-item:hover {
-    background: #ffdddd;
+    background: #ff0000;
 }
 
 /* 🎨 Style cho avatar */

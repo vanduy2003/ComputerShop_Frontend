@@ -41,7 +41,8 @@
                                     <div class="col col-stats ms-3 ms-sm-0">
                                         <div class="numbers">
                                             <p class="card-category">Thu Nhập</p>
-                                            <h4 class="card-title">1303</h4>
+                                            <h4 class="card-title">{{ Number(totalOrders).toLocaleString("vi-VN") }} đ
+                                            </h4>
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +80,7 @@
                                     <div class="col col-stats ms-3 ms-sm-0">
                                         <div class="numbers">
                                             <p class="card-category">Đơn Hàng</p>
-                                            <h4 class="card-title">576</h4>
+                                            <h4 class="card-title">{{ countOrders }}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -120,6 +121,7 @@ import { Chart, registerables, ArcElement, Tooltip, Legend } from "chart.js";
 import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
+import { useOrderStore } from '@/stores/oderStore';
 // Đăng ký các thành phần cần thiết của Chart.js
 Chart.register(...registerables, ArcElement, Tooltip, Legend);
 
@@ -134,10 +136,13 @@ export default {
     setup() {
         const productsStore = useProductStore();
         const { totalProducts } = storeToRefs(productsStore);
+        const ordersStore = useOrderStore();
+        const { totalOrders, countOrders } = storeToRefs(ordersStore);
 
 
         onMounted(() => {
             productsStore.fetchProducts();
+            ordersStore.fetchOders();
         });
 
         const chartData = {
@@ -266,6 +271,8 @@ export default {
             chartOptions1,
             legendData,
             totalProducts,
+            totalOrders,
+            countOrders
         }
     }
 }
@@ -384,10 +391,10 @@ export default {
 }
 
 .card-category {
-    margin-top: 8px;
-    font-size: 1rem;
+    margin-bottom: 5px;
+    font-size: 18px;
     color: #8d9498;
-    margin-bottom: 0;
+    font-weight: bold;
     word-break: normal;
 }
 </style>

@@ -14,19 +14,50 @@ export const useCartStore = defineStore("cart", () => {
     const toast = useToast();
     const orderId = ref(null);
     const router = useRouter();
+    const discount = ref(0); // Lưu giá trị giảm giá từ voucher
 
     // Computed để tính tổng số lượng sản phẩm trong giỏ hàng
     const countItems = computed(() => {
         return cart.value.reduce((total, item) => total + item.quantity, 0);
     });
 
-    // ✅ Tính tổng chi phí giỏ hàng (số lượng * đơn giá từng sản phẩm)
+    // ✅ Tổng giá chưa giảm
     const totalCartPrice = computed(() => {
         return cart.value.reduce(
             (total, item) => total + item.quantity * item.priceNew,
             0
         );
     });
+
+    // ✅ Tổng giá sau khi áp dụng voucher
+    const discountedTotal = computed(() => {
+        return Math.max(0, totalCartPrice.value - discount.value);
+    });
+
+    // ✅ Hàm áp dụng mã giảm giá
+    const applyVoucher = (voucherCode) => {
+        const voucherList = [
+            { code: "SALE100", discount: 100000 },
+            { code: "DISCOUNT50", discount: 50000 },
+            { code: "FREESHIP", discount: 20000 },
+        ];
+
+        const foundVoucher = voucherList.find(
+            (v) => v.code === voucherCode.toUpperCase()
+        );
+
+        if (foundVoucher) {
+            discount.value = foundVoucher.discount;
+            toast.success(
+                `Áp dụng mã: ${
+                    foundVoucher.code
+                } (-${foundVoucher.discount.toLocaleString("vi-VN")}đ)`
+            );
+        } else {
+            discount.value = 0;
+            toast.error("Mã giảm giá không hợp lệ");
+        }
+    };
 
     // Hàm thêm sản phẩm vào giỏ hàng
     const addToCart = async (productId, quantity) => {
@@ -220,6 +251,9 @@ export const useCartStore = defineStore("cart", () => {
         countItems,
         totalCartPrice,
         orderId,
+        discountedTotal, // Giá sau khi giảm
+        discount, // Giá trị giảm giá
+        applyVoucher, // Hàm áp dụng mã giảm giá
         addToCart,
         fetchCart,
         removeFromCart,

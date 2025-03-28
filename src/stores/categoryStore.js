@@ -1,29 +1,112 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 import axios from "axios";
+import dayjs from "dayjs";
 
-const useCategoryStore = defineStore("category", {
-    state: () => ({
-        categorys: [], // Danh sách danh mục
-    }),
+export const useCategoryStore = defineStore("category", () => {
+    const categorys = ref([]); // Danh sách danh mục
+    const error = ref(null);
 
-    actions: {
-        // 🟢 Lấy danh sách tất cả bài viết
-        async fetchCategory() {
-            if (this.categorys.length > 0) return; // Nếu đã có dữ liệu, không gọi lại API
+    // 🟢 Lấy danh sách tất cả danh mục
+    const fetchCategory = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:3000/api/v1/data/category"
+            );
 
-            try {
-                const response = await axios.get(
-                    "http://localhost:3000/api/v1/data/category"
-                );
+            // ✅ Cập nhật lại toàn bộ danh sách với dữ liệu mới nhất
+            categorys.value = response.data.map((category) => ({
+                ...category,
+                createdAt: dayjs(category.createdAt).format(
+                    "DD/MM/YYYY, HH:mm A"
+                ),
+            }));
 
-                this.categorys = response.data;
-                console.log("categorys", this.categorys);
-            } catch (error) {
-                this.error = "Không thể tải dữ liệu sản phẩm";
-                console.error(error);
+            console.log("categorys", categorys.value);
+        } catch (err) {
+            error.value = "Không thể tải dữ liệu danh mục";
+            console.error(err);
+        }
+    };
+
+    // 🟢 Thêm danh mục mới
+    const addCategory = async (category) => {
+        try {
+            const response = await axios.post(
+                "http://localhost:3000/api/v1/data/category/add-category",
+                category
+            );
+
+            const newCategory = response.data;
+            if (!newCategory || !newCategory.categoryId || !newCategory.name) {
+                console.error("Dữ liệu trả về không hợp lệ:", newCategory);
+                return;
             }
-        },
-    },
-});
 
-export { useCategoryStore };
+            // ✅ Thêm trực tiếp vào danh sách để cập nhật ngay lập tức
+            categorys.value.unshift({
+                ...newCategory,
+                createdAt: dayjs(newCategory.createdAt).format(
+                    "DD/MM/YYYY, HH:mm A"
+                ),
+            });
+        } catch (err) {
+            error.value = "Không thể thêm danh mục mới";
+            console.error(err);
+        }
+    };
+
+    // 🟢 Cập nhật danh mục
+    const updateCategory = async (category) => {
+        try {
+            await axios.put(
+                `http://localhost:3000/api/v1/data/category/update-category/${category.categoryId}`,
+                category
+            );
+
+            // ✅ Cập nhật danh mục trong danh sách mà không cần gọi API lại
+            const index = categorys.value.findIndex(
+                (item) => item.categoryId === category.categoryId
+            );
+            if (index !== -1) {
+                categorys.value[index] = {
+                    ...category,
+                    createdAt: dayjs(category.createdAt).format(
+                        "DD/MM/YYYY, HH:mm A"
+                    ),
+                };
+            }
+            await fetchCategory();
+        } catch (err) {
+            error.value = "Không thể cập nhật danh mục";
+            console.error(err);
+        }
+    };
+
+    // Xóa danh mục
+    const deleteCategory = async (categoryId) => {
+        try {
+            await axios.delete(
+                `http://localhost:3000/api/v1/data/category/delete-category/${categoryId}`
+            );
+
+            // 🔥 Xóa danh mục trực tiếp trong danh sách mà không cần gọi API lại
+            categorys.value = categorys.value.filter(
+                (category) => category.categoryId !== categoryId
+            );
+            return true;
+        } catch (err) {
+            error.value = "Không thể xóa danh mục";
+            console.error(err);
+        }
+    };
+
+    return {
+        categorys,
+        error,
+        fetchCategory,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+    };
+});

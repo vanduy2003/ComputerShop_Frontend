@@ -96,7 +96,7 @@
                                         <v-list-item-title>
                                             <strong>{{ component.componentType }}: </strong>
                                             <a href="#" target="_blank">
-                                                {{ component.component_name }}
+                                                {{ component.name }}
                                             </a>
                                         </v-list-item-title>
                                         <v-list-item-subtitle>

@@ -37,7 +37,7 @@
                     <div class="item d-flex align-items-center mb-2">
                         <b>Giao đến: </b>
                         <span>{{ order.address }} - {{ order.ward }} - {{ order.district }} - {{ order.province
-                            }}</span>
+                        }}</span>
                     </div>
                     <div class="item d-flex align-items-center mb-2">
                         <b>Phương thức thanh toán: </b>
@@ -69,7 +69,7 @@
                                 </a>
                                 <div class="price mt-1">
                                     <b class="text-danger">{{ Number(item.price).toLocaleString('vi-VN')
-                                    }}đ</b>
+                                        }}đ</b>
                                     <div class="d-flex align-items-center ">
                                         <b class="me-1">Số lượng:</b>
                                         <span>{{ item.quantity }}</span>
@@ -89,7 +89,7 @@
                             <b>Tổng chi phí</b>
                             <div class="text-danger fw-semibold fs-5">{{
                                 Number(order.total_price).toLocaleString('vi-VN')
-                            }}đ </div>
+                                }}đ </div>
                         </div>
                         <span class="vat text-end d-block mt-2">
                             Đã bao gồm VAT [nếu có]
@@ -163,7 +163,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .send-cart .btn-group .item {
     width: 50%;
     margin-right: 24px;

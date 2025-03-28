@@ -16,6 +16,8 @@ export const useProductStore = defineStore("product", () => {
     // 🔹 Actions
     // 🟢 Lấy danh sách tất cả sản phẩm
     const fetchProducts = async () => {
+        loading.value = true;
+        error.value = null;
         try {
             const response = await axios.get(
                 "http://localhost:3000/api/v1/data/products"
@@ -57,10 +59,9 @@ export const useProductStore = defineStore("product", () => {
 
             // ✅ Xác định ảnh chính một cách an toàn
             selectedImage.value =
-                productData.imageDetail?.length > 0
-                    ? productData.imageDetail[0]
-                    : productData.product_images ||
-                      "https://via.placeholder.com/500";
+                productData.imageUrl || // 🟢 Ưu tiên ảnh chính
+                productData.imageDetail?.[0] || // 🔹 Nếu không có ảnh chính, lấy ảnh phụ đầu tiên
+                "https://via.placeholder.com/500"; // 🔸 Nếu không có ảnh, dùng ảnh mặc định
 
             product.value = productData;
             components.value = productData.components;
@@ -91,7 +92,7 @@ export const useProductStore = defineStore("product", () => {
         }
     };
 
-    // 🟢 Xóa sản phẩ
+    // 🟢 Xóa sản phẩm
     const deleteProduct = async (productId) => {
         try {
             const response = await axios.delete(

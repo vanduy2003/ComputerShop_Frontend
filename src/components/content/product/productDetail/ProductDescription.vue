@@ -37,7 +37,7 @@
                                                 </strong></a>
                                         </td>
                                         <td class="att-value">
-                                            <a href="#" target="_blank">{{ component.component_name }}</a>
+                                            <a href="#" target="_blank">{{ component.name }}</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -90,6 +90,12 @@ export default {
 </script>
 
 <style>
+.box-desciption img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
 .productDescription strong {
     color: #ff9900 !important;
 }

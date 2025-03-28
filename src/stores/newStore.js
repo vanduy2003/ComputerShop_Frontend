@@ -1,76 +1,138 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 import axios from "axios";
 import dayjs from "dayjs";
 
-const useNewStore = defineStore("new", {
-    state: () => ({
-        news: [], // Danh sách bai viết
-        newCurrent: {}, // bai viet đang xem
-        loading: false,
-        error: null,
-    }),
+export const useNewStore = defineStore("news", () => {
+    const news = ref([]); // Danh sách bài viết
+    const newCurrent = ref({}); // Bài viết đang xem
+    const loading = ref(false);
+    const error = ref(null);
 
-    actions: {
-        // 🟢 Lấy danh sách tất cả bài viết
-        async fetchNews() {
-            if (this.news.length > 0) return; // Nếu đã có dữ liệu, không gọi lại API
+    // 🟢 Lấy danh sách tất cả bài viết
+    const fetchNews = async () => {
+        loading.value = true;
+        error.value = null;
+        try {
+            const response = await axios.get(
+                "http://localhost:3000/api/v1/data/news"
+            );
 
-            this.loading = true;
-            this.error = null;
-            try {
-                const response = await axios.get(
-                    "http://localhost:3000/api/v1/data/news"
-                );
-
-                // format ngày tháng
-                this.news = response.data.map((newItem) => {
-                    return {
-                        ...newItem,
-                        updatedAt: dayjs(newItem.updatedAt).format(
-                            "DD/MM/YYYY, HH:mm A"
-                        ),
-                    };
-                });
-            } catch (error) {
-                this.error = "Không thể tải dữ liệu sản phẩm";
-                console.error(error);
-            } finally {
-                this.loading = false;
-            }
-        },
-
-        // 🟢 Lấy thông tin sản phẩm theo ID
-        async fetchNewDataID(newId) {
-            newId = Number(newId); // Ép kiểu để tránh lỗi so sánh
-
-            // 🛑 Nếu sản phẩm đã được load và đúng ID, không gọi API nữa
-            if (this.newCurrent && this.newCurrent.newId === newId) return;
-
-            this.loading = true;
-            this.error = null;
-            try {
-                const response = await axios.get(
-                    `http://localhost:3000/api/v1/data/news/${newId}`
-                );
-                if (!response.data || response.data.length === 0) {
-                    throw new Error("Không có dữ liệu sản phẩm");
-                }
-
-                // format ngày tháng
-                let newCurrent = response.data[0];
-                newCurrent.updatedAt = dayjs(newCurrent.updatedAt).format(
+            // Format ngày tháng
+            news.value = response.data.map((newItem) => ({
+                ...newItem,
+                updatedAt: dayjs(newItem.updatedAt).format(
                     "DD/MM/YYYY, HH:mm A"
-                );
+                ),
+            }));
+        } catch (err) {
+            error.value = "Không thể tải dữ liệu bài viết";
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    };
 
-                this.newCurrent = newCurrent;
-            } catch (error) {
-                this.error = "Không thể tải sản phẩm";
-                console.error(error);
-            } finally {
-                this.loading = false;
+    // 🟢 Lấy thông tin bài viết theo ID
+    const fetchNewDataByID = async (newId) => {
+        newId = Number(newId);
+
+        newCurrent.value = {}; // 🔄 Reset trước khi gọi API
+
+        loading.value = true;
+        error.value = null;
+        try {
+            const response = await axios.get(
+                `http://localhost:3000/api/v1/data/news/${newId}`
+            );
+
+            if (!response.data) {
+                throw new Error("Không có dữ liệu bài viết");
             }
-        },
-    },
-});
 
-export { useNewStore };
+            newCurrent.value = {
+                ...response.data[0],
+                updatedAt: dayjs(response.data[0].updatedAt).format(
+                    "DD/MM/YYYY, HH:mm A"
+                ),
+            };
+        } catch (err) {
+            error.value = "Không thể tải bài viết";
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    // 🟢 Thêm bài viết mới
+    const addNews = async (newData) => {
+        try {
+            console.log("Gửi API với dữ liệu:", newData);
+            const response = await axios.post(
+                "http://localhost:3000/api/v1/data/news/add-new",
+                newData
+            );
+            console.log("Kết quả API:", response.data);
+
+            if (response.data.success) {
+                this.news.unshift(response.data.newArticle);
+                return { success: true };
+            } else {
+                return { success: false, message: response.data.message };
+            }
+        } catch (error) {
+            console.error("❌ Lỗi khi thêm bài viết:", error);
+            return { success: false, message: "Lỗi server" };
+        }
+    };
+
+    // 🟢 Cập nhật bài viết
+    const updateNews = async (newData) => {
+        try {
+            console.log("Gửi API cập nhật với dữ liệu:", newData);
+            const response = await axios.put(
+                `http://localhost:3000/api/v1/data/news/${newData.newId}`,
+                newData
+            );
+
+            if (response.data.success) {
+                fetchNews(); // Lấy lại danh sách bài viết
+                return true;
+            } else {
+                return { success: false, message: response.data.message };
+            }
+        } catch (error) {
+            console.error("❌ Lỗi khi cập nhật bài viết:", error);
+            return { success: false, message: "Lỗi server" };
+        }
+    };
+
+    const deleteNews = async (newId) => {
+        try {
+            const response = await axios.delete(
+                `http://localhost:3000/api/v1/data/news-delete/${newId}`
+            );
+            if (response.status === 200) {
+                fetchNews(); // Cập nhật danh sách bài viết
+                return true;
+            }
+        } catch (err) {
+            error.value = "Không thể xóa bài viết";
+            console.error(err);
+        } finally {
+            loading.value = false;
+        }
+    };
+
+    return {
+        news,
+        newCurrent,
+        loading,
+        error,
+        fetchNews,
+        fetchNewDataByID,
+        addNews,
+        updateNews,
+        deleteNews,
+    };
+});

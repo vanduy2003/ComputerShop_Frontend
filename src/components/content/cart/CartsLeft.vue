@@ -2,15 +2,14 @@
     <div>
         <div class="content-left">
             <div class="background-white">
-
                 <div class="title d-flex align-items-center justify-space-between">
                     <h2 class="fs-4 fw-semibold">Thông tin sản phẩm</h2>
-                    <div class="btn-action-cart d-flex align-items-center fs-7">
-                        <a href="#" class="item">
+                    <div class="btn-action d-flex align-items-center fs-7">
+                        <a href="#" class="item" @click.prevent="downloadOrder">
                             <i class="mdi mdi-file-download-outline"></i> Tải
                             báo giá
                         </a>
-                        <a href="#" class="item">
+                        <a href="#" class="item" @click.prevent="printOrder">
                             <i class="mdi mdi-printer"></i> In báo giá
                         </a>
                     </div>
@@ -127,6 +126,7 @@
 <script>
 import { ref } from 'vue';
 import { useCartStore } from "@/stores/cartStore";
+import Swal from "sweetalert2"; // Thư viện thông báo đẹp
 
 export default {
     props: {
@@ -154,18 +154,57 @@ export default {
             store.decreaseQuantity(cartId);
         }
 
+        // 🛠 Hàm in đơn hàng
+        const printOrder = () => {
+            window.print();
+        };
+
+        const downloadOrder = () => {
+            Swal.fire("Tính năng đang phát triển", "Chức năng này sẽ được cập nhật trong phiên bản sau", "info");
+        }
+
         return {
             isShowMore,
             toggleShowMore,
             removeFromCart,
             increaseQuantity,
-            decreaseQuantity
+            decreaseQuantity,
+            printOrder,
+            downloadOrder
         }
     }
 };
 </script>
 
-<style scoped>
+<style>
+@media print {
+
+    /* Ẩn tất cả nội dung mặc định */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Chỉ hiển thị nội dung đơn hàng */
+    .background-white,
+    .background-white * {
+        visibility: visible;
+    }
+
+    /* Ẩn các thành phần không cần in */
+    .btn-action,
+    .cart-right,
+    .summary,
+    .header,
+    .footer,
+    .btn-buy,
+    .form-voucher,
+    .social-icons {
+        display: none !important;
+    }
+
+
+}
+
 .content-left .v-list-item:hover {
     background-color: white;
 }
@@ -202,6 +241,10 @@ export default {
 
 .list-product-cart .unit-detail-amount-control input {
     width: 50px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .list-product-cart .unit-detail-amount-control a {

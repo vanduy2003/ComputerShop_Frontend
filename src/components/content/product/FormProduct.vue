@@ -5,7 +5,7 @@
             <div class="product-collection">
                 <div class="list-tab-collection d-flex align-items-center">
                     <p class="heading">
-                        PC Gaming Bán Chạy
+                        Sản Phẩm Bán Chạy
                     </p>
                 </div>
                 <div class="background-white">
@@ -89,8 +89,6 @@ export default {
         const hotProducts = computed(() =>
             props.products.filter((product) => product.highlightType === "Best Choice")
         );
-
-
 
         return {
             modules: [Autoplay, Navigation, Pagination], hotProducts,

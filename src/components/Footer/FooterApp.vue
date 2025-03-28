@@ -24,9 +24,7 @@
                         <h3>Đăng ký email để nhận tin khuyến mãi</h3>
                         <div id="newsletter" class="d-flex justify-content-end">
                             <input type="text" id="email-newsletter" placeholder="Nhập email của bạn" />
-                            <a href="#!" class="send-newsletter">
-                                Đăng ký
-                            </a>
+                            <a href="#!" class="send-newsletter"> Đăng ký </a>
                         </div>
                         <div class="note-error"></div>
                     </div>
@@ -40,18 +38,10 @@
                         <h3 class="title">Danh Mục Sản Phẩm</h3>
                         <div class="cnt">
                             <a href="/gaming-pc.html">PC Gaming</a>
-                            <a href="/gaming-laptop.html">
-                                Laptop Gaming
-                            </a>
-                            <a href="/vga-nvidia-rtx-4070.html">
-                                VGA NVidia Rtx 4070
-                            </a>
-                            <a href="/may-play-station-5.html">
-                                Ps5 Rẻ nhất Việt Nam
-                            </a>
-                            <a href="/vga-nvidia-rtx-4060.html">
-                                VGA NVidia Rtx 4060
-                            </a>
+                            <a href="/gaming-laptop.html"> Laptop Gaming </a>
+                            <a href="/vga-nvidia-rtx-4070.html"> VGA NVidia Rtx 4070 </a>
+                            <a href="/may-play-station-5.html"> Ps5 Rẻ nhất Việt Nam </a>
+                            <a href="/vga-nvidia-rtx-4060.html"> VGA NVidia Rtx 4060 </a>
                         </div>
                     </div>
                     <div class="item col-md-3">
@@ -68,29 +58,19 @@
                         <h3 class="title">Chính Sách</h3>
                         <div class="cnt">
                             <a href="#!">Quy Định Chung</a>
-                            <a href="/chinh-sach-van-chuyen-tnc-store">
-                                Chính Sách Vận Chuyển
-                            </a>
+                            <a href="/chinh-sach-van-chuyen-tnc-store"> Chính Sách Vận Chuyển </a>
                             <a href="/chinh-sach-va-quy-dinh-bao-hanh-tai-tnc-store">
                                 Chính Sách Bảo Hành
                             </a>
-                            <a href="/chinh-sach-doi-tra-lai-hang">
-                                Chính Sách Đổi, Trả Hàng
-                            </a>
-                            <a href="/chinh-sach-cho-doanh-nghiep">
-                                Chính Sách Cho Doanh Nghiệp
-                            </a>
+                            <a href="/chinh-sach-doi-tra-lai-hang"> Chính Sách Đổi, Trả Hàng </a>
+                            <a href="/chinh-sach-cho-doanh-nghiep"> Chính Sách Cho Doanh Nghiệp </a>
                         </div>
                     </div>
                     <div class="item col-md-3">
                         <h3 class="title">Thông Tin Hữu Ích</h3>
                         <div class="cnt">
-                            <a href="https://www.tncstore.vn/buildpc">
-                                Build PC là TNC
-                            </a>
-                            <a href="huong-dan-build-pc-tnc.html">
-                                Hướng dẫn Build PC TNC
-                            </a>
+                            <a href="https://www.tncstore.vn/buildpc"> Build PC là TNC </a>
+                            <a href="huong-dan-build-pc-tnc.html"> Hướng dẫn Build PC TNC </a>
                             <a href="tips-build-pc-tnc-nhieu-khuyen-mai.html">
                                 Tips Build PC TNC nhiều Khuyến Mại
                             </a>
@@ -104,7 +84,7 @@
                     </div>
                 </div>
                 <div class="row info-showroom d-flex my-4">
-                    <div class="left col-md-6" style="width: 450px;">
+                    <div class="left col-md-6" style="width: 450px">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14899.070737640484!2d105.844173!3d21.0019476!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac70cf94287f%3A0x7362ea6005b5ac6e!2sTNC%20Store!5e0!3m2!1sen!2s!4v1683824721069!5m2!1sen!2s"
                             width="400" height="210" allowFullScreen loading="lazy"
@@ -112,14 +92,10 @@
                             title="TNC Store"></iframe>
                     </div>
                     <div class="right col-md-6">
-                        <h3>
-                            Công ty TNHH Thương mại &amp; Tin học Tú
-                            Nguyệt
-                        </h3>
+                        <h3>Công ty TNHH Thương mại &amp; Tin học Tú Nguyệt</h3>
                         <div class="box">
                             <p>
-                                Showroom: 172 Lê Thanh Nghị, Phường Đồng
-                                Tâm, Quận Hai Bà Trưng, Hà Nội
+                                Showroom: 172 Lê Thanh Nghị, Phường Đồng Tâm, Quận Hai Bà Trưng, Hà Nội
                             </p>
                             <p class="lh-base">
                                 <span>Tel: </span>
@@ -134,9 +110,8 @@
                         </div>
                         <div class="box">
                             <p>
-                                Trung tâm bảo hành: 172 Lê Thanh Nghị,
-                                Phường Đồng Tâm, Quận Hai Bà Trưng, Hà
-                                Nội
+                                Trung tâm bảo hành: 172 Lê Thanh Nghị, Phường Đồng Tâm, Quận Hai Bà Trưng,
+                                Hà Nội
                             </p>
                             <p class="lh-base">
                                 Tel:
@@ -146,10 +121,7 @@
                             </p>
                         </div>
                         <div class="box">
-                            <p>
-                                Trụ sở (Không bán hàng): 11 Vũ Thạnh -
-                                Cát Linh - Đống Đa - Hà Nội
-                            </p>
+                            <p>Trụ sở (Không bán hàng): 11 Vũ Thạnh - Cát Linh - Đống Đa - Hà Nội</p>
                             <p class="lh-base">
                                 Tel:
                                 <a href="tel:0868302123">
@@ -176,10 +148,7 @@
         <div class="footer-bottom py-3">
             <div class="container">
                 <div class="d-flex align-items-center justify-content-between">
-                    <p>
-                        © 2020 - Bản quyền của Công ty TNHH Thương mại
-                        &amp; Tin học Tú Nguyệt
-                    </p>
+                    <p>© 2020 - Bản quyền của Công ty TNHH Thương mại &amp; Tin học Tú Nguyệt</p>
                     <div class="right d-flex">
                         <a href="http://online.gov.vn/Home/WebDetails/63325">
                             <i class="icon_2023 bct"></i>
@@ -192,13 +161,10 @@
             </div>
         </div>
     </footer>
-
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style scoped>
