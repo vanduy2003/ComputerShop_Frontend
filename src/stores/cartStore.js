@@ -6,6 +6,7 @@ import { computed } from "vue";
 import { useToast } from "vue-toastification";
 import { safeParseJSON } from "../utils/utils"; // Import hàm parse JSON
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 export const useCartStore = defineStore("cart", () => {
     const cart = ref([]);
@@ -78,7 +79,19 @@ export const useCartStore = defineStore("cart", () => {
                 { withCredentials: true }
             );
 
-            toast.success("Sản phẩm đã được thêm thành công!");
+            const confirm = await Swal.fire({
+                icon: "success",
+                title: "Thêm vào giỏ hàng thành công!",
+                text: "Bạn có muốn xem giỏ hàng không?",
+                showCancelButton: true,
+                confirmButtonText: "Xem giỏ hàng",
+                cancelButtonText: "Tiếp tục mua sắm",
+            });
+
+            if (confirm.isConfirmed) {
+                router.push("/me/cart"); // ✅ Chuyển đến trang giỏ hàng
+            }
+
             fetchCart(); // Cập nhật lại giỏ hàng
         } catch (error) {
             console.error("Lỗi khi thêm vào giỏ hàng:", error);
@@ -138,7 +151,15 @@ export const useCartStore = defineStore("cart", () => {
 
     // Hàm xóa sản phẩm khỏi giỏ hàng
     const removeFromCart = async (cartId) => {
-        if (!confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) return;
+        const confirm = await Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, Xóa sản phẩm",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!confirm.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
 
         try {
             const response = await axios.delete(

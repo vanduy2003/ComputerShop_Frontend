@@ -5,8 +5,8 @@
         <div class="">
             <div class="page-inner p-4">
                 <div class="pb-2">
-                    <h3 class="fw-bold mb-2">Computer Shop Management</h3>
-                    <h6 class="op-7 mb-2">Chiều lòng khách đến, Vừa lòng khách đi</h6>
+                    <h3 class="fw-bold mb-2">COMPUTER SHOP MANAGERMENT</h3>
+                    <h6 class="op-7 mb-2 text-gradient">TẬN TÂM - TRÁCH NHIỆM - SÁNG TẠO - KHÁC BIỆT</h6>
                 </div>
 
                 <div class="row">
@@ -22,7 +22,7 @@
                                     <div class="col col-stats ms-3 ms-sm-0">
                                         <div class="numbers">
                                             <p class="card-category">Khách Hàng</p>
-                                            <h4 class="card-title">1,294</h4>
+                                            <h4 class="card-title mb-0 fs-5">19</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -41,7 +41,9 @@
                                     <div class="col col-stats ms-3 ms-sm-0">
                                         <div class="numbers">
                                             <p class="card-category">Thu Nhập</p>
-                                            <h4 class="card-title">{{ Number(totalOrders).toLocaleString("vi-VN") }} đ
+                                            <h4 class="card-title mb-0 fs-5">{{
+                                                Number(totalOrders).toLocaleString("vi-VN")
+                                            }}
                                             </h4>
                                         </div>
                                     </div>
@@ -61,7 +63,7 @@
                                     <div class="col col-stats ms-3 ms-sm-0">
                                         <div class="numbers">
                                             <p class="card-category">Sản Phẩm</p>
-                                            <h4 class="card-title">{{ totalProducts }}</h4>
+                                            <h4 class="card-title mb-0 fs-5">{{ totalProducts }}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +82,7 @@
                                     <div class="col col-stats ms-3 ms-sm-0">
                                         <div class="numbers">
                                             <p class="card-category">Đơn Hàng</p>
-                                            <h4 class="card-title">{{ countOrders }}</h4>
+                                            <h4 class="card-title mb-0 fs-5">{{ countOrders }}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -94,7 +96,7 @@
                         <h3 class="fw-semibold fs-6">Revenue</h3>
                         <LineChart :chart-data="chartData" :chart-options="chartOptions" />
                     </div>
-                    <div class="card  ms-4">
+                    <div class="card p-3 ms-4">
                         <h3 class="title">Website Visitors</h3>
                         <DoughnutChart :chart-data="chartData1" :chart-options="chartOptions1" class="chart" />
                         <ul class="legend fw-semibold">
@@ -280,13 +282,20 @@ export default {
 
 <style scoped>
 .wrappers {
-    height: 100vh;
     background: linear-gradient(314deg, #ff7ebc 0%, #ffffad 40%, #ffa0b6 80%);
+}
+
+.text-gradient {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #ff0000, #003bff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .card {
     background: #fff;
-    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -352,8 +361,8 @@ export default {
 }
 
 .card-stats .col-icon {
-    width: 65px;
-    height: 65px;
+    width: 55px;
+
     padding-left: 0;
     padding-right: 0;
     margin-left: 15px;

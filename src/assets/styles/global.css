@@ -13,6 +13,10 @@ body {
   font-size: 14px;
 }
 
+.tudongchat-icon.svelte-g5s9s0{
+  background: linear-gradient(315deg, rgb(0, 10, 204) 15.28%, rgb(2, 120, 255) 84.72%) !important;
+}
+
 .container {
   padding: 0px;
   max-width: 1400px;
@@ -22,7 +26,9 @@ a {
   text-decoration: none;
 }
 
-
+.swal2-confirm, .swal2-styled{
+  color: #fff !important;
+}
 
 /* Đảm bảo giảm opacity mặc định */
 .v-btn--variant-elevated,
@@ -44,7 +50,7 @@ a {
 }
 
 .background-white {
-  background: #fff;
+  background: #fff !important;
   padding: 24px;
 }
 

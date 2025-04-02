@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export const useNewStore = defineStore("news", () => {
     const news = ref([]); // Danh sách bài viết
@@ -21,9 +22,7 @@ export const useNewStore = defineStore("news", () => {
             // Format ngày tháng
             news.value = response.data.map((newItem) => ({
                 ...newItem,
-                updatedAt: dayjs(newItem.updatedAt).format(
-                    "DD/MM/YYYY, HH:mm A"
-                ),
+                updatedAt: dayjs(newItem.updatedAt).format("DD/MM/YYYY, HH:mm"),
             }));
         } catch (err) {
             error.value = "Không thể tải dữ liệu bài viết";
@@ -96,7 +95,6 @@ export const useNewStore = defineStore("news", () => {
             );
 
             if (response.data.success) {
-                fetchNews(); // Lấy lại danh sách bài viết
                 return true;
             } else {
                 return { success: false, message: response.data.message };
@@ -108,6 +106,17 @@ export const useNewStore = defineStore("news", () => {
     };
 
     const deleteNews = async (newId) => {
+        const confirm = await Swal.fire({
+            title: "Xóa bài viết",
+            text: "Bạn có chắc chắn muốn xóa bài viết này không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, chắc chắn",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!confirm.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
+
         try {
             const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/news-delete/${newId}`

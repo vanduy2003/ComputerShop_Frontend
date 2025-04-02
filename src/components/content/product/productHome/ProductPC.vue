@@ -32,6 +32,7 @@
                                             ]">
                                                 {{ product.highlightType }}
                                             </span>
+
                                         </router-link>
                                         <div class="product-info">
                                             <router-link :to="`/products/${product.productId}`"
@@ -49,6 +50,7 @@
                                                     <b class="price">{{ Number(product.priceNew).toLocaleString('vi-VN')
                                                         }}đ</b>
                                                     <div class="price-saleoff">{{ product.sale }}%</div>
+                                                    <span class="box-favarite mdi mdi-heart-circle"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,6 +114,7 @@
                                                         Number(product.priceNew).toLocaleString('vi-VN')
                                                     }}đ</b>
                                                     <div class="price-saleoff">{{ product.sale }}%</div>
+                                                    <span class="box-favarite mdi mdi-heart-circle"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -174,6 +177,7 @@
                                                         Number(product.priceNew).toLocaleString('vi-VN')
                                                     }}đ</b>
                                                     <div class="price-saleoff">{{ product.sale }}%</div>
+                                                    <span class="box-favarite mdi mdi-heart-circle"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -335,6 +339,26 @@ export default {
     font-weight: 600;
     color: #000;
 }
+
+.product-item .box-favarite {
+    position: absolute;
+    right: 0;
+    padding: 4px 8px;
+    font-size: 40px;
+    font-weight: 600;
+    color: #ff1c1c;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.4s;
+}
+
+.product-item .box-favarite:hover {
+    color: #fb4e4e;
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+
 
 a {
     text-decoration: none;

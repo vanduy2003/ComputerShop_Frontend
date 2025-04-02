@@ -60,19 +60,32 @@
                                 </div>
                             </div>
 
-                            <div class="item-input" style="width: 100%">
-                                <label>Tỉnh/thành phố<span>*</span></label>
-                                <select v-model="locationStore.selectedProvince" class="form-control">
-                                    <option :value="null">Chọn tỉnh/thành phố</option>
-                                    <option v-for="province in locationStore.provinces" :key="province.code"
-                                        :value="province">
-                                        {{ province.name }}
-                                    </option>
-                                </select>
-                                <div class="note-error text-danger" v-if="errors.provinceName">
-                                    {{ errors.provinceName }}
+                            <div class="row">
+
+                                <div class="item-input col-md-6">
+                                    <label>Email<span>*</span></label>
+                                    <input type="text" class="form-control" v-model="email" placeholder="Nhập email " />
+                                    <div class="note-error text-danger" v-if="errors.email">
+                                        {{ errors.email }}
+                                    </div>
+                                </div>
+
+                                <div class="item-input col-md-6">
+                                    <label>Tỉnh/thành phố<span>*</span></label>
+                                    <select v-model="locationStore.selectedProvince" class="form-control">
+                                        <option :value="null">Chọn tỉnh/thành phố</option>
+                                        <option v-for="province in locationStore.provinces" :key="province.code"
+                                            :value="province">
+                                            {{ province.name }}
+                                        </option>
+                                    </select>
+                                    <div class="note-error text-danger" v-if="errors.provinceName">
+                                        {{ errors.provinceName }}
+                                    </div>
                                 </div>
                             </div>
+
+
 
                             <div class="row">
                                 <div class="item-input col-md-6">
@@ -118,24 +131,36 @@
                         <div class="box-pay-method fs-6">
                             <h2 class="fs-4 fw-semibold">Hình thức thanh toán</h2>
                             <div class="content-select-radio d-flex align-items-center mt-4">
-                                <label class="item-radio d-flex align-items-center me-5">
-                                    <input type="radio" name="pay_method" class="check-radio me-1"
-                                        v-model="paymentMethod" value="Chuyển khoản" />
-                                    <span class="txt">Thanh toán bằng chuyển khoản</span>
+                                <label class="me-5">
+                                    <input type="radio" name="pay_method" v-model="paymentMethod"
+                                        value="Chuyển khoản" />
+                                    Chuyển khoản
                                 </label>
-                                <label class="item-radio d-flex align-items-center">
-                                    <input type="radio" name="pay_method" class="check-radio me-1"
-                                        v-model="paymentMethod" value="Thanh toán khi nhận hàng" />
-                                    <span class="txt">Thanh toán khi nhận hàng</span>
+                                <label class="me-5">
+                                    <input type="radio" name="pay_method" v-model="paymentMethod"
+                                        value="Thanh toán khi nhận hàng" />
+                                    Thanh toán khi nhận hàng
+                                </label>
+                                <label>
+                                    <input type="radio" name="pay_method" v-model="paymentMethod" value="momo" />
+                                    Thanh toán Online
                                 </label>
                             </div>
-                            <div class="note-error text-danger" v-if="errors.paymentMethod">
-                                {{ errors.paymentMethod }}
+                            <div class="text-danger" v-if="errors.paymentMethod">{{ errors.paymentMethod }}</div>
+
+                            <div v-if="paymentMethod === 'momo'" @click="handleMoMoPayment"
+                                class="cursor-pointer text-center mx-auto mt-3">
+                                <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo"
+                                    width="150px" />
+                            </div>
+
+                            <div v-if="paymentMethod === 'Chuyển khoản'" class="text-center mt-3">
+                                <img src="https://i.imgur.com/IKDG04p.jpg" alt="Chuyển khoản" width="250px" />
                             </div>
                         </div>
 
                         <!-- dscs -->
-                        <div class="content-info-pay active mt-4">
+                        <div class="content-info-pay active mt-4 fs-6">
                             <div class="item mb-3">
                                 <b>Tại Ngân hàng Thương mại Cổ phần Quân đội - MB Bank - Chi nhánh Tràng
                                     An - PGD Láng Thượng</b>
@@ -177,6 +202,7 @@ import { useLocationStore } from "@/stores/locationStore";
 import { useCartStore } from "@/stores/cartStore";
 import LoadingOverlay from "@/components/content/common/LoadingOverlay.vue";
 import { useToast } from "vue-toastification";
+import axios from "axios";
 
 export default {
     components: {
@@ -192,6 +218,7 @@ export default {
         const { cart, countItems, discountedTotal, userId } = storeToRefs(cartStore);
         const receiverName = ref("");
         const phoneNumber = ref("");
+        const email = ref("");
         const detailAddress = ref("");
         const isConfirmBuy = ref(true);
         const paymentMethod = ref("");
@@ -203,6 +230,7 @@ export default {
             userId: userId.value || null,
             receiverName: receiverName.value,
             phoneNumber: phoneNumber.value,
+            email: email.value,
             provinceName: locationStore.selectedProvince?.name || null,
             districtName: locationStore.selectedDistrict?.name || null,
             wardName: locationStore.selectedWard?.name || null,
@@ -228,6 +256,12 @@ export default {
                 errors.value.phoneNumber = "Số điện thoại không hợp lệ.";
             }
 
+            if (!email.value) {
+                errors.value.email = "Vui lòng nhập email.";
+            } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value)) {
+                errors.value.email = "Email không hợp lệ.";
+            }
+
             if (!locationStore.selectedProvince)
                 errors.value.provinceName = "Vui lòng chọn tỉnh/thành phố.";
             if (!locationStore.selectedDistrict)
@@ -250,21 +284,58 @@ export default {
 
             try {
                 isLoading.value = true;
-                const newOrderId = await cartStore.createOrder(orderData.value);
 
-                // Chờ 2 giây trước khi chuyển hướng
+                // 🛒 Lưu lại số tiền trước khi tạo đơn hàng
+                const totalAmount = discountedTotal.value.toString();
+
+                // 🛒 ✅ Tạo đơn hàng trước, lấy orderId từ backend
+                const response = await cartStore.createOrder(orderData.value);
+                const newOrderId = response;
+
+                if (!newOrderId) {
+                    throw new Error("Không thể tạo đơn hàng!");
+                }
+
+                // Nếu chọn thanh toán bằng MoMo, gửi orderId + số tiền lên MoMo
+                if (orderData.value.paymentMethod === "momo") {
+                    handleMoMoPayment(newOrderId, totalAmount);
+                    return;
+                }
+
+                // Nếu không dùng MoMo, chuyển đến trang đặt hàng thành công
                 setTimeout(() => {
                     isLoading.value = false;
-                    if (newOrderId) {
-                        router.replace(`/me/cart/buy-success/${newOrderId}`);
-                    }
+                    router.replace(`/me/cart/buy-success/${newOrderId}`);
                 }, 2000);
             } catch (error) {
                 console.error("Lỗi khi đặt hàng:", error);
                 toast.error("Đã xảy ra lỗi, vui lòng thử lại!");
-                isLoading.value = false; // Đảm bảo tắt loading nếu có lỗi
+                isLoading.value = false;
             }
         };
+
+        // ✅ Xử lý thanh toán MoMo
+        const handleMoMoPayment = async (orderId, amount) => {
+            try {
+                isLoading.value = true;
+                const response = await axios.post("http://localhost:3000/api/v1/data/create-payment", {
+                    orderId, // Gửi orderId để MoMo biết đơn hàng nào cần thanh toán
+                    amount,  // Dùng số tiền đã lưu trước khi gọi createOrder
+                });
+
+                if (response.data && response.data.payUrl) {
+                    window.location.href = response.data.payUrl; // Điều hướng đến trang thanh toán MoMo
+                } else {
+                    alert("Lỗi khi tạo đơn hàng MoMo");
+                }
+            } catch (error) {
+                console.error("Lỗi MoMo:", error.response ? error.response.data : error);
+            } finally {
+                isLoading.value = false;
+            }
+        };
+
+
 
         return {
             cart,
@@ -274,6 +345,7 @@ export default {
             locationStore,
             receiverName,
             phoneNumber,
+            email,
             detailAddress,
             isConfirmBuy,
             orderData,
@@ -281,6 +353,7 @@ export default {
             handleConfirmOrder,
             isLoading,
             errors,
+            handleMoMoPayment,
         };
     },
 };

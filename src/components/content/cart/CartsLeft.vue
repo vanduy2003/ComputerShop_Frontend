@@ -43,7 +43,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <a href="#" class="remove text-center d-block text-secondary mt-1"
+                                    <a href="#" class="remove text-center d-block fs-6 fw-semibold text-secondary mt-1"
                                         @click="removeFromCart(cart.cartId)">Xoá</a>
                                 </div>
                             </div>

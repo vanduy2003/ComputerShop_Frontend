@@ -71,14 +71,15 @@ export default {
         const toast = useToast();
         const isLoading = ref(false);
 
-        const logout = () => {
-            isLoading.value = true;
-            userStore.logout();
-            toast.success("Đăng xuất thành công");
-            setTimeout(() => {
-                isLoading.value = false;
-                router.push("/");
-            }, 1000);
+        const logout = async () => {
+
+            const result = await userStore.logout();
+            if (result) {
+                toast.success("Đăng xuất thành công");
+                router.push("/"); // Chuyển hướng đến trang đăng nhập
+            } else {
+                console.log("Đăng xuất không thành công");
+            }
         }
 
         return {

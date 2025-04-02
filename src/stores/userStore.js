@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export const useUserStore = defineStore("user", () => {
     const users = ref([]);
@@ -63,14 +64,25 @@ export const useUserStore = defineStore("user", () => {
 
     // Hàm logout
     const logout = async () => {
+        // Xác nhận đăng xuất
+        const result = await Swal.fire({
+            title: "Bạn có chắc chắn muốn đăng xuất không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, Đăng xuất",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!result.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
+
         try {
             await axios.post(
                 "http://localhost:3000/api/v1/auth/logout",
                 {},
                 { withCredentials: true }
             );
-
             user.value = null;
+            return true; // Trả về true để thông báo đăng xuất thành công
         } catch (error) {
             console.error("Lỗi khi đăng xuất:", error);
         }
@@ -92,12 +104,29 @@ export const useUserStore = defineStore("user", () => {
     };
 
     const deleteUser = async (userId) => {
+        // Hiển thị thông báo xác nhận trước khi xóa
+        const confirm = await Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa người dùng này không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, Xóa người dùng",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!confirm.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
+
         try {
-            await axios.delete(
+            const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/delete-user/${userId}`,
                 { withCredentials: true }
             );
-            users.value = users.value.filter((user) => user.userId !== userId);
+
+            if (response.data.success) {
+                users.value = users.value.filter(
+                    (user) => user.userId !== userId
+                ); // Cập nhật danh sách người dùng sau khi xóa
+                return true; // Trả về true để thông báo xóa thành công
+            }
         } catch (error) {
             console.error("Lỗi xóa người dùng:", error);
         }

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export const useOrderStore = defineStore("orders", () => {
     const orders = ref([]);
@@ -76,12 +77,23 @@ export const useOrderStore = defineStore("orders", () => {
 
     // Xóa đơn hàng
     const deleteOrder = async (orderId) => {
+        // Hiển thị thông báo xác nhận trước khi xóa
+        const confirm = await Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa đơn hàng này?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, Xóa đơn hàng",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!confirm.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
+
         try {
             const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/delete-order/${orderId}`
             );
             if (response.data.success) {
-                console.log("Xóa đơn hàng thành công!");
+                return response.data.success; // Trả về giá trị thành công
             } else {
                 console.error("⚠️ Xóa đơn hàng thất bại!");
             }
@@ -106,6 +118,7 @@ export const useOrderStore = defineStore("orders", () => {
         }
     };
 
+    // Hủy đơn hàng
     const cancelOrder = async (orderId) => {
         try {
             // 🛠 Gửi yêu cầu cập nhật trạng thái thành "cancelled"

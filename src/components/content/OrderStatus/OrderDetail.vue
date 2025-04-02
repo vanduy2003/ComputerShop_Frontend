@@ -62,7 +62,7 @@
                         </div>
                         <div class="item d-flex align-items-center mb-2">
                             <b>Email:</b>
-                            <span>khtncstore@gmail.com</span>
+                            <span>{{ order.email }}</span>
                         </div>
                         <div class="item d-flex align-items-center mb-2">
                             <b>Giao đến: </b>
@@ -71,7 +71,8 @@
                         </div>
                         <div class="item d-flex align-items-center mb-2">
                             <b>Phương thức thanh toán: </b>
-                            <span>{{ order.payment_method }}</span>
+                            <span>{{ order.payment_method === "momo" ? "Thanh toán bằng ví Momo" :
+                                order.payment_method }}</span>
                         </div>
                         <div class="item d-flex align-items-center mb-2">
                             <b>Ngày đặt hàng: </b>
@@ -79,7 +80,7 @@
                         </div>
                         <div class="item d-flex align-items-center mb-2">
                             <b>Phí vận chuyển: </b>
-                            <span class="red">Miễn phí</span>
+                            <span class="red">Miễn phí vận chuyển</span>
                         </div>
                     </div>
                     <div class="group-info-product">

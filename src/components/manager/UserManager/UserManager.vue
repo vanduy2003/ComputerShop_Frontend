@@ -86,8 +86,8 @@ export default {
 
 
 
-        onMounted(() => {
-            userStore.getAllUsers();
+        onMounted(async () => {
+            await userStore.getAllUsers();
         })
 
         const headers = [
@@ -102,14 +102,18 @@ export default {
             { title: 'Hành động', value: 'actions', sortable: false }
         ];
 
-        const removeUser = (userId) => {
+        const removeUser = async (userId) => {
             if (userId === user.value.userId) {
                 return toast.error("Không thể xóa tài khoản của chính mình");
             }
 
             try {
-                userStore.deleteUser(userId);
-                toast.success("Xóa người dùng thành công");
+                const result = await userStore.deleteUser(userId);
+                if (result) {
+                    toast.success("Xóa người dùng thành công");
+                } else {
+                    console.error("Xóa người dùng thất bại");
+                }
             } catch (error) {
                 toast.error("Xóa người dùng thất bại");
             }

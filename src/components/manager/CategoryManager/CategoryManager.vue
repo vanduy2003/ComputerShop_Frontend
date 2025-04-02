@@ -5,7 +5,7 @@
         <div class="content p-4">
             <h1 class="title text-white">Danh sách danh mục sản phẩm</h1>
             <div class="btn-controll">
-                <button class="btn-creat mb-1 p-2 fs-6 text-white" @click="openAddDialog">
+                <button class="btn-creat btn-lish mb-1 p-2 fs-6 text-white" @click="openAddDialog">
                     <v-icon>mdi mdi-package-variant-closed</v-icon>
                     <span>Thêm danh mục</span>
                 </button>
@@ -45,37 +45,7 @@
                 </v-card>
             </v-dialog>
 
-            <!-- Dialog Success -->
-            <v-dialog v-model="dialogSuccess">
-                <v-fade-transition hide-on-leave>
-                    <v-card v-if="dialogSuccess" append-icon="$close" class="mx-auto" elevation="16" width="500"
-                        title="Thông báo">
-                        <template v-slot:append>
-                            <v-btn icon="$close" variant="outlined" @click="dialogSuccess = false"></v-btn>
-                        </template>
 
-                        <v-divider></v-divider>
-
-                        <div class="py-12 text-center">
-                            <v-icon class="mb-6" color="success" icon="mdi-check-circle-outline" size="128"></v-icon>
-
-                            <div class="text-h4 font-weight-bold">{{ ActionType === 'Add' ? 'Thêm danh mục thành công' :
-                                ActionType ===
-                                    'Update' ?
-                                    'Cập nhật danh mục thành công' : 'Delete Successfully' }}</div>
-                        </div>
-
-                        <v-divider></v-divider>
-
-                        <div class="pa-4 text-end">
-                            <v-btn class="text-none" color="medium-emphasis" min-width="92" variant="outlined" rounded
-                                @click="dialogSuccess = false">
-                                Close
-                            </v-btn>
-                        </div>
-                    </v-card>
-                </v-fade-transition>
-            </v-dialog>
         </div>
     </div>
 </template>
@@ -103,8 +73,8 @@ export default {
         const toast = useToast()
         const currentCategory = ref(null)
         const isEdit = ref(false)
-        const dialogSuccess = ref(false)
-        const ActionType = ref('')
+
+
 
         onMounted(() => {
             categoryStore.fetchCategory()
@@ -138,26 +108,22 @@ export default {
 
         const submitForm = async (formData) => {
             if (formData.categoryId) {
+                dialog.value = false;
                 await categoryStore.updateCategory(formData);
-                ActionType.value = 'Update';
-                dialogSuccess.value = true;
             } else {
+                dialog.value = false;
                 await categoryStore.addCategory(formData);
-                ActionType.value = 'Add';
-                dialogSuccess.value = true;
             }
             closeDialog();
         };
 
         const removeCategory = async (categoryId) => {
-            const confirmed = confirm('Bạn có chắc chắn muốn xóa danh mục này?');
-            if (!confirmed) return;
-
             const success = await categoryStore.deleteCategory(categoryId);
+
             if (success) {
                 toast.success('Xóa danh mục thành công!');
             } else {
-                toast.error('Lỗi khi xóa danh mục!');
+                console.error('Xóa danh mục thất bại!');
             }
         }
 
@@ -173,8 +139,7 @@ export default {
             openEditDialog,
             removeCategory,
             currentCategory,
-            dialogSuccess,
-            ActionType
+
         }
     }
 }

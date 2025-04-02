@@ -123,7 +123,7 @@ export default {
 }
 
 table td {
-    padding: 9px;
+    padding: 5px !important;
     font-weight: 500;
 }
 

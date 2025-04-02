@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
 import { safeParseJSON } from "../utils/utils"; // Import hàm parse JSON
+import Swal from "sweetalert2";
+import { useRouter } from "vue-router";
 
 export const useProductStore = defineStore("product", () => {
     // 🔹 State
@@ -12,6 +14,7 @@ export const useProductStore = defineStore("product", () => {
     const loading = ref(false);
     const error = ref(null);
     const totalProducts = computed(() => products.value.length);
+    const router = useRouter(); // Khởi tạo router
 
     // 🔹 Actions
     // 🟢 Lấy danh sách tất cả sản phẩm
@@ -81,7 +84,19 @@ export const useProductStore = defineStore("product", () => {
                 productData
             );
             if (response.status === 201) {
-                fetchProducts(); // Cập nhật danh sách sản phẩm
+                // Hiển thị thông báo thành công
+                const confirm = await Swal.fire({
+                    title: "Thêm sản phẩm thành công!",
+                    icon: "success",
+                    showCancelButton: true,
+                    confirmButtonText: "Xem danh sách sản phẩm",
+                    cancelButtonText: "Đóng",
+                });
+
+                if (confirm.isConfirmed) {
+                    router.push("/admin/products-list-manage"); // Chuyển hướng đến danh sách sản phẩm
+                }
+
                 return true;
             }
         } catch (err) {
@@ -94,6 +109,16 @@ export const useProductStore = defineStore("product", () => {
 
     // 🟢 Xóa sản phẩm
     const deleteProduct = async (productId) => {
+        const confirm = await Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa sản phẩm này không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, Xóa sản phẩm",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!confirm.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
+
         try {
             const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/product-delete/${productId}`
@@ -118,7 +143,17 @@ export const useProductStore = defineStore("product", () => {
                 productData
             );
             if (response.status === 200) {
-                fetchProducts(); // Cập nhật danh sách sản phẩm
+                // Hiển thị thông báo thành công
+                const confirm = await Swal.fire({
+                    title: "Cập nhật sản phẩm thành công!",
+                    icon: "success",
+                    showCancelButton: true,
+                    confirmButtonText: "Xem danh sách sản phẩm",
+                    cancelButtonText: "Đóng",
+                });
+                if (confirm.isConfirmed) {
+                    router.replace("/admin/products-list-manage"); // Chuyển hướng đến danh sách sản phẩm
+                }
                 return true;
             }
         } catch (err) {

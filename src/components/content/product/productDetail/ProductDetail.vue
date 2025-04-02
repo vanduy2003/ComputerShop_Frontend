@@ -254,9 +254,6 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import { useCartStore } from "@/stores/cartStore";
 
-
-
-
 export default {
     props: {
         product: Object,

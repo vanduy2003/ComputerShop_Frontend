@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Email:</b></td>
-                                    <td>khtncstore@gmail.com</td>
+                                    <td>{{ order.email }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Giao đến:</b></td>
@@ -51,7 +51,8 @@
                                 </tr>
                                 <tr>
                                     <td><b>Phương thức thanh toán:</b></td>
-                                    <td>{{ order.payment_method }}</td>
+                                    <td>{{ order.payment_method === "momo" ? "Thanh toán bằng ví Momo" :
+                                        order.payment_method }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Ngày đặt hàng:</b></td>
@@ -206,14 +207,15 @@ export default {
             }
         };
 
+        // Hàm xóa đơn hàng
         const handleDeleteOrder = async (orderId) => {
-            const confirmed = confirm("Bạn có chắc chắn muốn xóa đơn hàng này?");
-            if (!confirmed) return;
 
             try {
-                await orderStore.deleteOrder(orderId);
-                toast.success("Xóa đơn hàng thành công!");
-                router.push("/admin/order-list-manage");
+                const result = await orderStore.deleteOrder(orderId);
+                if (result) {
+                    toast.success("Xóa đơn hàng thành công!");
+                    router.push("/admin/order-list-manage")
+                }
             } catch (error) {
                 toast.error("Xóa đơn hàng thất bại!");
             }

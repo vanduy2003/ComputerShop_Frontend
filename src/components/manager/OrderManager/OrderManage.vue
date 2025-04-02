@@ -46,15 +46,15 @@
                     <template v-slot:[`item.total_price`]="{ item }">
                         <div class="d-flex justify-center text-center">{{
                             Number(item.total_price).toLocaleString("vi-VN")
-                        }}</div>
-                    </template>
-
-                    <template v-slot:[`item.created_at`]="{ item }">
-                        <div class="d-flex justify-center text-center">{{ item.created_at }}</div>
+                            }}</div>
                     </template>
 
                     <template v-slot:[`item.phone_number`]="{ item }">
                         <div class="d-flex justify-center text-center">{{ item.phone_number }}</div>
+                    </template>
+
+                    <template v-slot:[`item.orderId`]="{ item }">
+                        <div class="d-flex justify-center text-center">{{ item.orderId }}</div>
                     </template>
 
                     <template v-slot:[`item.actions`]="{ item }">
@@ -113,7 +113,6 @@ export default {
             { title: 'Tên Sản phẩm', value: 'product_names', },
             { title: 'Tổng tiền', value: 'total_price' },
             { title: 'Trạng thái ', value: 'order_status' },
-            { title: 'Ngày mua', value: 'created_at' },
             { title: 'Actions', value: 'actions', sortable: false },
         ];
 

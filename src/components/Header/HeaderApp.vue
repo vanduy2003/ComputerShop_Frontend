@@ -1,451 +1,478 @@
 <template>
-    <div class="header" :class="{ sticky: isSticky }">
-        <!-- Header Top -->
-        <div class="header-top">
-            <div class="container">
-                <div class="d-flex justify-content-end">
-                    <router-link to="#" class="item d-flex align-items-center">
-                        <i class="mdi mdi-store"></i>
-                        <span class="hover-txt">Tất cả sản phẩm</span>
-                    </router-link>
-                    <router-link to="#" class="item d-flex align-items-center">
-                        <i class="mdi mdi-phone-in-talk-outline"></i>
-                        <span class="hover-txt">(086) 830.2123</span>
-                    </router-link>
-                    <a href="mailto:cskh@tncstore.vn" class="item d-flex align-items-center">
-                        <i class="mdi mdi-email"></i>
-                        <span class="hover-txt">cskh@tncstore.vn</span>
-                    </a>
-                </div>
-            </div>
+    <div>
+        <div class="banner-top" style="width: 100%; margin: 0 auto;background: #ff6300;">
+            <a href="/ad.php?id=308" class="item" style="display:block;">
+                <img class="lazy loaded" width="1600" height="35" alt="" style="display:block;"
+                    src="https://www.tncstore.vn/media/banner/14_08-f958cee856ddbb947dbd1e0f9065cbf1.png">
+            </a>
         </div>
 
-        <!-- Header Mid -->
-        <div class="header-mid">
-            <div class="container">
-                <div class="content-header-mid d-flex align-items-center">
-                    <!-- Logo -->
-                    <router-link to="/" class="logo me-5">
-                        <img src="https://i.imgur.com/AGkTeSa.png" alt="logo" width="160px" height="58px" />
-                    </router-link>
-
-                    <!-- Search Form -->
-                    <div class="form__input">
-                        <div class="search-form-container">
-                            <input type="text" class="text_search" placeholder="Nhập sản phẩm cần tìm..."
-                                v-model="searchQuery" />
-                            <button type="submit" class="submit-search">
-                                <i class="mdi mdi-magnify"></i> Tìm kiếm
-                            </button>
-                        </div>
+        <div class="header" :class="{ sticky: isSticky }">
+            <!-- Header Top -->
+            <div class="header-top">
+                <div class="container">
+                    <div class="d-flex justify-content-end">
+                        <router-link to="#" class="item d-flex align-items-center">
+                            <i class="mdi mdi-store"></i>
+                            <span class="hover-txt">Tất cả sản phẩm</span>
+                        </router-link>
+                        <router-link to="#" class="item d-flex align-items-center">
+                            <i class="mdi mdi-phone-in-talk-outline"></i>
+                            <span class="hover-txt">(086) 830.2123</span>
+                        </router-link>
+                        <a href="mailto:cskh@tncstore.vn" class="item d-flex align-items-center">
+                            <i class="mdi mdi-email"></i>
+                            <span class="hover-txt">cskh@tncstore.vn</span>
+                        </a>
                     </div>
-                    <!-- Danh sách sản phẩm -->
-                    <div class="autocomplete-suggestions" v-if="filteredProducts.length > 0">
-                        <div class="content-suggestions">
-                            <router-link :to="`/products/${product.productId}`" v-for="product in filteredProducts"
-                                @click="clearSearch" :key="product.productId"
-                                class=" d-flex align-items-center justify-space-between item">
-                                <div class="info fw-semibold ">
-                                    <p class="line-clamp-1 fs-6 text-dark mb-0">{{ product.name }}</p>
-                                    <span class="price mb-0 mt-1 me-5">{{
-                                        Number(product.priceNew).toLocaleString("vi-VN")
-                                        }}đ</span>
-                                    <del class="text-secondary mb-0 mt-1">{{
-                                        Number(product.priceOld).toLocaleString("vi-VN")
-                                    }}đ</del>
-                                </div>
-                                <img :src="product.imageUrl" alt="" class="" />
-                            </router-link>
+                </div>
+            </div>
+
+            <!-- Header Mid -->
+            <div class="header-mid">
+                <div class="container">
+                    <div class="content-header-mid d-flex align-items-center">
+                        <!-- Logo -->
+                        <router-link to="/" class="logo me-5">
+                            <img src="https://i.imgur.com/AGkTeSa.png" alt="logo" width="160px" height="58px" />
+                        </router-link>
+
+                        <!-- Search Form -->
+                        <div class="form__input">
+                            <div class="search-form-container">
+                                <input type="text" class="text_search" placeholder="Nhập sản phẩm cần tìm..."
+                                    v-model="searchQuery" />
+                                <button type="submit" class="submit-search">
+                                    <i class="mdi mdi-magnify"></i> Tìm kiếm
+                                </button>
+                            </div>
                         </div>
-                        <a href="tim?scat_id=0&amp;q=pc" class="more-all" id="click_search"><span class="hover-txt">Xem
-                                tất cả <span id="total-pro">1130</span> sản phẩm</span></a>
-                    </div>
-
-                    <!-- Header Right -->
-                    <div class="header-mid-right d-flex align-items-center">
-                        <!-- Tài khoản -->
-                        <v-menu v-if="isLoggedIn" open-on-hover transition="scale-transition">
-                            <template v-slot:activator="{ props }">
-                                <a class="item account d-flex align-items-center" aria-expanded="true" v-bind="props">
-                                    <img :src="user.avatar ||
-                                        'https://cdn-icons-png.flaticon.com/512/219/219983.png'
-                                        " alt="avatar" class="avatar" />
-                                    <span class="hover-txt">{{ user.username }}</span>
-                                </a>
-                            </template>
-
-                            <v-list class="custom-menu">
-                                <v-list-item @click="logout">
-                                    <div class="d-flex align-center">
-                                        <v-icon class="mr-2">mdi mdi-file-account-outline</v-icon>
-                                        <v-list-item-title class="fs-6 fw-semibold">Trang Cá Nhân</v-list-item-title>
+                        <!-- Danh sách sản phẩm -->
+                        <div class="autocomplete-suggestions" v-if="filteredProducts.length > 0">
+                            <div class="content-suggestions">
+                                <router-link :to="`/products/${product.productId}`" v-for="product in filteredProducts"
+                                    @click="clearSearch" :key="product.productId"
+                                    class=" d-flex align-items-center justify-space-between item">
+                                    <div class="info fw-semibold ">
+                                        <p class="line-clamp-1 fs-6 text-dark mb-0">{{ product.name }}</p>
+                                        <span class="price mb-0 mt-1 me-5">{{
+                                            Number(product.priceNew).toLocaleString("vi-VN")
+                                            }}đ</span>
+                                        <del class="text-secondary mb-0 mt-1">{{
+                                            Number(product.priceOld).toLocaleString("vi-VN")
+                                            }}đ</del>
                                     </div>
-                                </v-list-item>
+                                    <img :src="product.imageUrl" alt="" class="" />
+                                </router-link>
+                            </div>
+                            <a href="tim?scat_id=0&amp;q=pc" class="more-all" id="click_search"><span
+                                    class="hover-txt">Xem
+                                    tất cả <span id="total-pro">1130</span> sản phẩm</span></a>
+                        </div>
 
-                                <router-link class="text-black" to="/me/list-order">
-                                    <v-list-item>
+                        <!-- Header Right -->
+                        <div class="header-mid-right d-flex align-items-center">
+                            <!-- Tài khoản -->
+                            <v-menu v-if="isLoggedIn" open-on-hover transition="scale-transition">
+                                <template v-slot:activator="{ props }">
+                                    <a class="item account d-flex align-items-center" aria-expanded="true"
+                                        v-bind="props">
+                                        <img :src="user.avatar ||
+                                            'https://cdn-icons-png.flaticon.com/512/219/219983.png'
+                                            " alt="avatar" class="avatar" />
+                                        <span class="hover-txt">{{ user.username }}</span>
+                                    </a>
+                                </template>
+
+                                <v-list class="custom-menu">
+                                    <v-list-item @click="logout">
                                         <div class="d-flex align-center">
-                                            <v-icon class="mr-2">mdi mdi-cart</v-icon>
-                                            <v-list-item-title class="fs-6 fw-semibold">Đơn hàng</v-list-item-title>
+                                            <v-icon class="mr-2">mdi mdi-file-account-outline</v-icon>
+                                            <v-list-item-title class="fs-6 fw-semibold">Trang Cá
+                                                Nhân</v-list-item-title>
                                         </div>
                                     </v-list-item>
-                                </router-link>
 
-
-                                <v-list-item @click="logout">
-                                    <div class="d-flex align-center">
-                                        <v-icon class="mr-2">mdi mdi-heart-outline</v-icon>
-                                        <v-list-item-title class="fs-6 fw-semibold">Yêu thích</v-list-item-title>
-                                    </div>
-                                </v-list-item>
-
-                                <v-list-item @click="logout" class="logout-item">
-                                    <div class="d-flex align-center">
-                                        <v-icon class="mr-2">mdi mdi-logout</v-icon>
-                                        <v-list-item-title class="fs-6 fw-semibold">Đăng Xuất</v-list-item-title>
-                                    </div>
-                                </v-list-item>
-
-                            </v-list>
-                        </v-menu>
-
-                        <!-- Hiển thị đăng nhập nếu chưa đăng nhập -->
-                        <a v-else class="item account d-flex align-items-center" href="#"
-                            @click.prevent="openLoginDialog">
-                            <i class="mdi mdi-account"></i>
-                            <span class="hover-txt">Tài khoản</span>
-                        </a>
-
-                        <!-- Giỏ hàng -->
-                        <div class="item box-cart d-flex align-items-center cursor-pointer">
-                            <i class="mdi mdi-cart-plus"></i>
-                            <span class="counter-cart">{{ countItems }}</span>
-
-                            <div v-if="cart.length > 0" class="header-cart-hover loaded">
-                                <div class="cart-items-holder">
-                                    <div class="cart-item d-flex align-items-center" v-for="item in cart"
-                                        :key="item.cartId">
-                                        <router-link :to="`/products/${item.productId}`"
-                                            class="cart-img w-25 h-25 me-3 d-block">
-                                            <img :src="item.imageUrl" alt="{{ item.name }}" class="w-100" />
-                                        </router-link>
-                                        <div class="cart-mid">
-                                            <router-link :to="`/products/${item.productId}`"
-                                                class="name fw-semibold mb-1 line-clamp-2">{{
-                                                    item.name }}</router-link>
-                                            <div class="d-flex align-items-center">
-                                                <b class="price me-3">{{ Number(item.priceNew).toLocaleString("vi-VN")
-                                                    }}đ</b>
-                                                <del class="old-price">{{ Number(item.priceNew).toLocaleString("vi-VN")
-                                                    }}đ</del>
+                                    <router-link class="text-black" to="/me/list-order">
+                                        <v-list-item>
+                                            <div class="d-flex align-center">
+                                                <v-icon class="mr-2">mdi mdi-cart</v-icon>
+                                                <v-list-item-title class="fs-6 fw-semibold">Đơn hàng</v-list-item-title>
                                             </div>
-                                        </div>
-                                        <div class="cart-right">
-                                            <div class="unit-detail-amount-control d-flex">
-                                                <input type="text" size="7" :value="item.quantity" readonly />
+                                        </v-list-item>
+                                    </router-link>
 
-                                                <div class="d-flex flex-column">
-                                                    <a @click="increaseQuantity(item.cartId)"> <i
-                                                            class="mdi mdi-plus text-dark"></i></a>
-                                                    <a @click="decreaseQuantity(item.cartId)"> <i
-                                                            class="mdi mdi-minus text-dark"></i></a>
+
+                                    <v-list-item @click="logout">
+                                        <div class="d-flex align-center">
+                                            <v-icon class="mr-2">mdi mdi-heart-outline</v-icon>
+                                            <v-list-item-title class="fs-6 fw-semibold">Yêu thích</v-list-item-title>
+                                        </div>
+                                    </v-list-item>
+
+                                    <v-list-item @click="logout" class="logout-item">
+                                        <div class="d-flex align-center">
+                                            <v-icon class="mr-2">mdi mdi-logout</v-icon>
+                                            <v-list-item-title class="fs-6 fw-semibold">Đăng Xuất</v-list-item-title>
+                                        </div>
+                                    </v-list-item>
+
+                                </v-list>
+                            </v-menu>
+
+                            <!-- Hiển thị đăng nhập nếu chưa đăng nhập -->
+                            <a v-else class="item account d-flex align-items-center" href="#"
+                                @click.prevent="openLoginDialog">
+                                <i class="mdi mdi-account"></i>
+                                <span class="hover-txt">Tài khoản</span>
+                            </a>
+
+                            <!-- Giỏ hàng -->
+                            <div class="item box-cart d-flex align-items-center cursor-pointer">
+                                <i class="mdi mdi-cart-plus"></i>
+                                <span class="counter-cart">{{ countItems }}</span>
+
+                                <div v-if="cart.length > 0" class="header-cart-hover loaded">
+                                    <div class="cart-items-holder">
+                                        <div class="cart-item d-flex align-items-center" v-for="item in cart"
+                                            :key="item.cartId">
+                                            <router-link :to="`/products/${item.productId}`"
+                                                class="cart-img w-25 h-25 me-3 d-block">
+                                                <img :src="item.imageUrl" alt="{{ item.name }}" class="w-100" />
+                                            </router-link>
+                                            <div class="cart-mid">
+                                                <router-link :to="`/products/${item.productId}`"
+                                                    class="name fw-semibold mb-1 line-clamp-2">{{
+                                                        item.name }}</router-link>
+                                                <div class="d-flex align-items-center">
+                                                    <b class="price me-3">{{
+                                                        Number(item.priceNew).toLocaleString("vi-VN")
+                                                        }}đ</b>
+                                                    <del class="old-price">{{
+                                                        Number(item.priceNew).toLocaleString("vi-VN")
+                                                        }}đ</del>
                                                 </div>
                                             </div>
-                                            <a href="#" class="remove text-center d-block text-secondary mt-1"
-                                                @click="removeFromCart(item.cartId)">Xoá</a>
+                                            <div class="cart-right">
+                                                <div class="unit-detail-amount-control d-flex">
+                                                    <input type="text" size="7" :value="item.quantity" readonly />
+
+                                                    <div class="d-flex flex-column">
+                                                        <a @click="increaseQuantity(item.cartId)"> <i
+                                                                class="mdi mdi-plus text-dark"></i></a>
+                                                        <a @click="decreaseQuantity(item.cartId)"> <i
+                                                                class="mdi mdi-minus text-dark"></i></a>
+                                                    </div>
+                                                </div>
+                                                <a href="#"
+                                                    class="remove text-center d-block text-secondary fs-6 fw-semibold mt-1"
+                                                    @click="removeFromCart(item.cartId)">Xoá</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cart-price-hover">
+                                        <div class="d-flex align-items-center justify-space-between fs-6">
+                                            <p class="mb-0 fw-semibold">Tổng chi phí</p>
+                                            <b class="red text-18 font-600 js-total-cart-price">{{
+                                                Number(totalCartPrice).toLocaleString("vi-VN") }}đ</b>
+                                        </div>
+                                        <div class="bnt-cart d-flex mt-3">
+                                            <router-link to="/me/cart" class="btn-goCart">Xem giỏ hàng</router-link>
+                                            <a href="/me/cart/cart-confirm-buy" class="btn-goCart cart-2">Mua hàng</a>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="cart-price-hover">
-                                    <div class="d-flex align-items-center justify-space-between fs-6">
-                                        <p class="mb-0 fw-semibold">Tổng chi phí</p>
-                                        <b class="red text-18 font-600 js-total-cart-price">{{
-                                            Number(totalCartPrice).toLocaleString("vi-VN") }}đ</b>
-                                    </div>
-                                    <div class="bnt-cart d-flex mt-3">
-                                        <router-link to="/me/cart" class="btn-goCart">Xem giỏ hàng</router-link>
-                                        <a href="/me/cart/cart-confirm-buy" class="btn-goCart cart-2">Mua hàng</a>
-                                    </div>
-                                </div>
-                            </div>
+                                <div v-else class="header-cart-hover empty">
+                                    <div class="empty-cart">
+                                        <img src="https://bizweb.dktcdn.net/100/427/804/themes/832400/assets/empty-cart.png?1722190080232"
+                                            alt="empty-cart" />
 
-                            <div v-else class="header-cart-hover empty">
-                                <div class="empty-cart">
-                                    <img src="https://bizweb.dktcdn.net/100/427/804/themes/832400/assets/empty-cart.png?1722190080232"
-                                        alt="empty-cart" />
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Header Bottom -->
-            <div class="header-bottom">
-                <div class="container">
-                    <div class="header-bottom-content d-flex">
-                        <!-- header-menu -->
-                        <div class="header-menu">
-                            <div class="title-header d-flex justify-content-center align-items-center">
-                                <i class="mdi mdi-menu"></i>
-                                <span class="hover-txt">Danh mục sản phẩm</span>
-                                <i class="mdi mdi-chevron-down"></i>
+                <!-- Header Bottom -->
+                <div class="header-bottom">
+                    <div class="container">
+                        <div class="header-bottom-content d-flex">
+                            <!-- header-menu -->
+                            <div class="header-menu">
+                                <div class="title-header d-flex justify-content-center align-items-center">
+                                    <i class="mdi mdi-menu"></i>
+                                    <span class="hover-txt">Danh mục sản phẩm</span>
+                                    <i class="mdi mdi-chevron-down"></i>
+                                </div>
+                                <div class="menu_holder">
+                                    <div class="item">
+                                        <!-- Mục chính -->
+                                        <router-link to="" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">Xây dựng cấu hình PC</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+
+                                        <!-- Menu Hover -->
+                                        <div class="menu-hover">
+                                            <div class="d-flex flex-wrap">
+                                                <!-- Danh sách mục con -->
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Gaming Workstation
+                                                        PC</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Pro
+                                                        Creator</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Pro
+                                                        Ductivity</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Pro VR</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Pro Audio</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">PC Cao
+                                                        Cấp</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Mini PC</router-link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <router-link :to="`/category/1`" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">PC Gaming</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+                                    </div>
+                                    <div class="item">
+                                        <router-link to="/category/8" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">PC Đồ Họa</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+                                    </div>
+                                    <div class="item">
+                                        <router-link :to="dsvs" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">PC AI</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+                                    </div>
+                                    <div class="item">
+                                        <router-link to="/category/8" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">PC Văn Phòng</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+
+                                        <div class="menu-hover">
+                                            <div class="d-flex flex-wrap">
+                                                <div class="item-holder me-5"
+                                                    v-for="product in filteredPcOfficeProducts"
+                                                    :key="product.productId">
+                                                    <router-link :to="`/products/${product.productId}`"
+                                                        class="title-holder">{{
+                                                            product.name }}
+                                                    </router-link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <router-link to="/category/2" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">Màn Hình Máy Tính</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+
+                                        <div class="menu-hover">
+                                            <div class="d-flex flex-wrap">
+                                                <div class="item-holder ms-3" v-for="product in filteredMonitorProducts"
+                                                    :key="product.productId">
+                                                    <router-link :to="`/products/${product.productId}`"
+                                                        class="title-holder">{{
+                                                            product.name }}</router-link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <router-link to="/category/4" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">Máy chơi game - Console</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+
+                                        <div class="menu-hover">
+                                            <div class="d-flex flex-wrap">
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Máy PS5 - PlayStation
+                                                        5</router-link>
+                                                </div>
+
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Pc
+                                                        Handheld</router-link>
+                                                </div>
+
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Đĩa Game
+                                                        PS5</router-link>
+                                                </div>
+
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Phụ Kiện
+                                                        Playstation</router-link>
+                                                </div>
+
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Máy chơi game
+                                                        Nintendo</router-link>
+                                                </div>
+
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Đĩa Game Nintendo
+                                                        Switch</router-link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <router-link :to="dsvs" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">Tay Cầm Chơi Game</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+
+                                        <div class="menu-hover">
+                                            <div class="d-flex flex-wrap">
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                        PS5</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                        Xbox</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                        Razer</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                        Asus</router-link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <router-link :to="dsvs" class="item-cate d-flex align-items-center">
+                                            <p class="cat-title">VGA - Card Màn Hình</p>
+                                            <span class="box-right">
+                                                <i class="mdi mdi-chevron-right"></i>
+                                            </span>
+                                        </router-link>
+
+                                        <div class="menu-hover">
+                                            <div class="d-flex flex-wrap">
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">VGA Nvidia RTX 3060 /
+                                                        RTX
+                                                        3060Ti</router-link>
+                                                </div>
+                                                <div class="item-holder">
+                                                    <router-link :to="dsvs" class="title-holder">VGA Nvidia RTX 4060 /
+                                                        4060Ti</router-link>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="menu_holder">
-                                <div class="item">
-                                    <!-- Mục chính -->
-                                    <router-link to="" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">Xây dựng cấu hình PC</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-
-                                    <!-- Menu Hover -->
-                                    <div class="menu-hover">
-                                        <div class="d-flex flex-wrap">
-                                            <!-- Danh sách mục con -->
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Gaming Workstation
-                                                    PC</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Pro Creator</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Pro Ductivity</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Pro VR</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Pro Audio</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">PC Cao Cấp</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Mini PC</router-link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <router-link :to="`/category/1`" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">PC Gaming</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-                                </div>
-                                <div class="item">
-                                    <router-link to="/category/8" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">PC Đồ Họa</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-                                </div>
-                                <div class="item">
-                                    <router-link :to="dsvs" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">PC AI</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-                                </div>
-                                <div class="item">
-                                    <router-link to="/category/8" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">PC Văn Phòng</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-
-                                    <div class="menu-hover">
-                                        <div class="d-flex flex-wrap">
-                                            <div class="item-holder me-5" v-for="product in filteredPcOfficeProducts"
-                                                :key="product.productId">
-                                                <router-link :to="`/products/${product.productId}`"
-                                                    class="title-holder">{{
-                                                        product.name }}
-                                                </router-link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <router-link to="/category/2" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">Màn Hình Máy Tính</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-
-                                    <div class="menu-hover">
-                                        <div class="d-flex flex-wrap">
-                                            <div class="item-holder ms-3" v-for="product in filteredMonitorProducts"
-                                                :key="product.productId">
-                                                <router-link :to="`/products/${product.productId}`"
-                                                    class="title-holder">{{
-                                                        product.name }}</router-link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <router-link to="/category/4" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">Máy chơi game - Console</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-
-                                    <div class="menu-hover">
-                                        <div class="d-flex flex-wrap">
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Máy PS5 - PlayStation
-                                                    5</router-link>
-                                            </div>
-
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Pc Handheld</router-link>
-                                            </div>
-
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Đĩa Game PS5</router-link>
-                                            </div>
-
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Phụ Kiện
-                                                    Playstation</router-link>
-                                            </div>
-
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Máy chơi game
-                                                    Nintendo</router-link>
-                                            </div>
-
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Đĩa Game Nintendo
-                                                    Switch</router-link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <router-link :to="dsvs" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">Tay Cầm Chơi Game</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-
-                                    <div class="menu-hover">
-                                        <div class="d-flex flex-wrap">
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Tay Cầm PS5</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Tay Cầm Xbox</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Tay Cầm Razer</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">Tay Cầm Asus</router-link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <router-link :to="dsvs" class="item-cate d-flex align-items-center">
-                                        <p class="cat-title">VGA - Card Màn Hình</p>
-                                        <span class="box-right">
-                                            <i class="mdi mdi-chevron-right"></i>
-                                        </span>
-                                    </router-link>
-
-                                    <div class="menu-hover">
-                                        <div class="d-flex flex-wrap">
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">VGA Nvidia RTX 3060 / RTX
-                                                    3060Ti</router-link>
-                                            </div>
-                                            <div class="item-holder">
-                                                <router-link :to="dsvs" class="title-holder">VGA Nvidia RTX 4060 /
-                                                    4060Ti</router-link>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- header-bottom-right -->
+                            <div class="header-bottom-right d-flex align-items-center">
+                                <router-link to="/Xaydungcauhinhpc" class="item">
+                                    <span class="txt" alt="Build PC Gaming"> Xây dựng cấu hình PC </span>
+                                </router-link>
+                                <router-link to="/category/1" class="item">
+                                    <span class="txt" alt="PC Gaming"> PC gaming </span>
+                                </router-link>
+                                <router-link to="/category/2" class="item">
+                                    <span class="txt" alt="Màn hình Gaming"> Màn hình gaming </span>
+                                </router-link>
+                                <router-link to="/category/7" class="item">
+                                    <span class="txt" alt="Laptop NHập khẩu"> Laptop Nhập Khẩu </span>
+                                </router-link>
+                                <router-link to="/category/3" class="item">
+                                    <span class="txt">Gaming Gear</span>
+                                </router-link>
+                                <router-link to="/category/4" class="item">
+                                    <span class="txt">PC Handheld</span>
+                                </router-link>
+                                <router-link to="/category/4" class="item">
+                                    <span class="txt">Khuyến mãi</span>
+                                </router-link>
+                                <router-link to="/category/8" class="item">
+                                    <span class="txt">PC Văn Phòng</span>
+                                </router-link>
+                                <router-link to="/mayin" class="item">
+                                    <span class="txt">Máy in</span>
+                                </router-link>
+                                <router-link to="/contact" class="item">
+                                    <span class="txt">Liên hệ</span>
+                                </router-link>
                             </div>
-                        </div>
-                        <!-- header-bottom-right -->
-                        <div class="header-bottom-right d-flex align-items-center">
-                            <router-link to="/Xaydungcauhinhpc" class="item">
-                                <span class="txt" alt="Build PC Gaming"> Xây dựng cấu hình PC </span>
-                            </router-link>
-                            <router-link to="/category/1" class="item">
-                                <span class="txt" alt="PC Gaming"> PC gaming </span>
-                            </router-link>
-                            <router-link to="/category/2" class="item">
-                                <span class="txt" alt="Màn hình Gaming"> Màn hình gaming </span>
-                            </router-link>
-                            <router-link to="/category/7" class="item">
-                                <span class="txt" alt="Laptop NHập khẩu"> Laptop Nhập Khẩu </span>
-                            </router-link>
-                            <router-link to="/category/3" class="item">
-                                <span class="txt">Gaming Gear</span>
-                            </router-link>
-                            <router-link to="/category/4" class="item">
-                                <span class="txt">PC Handheld</span>
-                            </router-link>
-                            <router-link to="/category/4" class="item">
-                                <span class="txt">Khuyến mãi</span>
-                            </router-link>
-                            <router-link to="/category/8" class="item">
-                                <span class="txt">PC Văn Phòng</span>
-                            </router-link>
-                            <router-link to="/mayin" class="item">
-                                <span class="txt">Máy in</span>
-                            </router-link>
-                            <router-link to="/contact" class="item">
-                                <span class="txt">Liên hệ</span>
-                            </router-link>
                         </div>
                     </div>
                 </div>
+
+                <!-- Dùng component LoadingOverlay -->
+                <LoadingOverlay :isLoading="isLoading" />
+
+                <!-- Dialogs -->
+                <v-dialog v-model="isLoginDialog">
+                    <v-card>
+                        <LoginApp @switchToRegister="switchToRegister" @switchToForgot="switchToForgot"
+                            @closeForm="closeDialog" />
+                    </v-card>
+                </v-dialog>
+
+                <v-dialog v-model="isRegisterDialog">
+                    <v-card>
+                        <RegisterApp @switchToForgot="switchToForgot" @switchToLogin="switchToLogin"
+                            @closeForm="closeDialog" />
+                    </v-card>
+                </v-dialog>
+
+                <v-dialog v-model="isForgotPassDialog">
+                    <v-card>
+                        <ForgotPass @switchToLogin="switchToLogin" @closeForm="closeDialog" />
+                    </v-card>
+                </v-dialog>
             </div>
-
-            <!-- Dùng component LoadingOverlay -->
-            <LoadingOverlay :isLoading="isLoading" />
-
-            <!-- Dialogs -->
-            <v-dialog v-model="isLoginDialog">
-                <v-card>
-                    <LoginApp @switchToRegister="switchToRegister" @switchToForgot="switchToForgot"
-                        @closeForm="closeDialog" />
-                </v-card>
-            </v-dialog>
-
-            <v-dialog v-model="isRegisterDialog">
-                <v-card>
-                    <RegisterApp @switchToForgot="switchToForgot" @switchToLogin="switchToLogin"
-                        @closeForm="closeDialog" />
-                </v-card>
-            </v-dialog>
-
-            <v-dialog v-model="isForgotPassDialog">
-                <v-card>
-                    <ForgotPass @switchToLogin="switchToLogin" @closeForm="closeDialog" />
-                </v-card>
-            </v-dialog>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -551,19 +578,18 @@ export default {
         // Đăng xuất
         const logout = async () => {
             try {
-                isLoading.value = true; // Bắt đầu loading
-
-                await userStore.logout(); // Thực hiện logout (có thể gọi API nếu cần)
-
-                toast.success("Đăng xuất thành công!");
+                const result = await userStore.logout(); // Thực hiện logout (có thể gọi API nếu cần)
                 isMenuOpen.value = false; // Đóng menu
-                router.push("/"); // Chuyển hướng về trang chủ
+                if (result) {
+                    toast.success("Đăng xuất thành công!");
+                    router.push("/"); // Chuyển hướng về trang chủ sau khi đăng xuất
+                } else {
+                    console.error("Đăng xuất thất bại!");
+                }
             } catch (error) {
                 console.error("Lỗi khi đăng xuất:", error);
                 toast.error("Đăng xuất thất bại, vui lòng thử lại!");
 
-            } finally {
-                isLoading.value = false; // Kết thúc loading
             }
         };
 

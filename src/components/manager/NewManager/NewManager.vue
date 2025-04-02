@@ -132,14 +132,11 @@ export default {
 
         // Hàm xóa bài viết
         const removeNew = async (id) => {
-            const confirmed = confirm("Bạn có chắc chắn muốn xóa bài viết này?");
-            if (!confirmed) return;
-
             const success = await newStore.deleteNews(id);
             if (success) {
                 toast.success("Xóa bài viết thành công!");
             } else {
-                toast.error("Lỗi khi xóa bài viết!");
+                console.error("Xóa bài viết thất bại!");
             }
         };
 
@@ -163,7 +160,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .v-data-table td:nth-child(4),
 .v-data-table th:nth-child(4) {
     max-width: 350px;

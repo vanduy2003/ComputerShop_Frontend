@@ -27,7 +27,9 @@
                 }" :pagination="{ clickable: true }" :navigation="true" :modules="modules" class="mySwiper">
                     <swiper-slide v-for="braner in bannerList" :key="braner.id">
                         <div class="feedback-img product-item">
-                            <img :src="braner.src" :alt="braner.name" />
+                            <router-link :to="`/category/${braner.branerId}`">
+                                <img :src="braner.src" :alt="braner.name" />
+                            </router-link>
                         </div>
                     </swiper-slide>
                 </swiper>
@@ -67,14 +69,18 @@ export default {
                 { src: "/images/5.jpg" },
             ],
             bannerList: [
-                { src: "/images/1a.jpg" },
-                { src: "/images/2a.jpg" },
-                { src: "/images/3a.jpg" },
-                { src: "/images/4a.jpg" },
-                { src: "/images/5a.jpg" },
-                { src: "/images/6a.jpg" },
-                { src: "/images/7a.jpg" },
-                { src: "/images/8a.jpg" },
+                { src: "/images/1a.jpg", branerId: 4 },
+                { src: "/images/2a.jpg", branerId: 5 },
+                { src: "/images/3a.jpg", branerId: 7 },
+                { src: "/images/4a.jpg", branerId: 1 },
+                { src: "/images/5a.jpg", branerId: 32 },
+                { src: "/images/6a.jpg", branerId: 3 },
+                { src: "/images/7a.jpg", branerId: 3 },
+                { src: "/images/8a.jpg", branerId: 2 },
+                { src: "/images/5a.jpg", branerId: 7 },
+                { src: "/images/6a.jpg", branerId: 7 },
+                { src: "/images/7a.jpg", branerId: 7 },
+                { src: "/images/8a.jpg", branerId: 2 },
             ],
         };
     },

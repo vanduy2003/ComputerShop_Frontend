@@ -48,7 +48,7 @@
 
                         <div class="content-new-detail " id="js-find_content">
                             <div class="nd fs-5">
-                                <span class="mb-3 d-block">{{ newCurrent.description }}</span>
+                                <span class="mb-3 d-block" v-html="newCurrent.description"></span>
                                 <div v-if="newCurrent.videoUrl" class="text-center"><iframe class="text-center"
                                         width="750" height="450"
                                         :src="`https://www.youtube.com/embed/${newCurrent.videoUrl}?si=bBF32BcN8kACYABp`"
@@ -83,7 +83,7 @@
 <script>
 import { useNewStore } from '@/stores/newStore';
 import { storeToRefs } from 'pinia';
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import NewApp from './NewApp.vue';
@@ -97,39 +97,79 @@ export default {
         const { newCurrent } = storeToRefs(store);
         const route = useRoute();
 
+        // Tạo currentURL dựa trên route hiện tại
+        const currentURL = computed(() => {
+            return window.location.origin + route.fullPath;
+        });
+
         // Hàm fetch dữ liệu + re-render Facebook Plugin
         const fetchData = async (newId) => {
             if (!newId) return; // Tránh lỗi nếu newId chưa có
             await store.fetchNewDataByID(newId);
 
-            setTimeout(() => {
-                if (window.FB) {
-                    window.FB.XFBML.parse(); // Re-render Facebook Plugin
-                }
-            }, 1000);
+            // Đợi Facebook SDK tải xong trước khi gọi parse()
+            if (window.FB && typeof window.FB.XFBML.parse === "function") {
+                setTimeout(() => {
+                    window.FB.XFBML.parse();
+                }, 500); // Đợi 500ms để đảm bảo Facebook SDK đã sẵn sàng
+            }
         };
 
         // Gọi API lần đầu khi component mount
         onMounted(() => {
-            fetchData(route.params.id);
+            // Kiểm tra xem Facebook SDK đã được tải chưa
+            if (!window.FB) {
+                let script = document.createElement("script");
+                script.src = "https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0";
+                script.async = true;
+                script.defer = true;
+                script.crossorigin = "anonymous";
+                script.onload = () => {
+                    console.log("Facebook SDK Loaded");
+                    fetchData(route.params.id); // Fetch dữ liệu và render Plugin
+                };
+                document.body.appendChild(script);
+            } else {
+                fetchData(route.params.id);
+            }
         });
+
 
         // Theo dõi sự thay đổi của ID trên URL
-        watch(() => route.params.id, (newId) => {
-            fetchData(newId);
+        watch(() => currentURL.value, () => {
+            if (window.FB && typeof window.FB.XFBML.parse === "function") {
+                setTimeout(() => {
+                    window.FB.XFBML.parse();
+                }, 500);
+            }
         });
 
-        return { newCurrent };
+
+        return { newCurrent, currentURL };
     }
 };
-
-
 </script>
 
 
 <style>
 .content-new-detail p,
 h4 {
+    font-weight: bold !important;
+}
+
+.content-new-detail h2 {
+    font-size: 20px !important;
+    font-weight: bold !important;
+
+}
+
+.content-new-detail p {
+    font-weight: normal !important;
+
+}
+
+.content-new-detail a {
+    color: #ff9900 !important;
     font-weight: bold !important;
 }
 

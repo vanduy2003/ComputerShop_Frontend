@@ -6,11 +6,16 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
         <link rel="icon" href="./TNC.png" />
         <title>TNC Store - Thế giới công nghệ</title>
+    </head>
+    <body>
+        <div id="app"></div>
+
         <!-- Facebook SDK -->
         <script>
             window.fbAsyncInit = function () {
                 FB.init({
-                    appId: "1635753900380684", // Thay YOUR_APP_ID bằng App ID của bạn
+                    appId: "1635753900380684",
+                    cookie: true, // Hỗ trợ xác thực nếu cần
                     xfbml: true,
                     version: "v17.0",
                 });
@@ -26,9 +31,10 @@
                 fjs.parentNode.insertBefore(js, fjs);
             })(document, "script", "facebook-jssdk");
         </script>
-    </head>
-    <body>
-        <div id="app"></div>
-        <!-- built files will be auto injected -->
+        <script src="https://app.tudongchat.com/js/chatbox.js"></script>
+        <script>
+            const tudong_chatbox = new TuDongChat("euTAGrFXYxQBBAR_l-CAG");
+            tudong_chatbox.initial();
+        </script>
     </body>
 </html>

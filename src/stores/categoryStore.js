@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export const useCategoryStore = defineStore("category", () => {
     const categorys = ref([]); // Danh sách danh mục
@@ -37,6 +38,16 @@ export const useCategoryStore = defineStore("category", () => {
                 category
             );
 
+            const confirm = await Swal.fire({
+                title: "Thêm danh mục thành công",
+                icon: "success",
+                confirmButtonText: "OK",
+            });
+
+            if (!confirm.isConfirmed) {
+                return;
+            }
+
             const newCategory = response.data;
             if (!newCategory || !newCategory.categoryId || !newCategory.name) {
                 console.error("Dữ liệu trả về không hợp lệ:", newCategory);
@@ -64,6 +75,16 @@ export const useCategoryStore = defineStore("category", () => {
                 category
             );
 
+            const confirm = await Swal.fire({
+                title: "Cập nhật danh mục thành công",
+                icon: "success",
+                confirmButtonText: "OK",
+            });
+
+            if (!confirm.isConfirmed) {
+                return;
+            }
+
             // ✅ Cập nhật danh mục trong danh sách mà không cần gọi API lại
             const index = categorys.value.findIndex(
                 (item) => item.categoryId === category.categoryId
@@ -85,6 +106,17 @@ export const useCategoryStore = defineStore("category", () => {
 
     // Xóa danh mục
     const deleteCategory = async (categoryId) => {
+        const result = await Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa danh mục này không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, chắc chắn!",
+            cancelButtonText: "Hủy",
+        });
+        if (!result.isConfirmed) {
+            return;
+        }
+
         try {
             await axios.delete(
                 `http://localhost:3000/api/v1/data/category/delete-category/${categoryId}`

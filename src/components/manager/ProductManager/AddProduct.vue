@@ -230,7 +230,7 @@ import { computed, onMounted, ref } from "vue";
 import LoadingOverlay from "@/components/content/common/LoadingOverlay.vue";
 import { useToast } from "vue-toastification";
 import Editor from '@tinymce/tinymce-vue';
-import { useRouter } from "vue-router";
+
 
 
 
@@ -257,7 +257,7 @@ export default {
         const supplierStore = useSupplierStore();
         const productStore = useProductStore();
         const toast = useToast();
-        const router = useRouter();
+
         const brandStore = useBrandStore();
         const componentStore = useComponentStore();
         const { components } = storeToRefs(componentStore);
@@ -435,20 +435,13 @@ export default {
             }
 
             try {
-                isLoading.value = true;
-
                 if (props.isEdit) {
                     // Nếu là edit, gọi hàm update
                     await productStore.updateProduct(newProduct.value);
-                    setTimeout(() => {
-                        isLoading.value = false; // Chỉ đặt lại loading ở đây
-                        toast.success("Cập nhật sản phẩm thành công");
-                        router.push("/admin/products-list-manage");
-                    }, 2000);
                 } else {
-                    await productStore.addProduct(newProduct.value);
-                    setTimeout(() => {
-                        toast.success("Thêm sản phẩm thành công");
+                    const result = await productStore.addProduct(newProduct.value);
+
+                    if (result) {
                         productName.value = "";
                         productPrice.value = "";
                         productImage.value = "";
@@ -461,12 +454,12 @@ export default {
                         descHTML.value = "";
                         selectedComponents.value = [];
                         productImageDetail.value = [];
-                        isLoading.value = false; // Chỉ đặt lại loading ở đây
-                    }, 2000);
+                    } else {
+                        toast.error("Thêm sản phẩm thất bại");
+                    }
                 }
             } catch (error) {
                 console.error("Lỗi khi thêm sản phẩm:", error);
-                isLoading.value = false; // Nếu có lỗi, cũng phải tắt loading
             }
         };
 

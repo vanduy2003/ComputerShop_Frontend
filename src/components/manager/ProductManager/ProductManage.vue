@@ -38,6 +38,11 @@
                         <div class="d-flex justify-center">{{ item.stockQuantity }}</div>
                     </template>
 
+                    <!-- Hiển thị số lượng -->
+                    <template v-slot:[`item.productId`]="{ item }">
+                        <div class="d-flex justify-center">{{ item.productId }}</div>
+                    </template>
+
                     <!-- Hiển thị giá -->
                     <template v-slot:[`item.priceNew`]="{ item }">
                         <div class="d-flex justify-center">{{ Number(item.priceNew).toLocaleString("vi-VN") }}</div>
@@ -131,14 +136,11 @@ export default {
 
         // Hàm xóa sản phẩm
         const removeProduct = async (id) => {
-            const confirmed = confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
-            if (!confirmed) return;
-
             const success = await productStore.deleteProduct(id);
             if (success) {
                 toast.success("Xóa sản phẩm thành công!");
             } else {
-                toast.error("Lỗi khi xóa sản phẩm!");
+                console.error("Xóa sản phẩm thất bại!");
             }
         };
 
