@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="content-right col-md-4">
-                    <NewApp />
+                    <NewApp :current-id="newCurrent.newId" :current-type="newCurrent.type" />
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
 <script>
 import { useNewStore } from '@/stores/newStore';
 import { storeToRefs } from 'pinia';
-import { onMounted, watch, computed } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import NewApp from './NewApp.vue';
@@ -97,58 +97,59 @@ export default {
         const { newCurrent } = storeToRefs(store);
         const route = useRoute();
 
-        // Tạo currentURL dựa trên route hiện tại
-        const currentURL = computed(() => {
-            return window.location.origin + route.fullPath;
-        });
+        const isFbSdkLoaded = ref(false); // Cờ để biết SDK đã tải xong chưa
 
-        // Hàm fetch dữ liệu + re-render Facebook Plugin
+        const loadFacebookSDK = () => {
+            return new Promise((resolve) => {
+                if (window.FB) {
+                    isFbSdkLoaded.value = true;
+                    resolve();
+                } else {
+                    const script = document.createElement('script');
+                    script.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0';
+                    script.async = true;
+                    script.defer = true;
+                    script.onload = () => {
+                        isFbSdkLoaded.value = true;
+                        console.log('Facebook SDK Loaded');
+                        resolve();
+                    };
+                    document.body.appendChild(script);
+                }
+            });
+        };
+
         const fetchData = async (newId) => {
-            if (!newId) return; // Tránh lỗi nếu newId chưa có
+            if (!newId) return;
             await store.fetchNewDataByID(newId);
 
-            // Đợi Facebook SDK tải xong trước khi gọi parse()
-            if (window.FB && typeof window.FB.XFBML.parse === "function") {
+            // Chỉ parse sau khi SDK đã sẵn sàng
+            if (isFbSdkLoaded.value && window.FB?.XFBML?.parse) {
                 setTimeout(() => {
                     window.FB.XFBML.parse();
-                }, 500); // Đợi 500ms để đảm bảo Facebook SDK đã sẵn sàng
+                }, 300); // Delay nhẹ cho chắc chắn
             }
         };
 
-        // Gọi API lần đầu khi component mount
-        onMounted(() => {
-            // Kiểm tra xem Facebook SDK đã được tải chưa
-            if (!window.FB) {
-                let script = document.createElement("script");
-                script.src = "https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0";
-                script.async = true;
-                script.defer = true;
-                script.crossorigin = "anonymous";
-                script.onload = () => {
-                    console.log("Facebook SDK Loaded");
-                    fetchData(route.params.id); // Fetch dữ liệu và render Plugin
-                };
-                document.body.appendChild(script);
-            } else {
-                fetchData(route.params.id);
-            }
+        onMounted(async () => {
+            await loadFacebookSDK(); // Đợi SDK load
+            await fetchData(route.params.id); // Fetch dữ liệu và parse luôn
         });
 
-
-        // Theo dõi sự thay đổi của ID trên URL
-        watch(() => currentURL.value, () => {
-            if (window.FB && typeof window.FB.XFBML.parse === "function") {
-                setTimeout(() => {
-                    window.FB.XFBML.parse();
-                }, 500);
+        watch(
+            () => route.params.id,
+            async (newId) => {
+                await fetchData(newId);
             }
-        });
+        );
 
+        const currentURL = ref(window.location.origin + route.fullPath);
 
         return { newCurrent, currentURL };
     }
 };
 </script>
+
 
 
 <style>

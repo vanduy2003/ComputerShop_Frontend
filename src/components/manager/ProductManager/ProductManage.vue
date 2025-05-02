@@ -4,6 +4,171 @@
         <AdminNavbar />
         <div class=" content p-4">
             <h1 class="title text-white">Danh sách sản phẩm</h1>
+
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                        <i class="mdi mdi-ballot"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Sản Phẩm</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ totalProducts }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-info bubble-shadow-small">
+                                        <i class="mdi mdi-slot-machine"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">PC Gaming</p>
+                                        <h4 class="card-title mb-0 fs-5">{{
+                                            pcProducts
+                                            }}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-success bubble-shadow-small">
+                                        <i class="mdi mdi-monitor"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Màn Hình</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ moniterProducts }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                        <i class="mdi mdi-laptop"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Laptop</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ lapProducts }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary1 bubble-shadow-small">
+                                        <i class="mdi mdi-mouse-variant"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Gaming Gear</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ gameGear }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary2 bubble-shadow-small">
+                                        <i class="mdi mdi-controller-classic"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">PC Handheld</p>
+                                        <h4 class="card-title mb-0 fs-5">{{
+                                            handHeld
+                                            }}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary3 bubble-shadow-small">
+                                        <i class="mdi mdi-slot-machine"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">PC Office</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ pcOfice }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary4 bubble-shadow-small">
+                                        <i class="mdi mdi-chair-school"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1 line-clamp-1">Ghế Gaming</p>
+                                        <h4 class="card-title mb-0 fs-5">0</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="btn-controll d-flex justify-content-end">
                 <button class="btn-creat mb-1 p-2 fs-6">
                     <router-link to="/admin/products/add-product" class="text-white">
@@ -11,12 +176,16 @@
                         <span>Thêm sản phẩm</span>
                     </router-link>
                 </button>
-                <button class="mb-1 ms-2">
+                <button class="mb-1 mx-2">
                     <div class="btn-controll">
                         <v-select v-model="selectedCategory" :items="categoryOptions" item-title="label"
                             item-value="value" class="custom-select" density="compact" variant="solo-filled"
                             hide-details="true" />
                     </div>
+                </button>
+                <button class="btn-creat excel mb-1 p-2 fs-6 text-white" @click="exportToExcel">
+                    <v-icon>mdi mdi-file-excel</v-icon>
+                    <span>Xuất Excel</span>
                 </button>
             </div>
             <v-card>
@@ -50,7 +219,7 @@
 
                     <!-- Hiển thị giảm giá -->
                     <template v-slot:[`item.sale`]="{ item }">
-                        <div class="d-flex justify-center">{{ item.sale }}</div>
+                        <div class="d-flex justify-center">{{ item.sale }}%</div>
                     </template>
 
                     <!-- Hiển thị danh mục -->
@@ -79,7 +248,6 @@
 
         </div>
     </div>
-
 </template>
 
 <script>
@@ -89,6 +257,8 @@ import AdminSidebar from '../Dashboard/AdminSidebar.vue';
 import { useProductStore } from "@/stores/productStore";
 import { onMounted, ref, onActivated, computed } from 'vue';
 import { useToast } from 'vue-toastification';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 export default {
     name: 'ProductManagePage',
@@ -99,11 +269,20 @@ export default {
 
     setup() {
         const productStore = useProductStore();
-        const { products } = storeToRefs(productStore);
+        const {
+            products,
+            totalProducts,
+            pcProducts,
+            moniterProducts,
+            lapProducts,
+            gameGear,
+            pcOfice,
+            handHeld, } = storeToRefs(productStore);
         const search = ref('');
         const toast = useToast();
         const selectedCategory = ref(null);
 
+        // Lọc sản phẩm theo danh mục
         const filteredcategory = computed(() => {
             if (!selectedCategory.value) {
                 return products.value;
@@ -144,6 +323,7 @@ export default {
             }
         };
 
+        // Danh sách danh mục sản phẩm
         const categoryOptions = [
             { label: 'Tất cả sản phẩm', value: null },
             { label: 'Laptop GAMING', value: 'LAPTOP GAMING' },
@@ -155,14 +335,50 @@ export default {
             { label: 'Ghế Gaming', value: 'GHẾ GAMING' },
         ];
 
+        // Hàm xuất dữ liệu ra file Excel
+        const exportToExcel = () => {
+            const exportData = filteredcategory.value.map(product => ({
+                ID: product.productId,
+                "Tên sản phẩm": product.name,
+                "Ảnh": product.imageUrl,
+                "Giá (VNĐ)": product.priceNew,
+                "Số lượng": product.stockQuantity,
+                "Giảm giá (%)": product.sale,
+                "Danh mục": product.categoryName,
+                "Nhà cung cấp": product.supplierName,
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachSanPham");
+
+            const excelBuffer = XLSX.write(workbook, {
+                bookType: "xlsx",
+                type: "array"
+            });
+
+            const data = new Blob([excelBuffer], {
+                type: "application/octet-stream"
+            });
+            saveAs(data, "danh_sach_san_pham.xlsx");
+        };
+
         return {
             products,
+            lapProducts,
+            gameGear,
+            pcOfice,
+            handHeld,
             headers,
             search,
+            moniterProducts,
+            totalProducts,
+            pcProducts,
             removeProduct,
             categoryOptions,
             selectedCategory,
-            filteredcategory
+            filteredcategory,
+            exportToExcel,
         }
     }
 }
@@ -174,8 +390,20 @@ export default {
     padding: 10px;
 }
 
-.wrappers {
-    background: linear-gradient(314deg, #585858 0%, #6f6f6f 40%, #5d5d5d 80%);
+.card-stats .icon-big.icon-primary1 {
+    background: #f4dc00;
+}
+
+.card-stats .icon-big.icon-primary2 {
+    background: #ff0b7d;
+}
+
+.card-stats .icon-big.icon-primary3 {
+    background: #aa00ff;
+}
+
+.card-stats .icon-big.icon-primary4 {
+    background: #00fbff;
 }
 
 .v-data-table td:nth-child(2),
@@ -209,6 +437,11 @@ export default {
     font-weight: bold;
     opacity: 0.8;
     border-radius: 3px;
+}
+
+.btn-creat.excel {
+    background-color: #ff8000;
+    margin-bottom: 0;
 }
 
 .btn-creat span {

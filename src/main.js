@@ -3,11 +3,11 @@ import App from "./App.vue";
 import { createPinia } from "pinia";
 import vuetify from "./plugins/vuetify";
 import router from "./router";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./assets/styles/global.css";
-import Toast from "vue-toastification";
-import "vue-toastification/dist/index.css";
 
 const pinia = createPinia();
 const app = createApp(App);

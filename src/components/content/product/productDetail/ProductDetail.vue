@@ -84,7 +84,7 @@
                             <div class="review d-flex align-items-center" id="js-scroll-review">
                                 Đánh giá: <i class="icon-star star5 ms-1"></i>
                             </div>
-                            <span class="view ms-2">Lượt xem: 11362</span>
+                            <span class="view ms-2">Còn lại: {{ product.stockQuantity }} sản phẩm</span>
                         </div>
 
                         <!-- Thông tin linh kiện -->
@@ -116,21 +116,18 @@
                                 Tùy chọn sản phẩm
                             </div>
                             <div class="content-option d-flex flex-wrap">
-                                <a href="/pc-core-ultra-5-supernova-4060ti-super.html" class="item-option">
-                                    <span class="name line-clamp-2">PC Core Ultra 5 - Supernova 4060Ti Super</span>
+                                <div v-for="item in suggestedProducts.slice(0, 5)" :key="item.productId"
+                                    class="item-option">
+                                    <router-link :to="`/products/${item.productId}`" class="">
+                                        <span class="name line-clamp-2">{{ item.name }}</span>
 
-                                    <div class="main-price-config d-flex align-items-center">
-                                        <span class="price-config">36.790.000 đ</span>
-                                    </div>
-                                </a>
-
-                                <a href="/pc-core-ultra-5-nova-4060-ti.html" class="item-option selected">
-                                    <span class="name line-clamp-2">PC Core Ultra 5 - Nova 4060 Ti</span>
-
-                                    <div class="main-price-config d-flex align-items-center">
-                                        <span class="price-config">38.090.000 đ</span>
-                                    </div>
-                                </a>
+                                        <div class="main-price-config d-flex align-items-center">
+                                            <span class="price-config">{{
+                                                Number(item.priceNew).toLocaleString('vi-VN')
+                                                }}₫</span>
+                                        </div>
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
 
@@ -261,6 +258,7 @@ export default {
         loading: Boolean,
         error: String,
         components: Array,
+        suggestedProducts: Array,
     },
 
     setup(props) {

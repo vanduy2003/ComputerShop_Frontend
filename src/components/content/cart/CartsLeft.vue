@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="content-left">
+        <div class="content-left mb-4">
             <div class="background-white">
                 <div class="title d-flex align-items-center justify-space-between">
                     <h2 class="fs-4 fw-semibold">Thông tin sản phẩm</h2>
@@ -250,5 +250,6 @@ export default {
 .list-product-cart .unit-detail-amount-control a {
     width: 40px;
     height: 30px;
+    cursor: pointer;
 }
 </style>

@@ -15,11 +15,13 @@
     "@mdi/font": "5.9.55",
     "@mdi/js": "^7.4.47",
     "@tinymce/tinymce-vue": "^6.1.0",
+    "@vuepic/vue-datepicker": "^11.0.2",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "chart.js": "^3.9.1",
     "computershop": "file:",
     "dayjs": "^1.11.13",
+    "file-saver": "^2.0.5",
     "firebase": "^11.4.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
@@ -32,7 +34,8 @@
     "vue-router": "^4.4.5",
     "vue-toastification": "^2.0.0-rc.5",
     "vuetify": "^3.0.0-beta.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

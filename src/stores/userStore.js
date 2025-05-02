@@ -9,6 +9,7 @@ export const useUserStore = defineStore("user", () => {
     const user = ref(null);
     const isLoggedIn = computed(() => !!user.value);
     const isAdmin = computed(() => user.value?.role === "admin"); // ✅ Kiểm tra role
+    const countUsers = computed(() => users.value.length); // ✅ Số lượng người dùng
 
     // Hàm login
     const login = async (credentials) => {
@@ -143,5 +144,6 @@ export const useUserStore = defineStore("user", () => {
         logout,
         getAllUsers,
         deleteUser,
+        countUsers,
     };
 });

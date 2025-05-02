@@ -2,7 +2,7 @@
     <div>
         <div class="banner-top" style="width: 100%; margin: 0 auto;background: #ff6300;">
             <a href="/ad.php?id=308" class="item" style="display:block;">
-                <img class="lazy loaded" width="1600" height="35" alt="" style="display:block;"
+                <img class="lazy loaded" width="1600" height="35" alt="" style="display:block; margin: 0 auto;"
                     src="https://www.tncstore.vn/media/banner/14_08-f958cee856ddbb947dbd1e0f9065cbf1.png">
             </a>
         </div>
@@ -85,13 +85,16 @@
                                 </template>
 
                                 <v-list class="custom-menu">
-                                    <v-list-item @click="logout">
-                                        <div class="d-flex align-center">
-                                            <v-icon class="mr-2">mdi mdi-file-account-outline</v-icon>
-                                            <v-list-item-title class="fs-6 fw-semibold">Trang Cá
-                                                Nhân</v-list-item-title>
-                                        </div>
-                                    </v-list-item>
+                                    <router-link class="text-black" to="/me/user-profile">
+                                        <v-list-item>
+                                            <div class="d-flex align-center">
+                                                <v-icon class="mr-2">mdi mdi-account-circle</v-icon>
+                                                <v-list-item-title class="fs-6 fw-semibold">Thông tin tài
+                                                    khoản</v-list-item-title>
+                                            </div>
+                                        </v-list-item>
+                                    </router-link>
+
 
                                     <router-link class="text-black" to="/me/list-order">
                                         <v-list-item>
@@ -102,13 +105,16 @@
                                         </v-list-item>
                                     </router-link>
 
+                                    <router-link class="text-black" to="/me/favorite">
+                                        <v-list-item>
+                                            <div class="d-flex align-center">
+                                                <v-icon class="mr-2">mdi mdi-heart-outline</v-icon>
+                                                <v-list-item-title class="fs-6 fw-semibold">Yêu
+                                                    thích</v-list-item-title>
+                                            </div>
+                                        </v-list-item>
+                                    </router-link>
 
-                                    <v-list-item @click="logout">
-                                        <div class="d-flex align-center">
-                                            <v-icon class="mr-2">mdi mdi-heart-outline</v-icon>
-                                            <v-list-item-title class="fs-6 fw-semibold">Yêu thích</v-list-item-title>
-                                        </div>
-                                    </v-list-item>
 
                                     <v-list-item @click="logout" class="logout-item">
                                         <div class="d-flex align-center">
@@ -222,29 +228,29 @@
                                             <div class="d-flex flex-wrap">
                                                 <!-- Danh sách mục con -->
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Gaming Workstation
+                                                    <router-link to="!" class="title-holder">Gaming Workstation
                                                         PC</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Pro
+                                                    <router-link to="!" class="title-holder">Pro
                                                         Creator</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Pro
+                                                    <router-link to="!" class="title-holder">Pro
                                                         Ductivity</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Pro VR</router-link>
+                                                    <router-link to="!" class="title-holder">Pro VR</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Pro Audio</router-link>
+                                                    <router-link to="!" class="title-holder">Pro Audio</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">PC Cao
+                                                    <router-link to="!" class="title-holder">PC Cao
                                                         Cấp</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Mini PC</router-link>
+                                                    <router-link to="!" class="title-holder">Mini PC</router-link>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,7 +272,7 @@
                                         </router-link>
                                     </div>
                                     <div class="item">
-                                        <router-link :to="dsvs" class="item-cate d-flex align-items-center">
+                                        <router-link to="!" class="item-cate d-flex align-items-center">
                                             <p class="cat-title">PC AI</p>
                                             <span class="box-right">
                                                 <i class="mdi mdi-chevron-right"></i>
@@ -324,39 +330,39 @@
                                         <div class="menu-hover">
                                             <div class="d-flex flex-wrap">
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Máy PS5 - PlayStation
+                                                    <router-link to="!" class="title-holder">Máy PS5 - PlayStation
                                                         5</router-link>
                                                 </div>
 
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Pc
+                                                    <router-link to="!" class="title-holder">Pc
                                                         Handheld</router-link>
                                                 </div>
 
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Đĩa Game
+                                                    <router-link to="!" class="title-holder">Đĩa Game
                                                         PS5</router-link>
                                                 </div>
 
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Phụ Kiện
+                                                    <router-link to="!" class="title-holder">Phụ Kiện
                                                         Playstation</router-link>
                                                 </div>
 
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Máy chơi game
+                                                    <router-link to="!" class="title-holder">Máy chơi game
                                                         Nintendo</router-link>
                                                 </div>
 
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Đĩa Game Nintendo
+                                                    <router-link to="!" class="title-holder">Đĩa Game Nintendo
                                                         Switch</router-link>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="item">
-                                        <router-link :to="dsvs" class="item-cate d-flex align-items-center">
+                                        <router-link to="!" class="item-cate d-flex align-items-center">
                                             <p class="cat-title">Tay Cầm Chơi Game</p>
                                             <span class="box-right">
                                                 <i class="mdi mdi-chevron-right"></i>
@@ -366,26 +372,26 @@
                                         <div class="menu-hover">
                                             <div class="d-flex flex-wrap">
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                    <router-link to="!" class="title-holder">Tay Cầm
                                                         PS5</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                    <router-link to="!" class="title-holder">Tay Cầm
                                                         Xbox</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                    <router-link to="!" class="title-holder">Tay Cầm
                                                         Razer</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">Tay Cầm
+                                                    <router-link to="!" class="title-holder">Tay Cầm
                                                         Asus</router-link>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="item">
-                                        <router-link :to="dsvs" class="item-cate d-flex align-items-center">
+                                        <router-link to="!" class="item-cate d-flex align-items-center">
                                             <p class="cat-title">VGA - Card Màn Hình</p>
                                             <span class="box-right">
                                                 <i class="mdi mdi-chevron-right"></i>
@@ -395,12 +401,12 @@
                                         <div class="menu-hover">
                                             <div class="d-flex flex-wrap">
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">VGA Nvidia RTX 3060 /
+                                                    <router-link to="!" class="title-holder">VGA Nvidia RTX 3060 /
                                                         RTX
                                                         3060Ti</router-link>
                                                 </div>
                                                 <div class="item-holder">
-                                                    <router-link :to="dsvs" class="title-holder">VGA Nvidia RTX 4060 /
+                                                    <router-link to="!" class="title-holder">VGA Nvidia RTX 4060 /
                                                         4060Ti</router-link>
                                                 </div>
 

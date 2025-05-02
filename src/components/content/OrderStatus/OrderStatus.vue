@@ -13,11 +13,92 @@
 
                     <li class="home float-start list-unstyled">
                         <a href="" class="text-custom">
-                            <i class="mdi mdi-cart text-black"></i>
                             <span itemprop="name"> ĐƠN HÀNG CỦA TÔI </span>
                         </a>
                     </li>
                 </ol>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                        <i class="mdi mdi-ballot"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Tổng đơn hàng</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ countOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-info bubble-shadow-small">
+                                        <i class="mdi mdi-radiobox-blank"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Chờ xác nhận</p>
+                                        <h4 class="card-title mb-0 fs-5">{{
+                                            pendingOrders
+                                        }}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-success bubble-shadow-small">
+                                        <i class="mdi mdi-check-decagram"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Đã hoàn thành</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ completedOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                        <i class="mdi mdi-close-box"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Đã hủy</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ cancelledOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div v-if="orders.length > 0">
@@ -167,7 +248,7 @@ import { useRouter } from "vue-router";
 export default {
     setup() {
         const oderStore = useOrderStore();
-        const { orders } = storeToRefs(oderStore);
+        const { orders, countOrders, cancelledOrders, pendingOrders, completedOrders, } = storeToRefs(oderStore);
         const userStore = useUserStore();
         const { user } = storeToRefs(userStore);
         const activeStatus = ref("all"); // Mặc định là tất cả đơn hàng
@@ -203,6 +284,10 @@ export default {
             orders,
             setStatus,
             activeStatus,
+            countOrders,
+            cancelledOrders,
+            pendingOrders,
+            completedOrders,
             filteredOrders,
             setActiveStatus,
             viewOrderDetail,

@@ -44,8 +44,6 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
-
-
         </div>
     </div>
 </template>

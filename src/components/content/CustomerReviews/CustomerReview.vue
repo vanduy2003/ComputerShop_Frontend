@@ -267,23 +267,31 @@
                 </button>
             </div>
 
+
+
+
+
         </div>
     </div>
 
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
-    data() {
+    setup() {
+        const expanded = ref(false);
+
+        const toggleContent = () => {
+            expanded.value = !expanded.value;
+        };
+
         return {
-            expanded: false // Trạng thái ban đầu của nội dung
-        }
+            expanded,
+            toggleContent,
+        };
     },
-    methods: {
-        toggleContent() {
-            this.expanded = !this.expanded; // Khi click vào button, đảo ngược trạng thái của nội dung
-        }
-    }
 }
 </script>
 

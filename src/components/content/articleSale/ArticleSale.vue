@@ -24,7 +24,7 @@
                         <div class="background-white">
                             <div class="title d-flex align-items-center justify-content-between">
                                 <h2>TNC channel</h2>
-                                <router-link :to="uhds" class="more-all">
+                                <router-link to="!" class="more-all">
                                     Xem tất cả
                                     <i class="mdi mdi-arrow-right"></i>
                                 </router-link>
@@ -60,7 +60,7 @@
                         <div class="background-white">
                             <div class="title d-flex align-items-center justify-content-between">
                                 <h2>Tin tức</h2>
-                                <router-link :to="dsjs" class="more-all">
+                                <router-link to="!" class="more-all">
                                     Xem tất cả
                                     <i class="mdi mdi-arrow-right"></i>
                                 </router-link>

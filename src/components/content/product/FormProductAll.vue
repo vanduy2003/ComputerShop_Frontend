@@ -97,8 +97,8 @@
                                                 Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
                                             <div class="d-flex align-items-center">
                                                 <b class="price">{{ Number(product.priceNew).toLocaleString('vi-VN')
-                                                    }}đ</b>
-                                                <div class="price-saleoff">{{ product.sale }}%</div>
+                                                }}đ</b>
+                                                <div class="price-saleoff">-{{ product.sale }}%</div>
                                             </div>
                                         </div>
                                     </div>

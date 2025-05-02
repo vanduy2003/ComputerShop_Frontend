@@ -45,12 +45,19 @@
                                             </div>
                                             <div class="main-price">
                                                 <del class="old-price">{{
-                                                    Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
+                                                    Number(product.priceOld).toLocaleString('vi-VN') }}₫</del>
                                                 <div class="d-flex align-items-center">
                                                     <b class="price">{{ Number(product.priceNew).toLocaleString('vi-VN')
-                                                        }}đ</b>
-                                                    <div class="price-saleoff">{{ product.sale }}%</div>
-                                                    <span class="box-favarite mdi mdi-heart-circle"></span>
+                                                        }}₫</b>
+                                                    <div class="price-saleoff">-{{ product.sale }}%</div>
+
+                                                    <span @click="addFavorite(product.productId)" :class="[
+                                                        'mdi',
+                                                        favoriteProductIds.includes(product.productId)
+                                                            ? 'mdi-heart text-danger'
+                                                            : 'mdi-heart-outline',
+                                                        'box-favarite',
+                                                    ]" style="font-size: 24px; cursor: pointer;"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,13 +115,19 @@
                                             </div>
                                             <div class="main-price">
                                                 <del class="old-price">{{
-                                                    Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
+                                                    Number(product.priceOld).toLocaleString('vi-VN') }}₫</del>
                                                 <div class="d-flex align-items-center">
                                                     <b class="price">{{
                                                         Number(product.priceNew).toLocaleString('vi-VN')
-                                                    }}đ</b>
-                                                    <div class="price-saleoff">{{ product.sale }}%</div>
-                                                    <span class="box-favarite mdi mdi-heart-circle"></span>
+                                                    }}₫</b>
+                                                    <div class="price-saleoff">-{{ product.sale }}%</div>
+                                                    <span @click="addFavorite(product.productId)" :class="[
+                                                        'mdi',
+                                                        favoriteProductIds.includes(product.productId)
+                                                            ? 'mdi-heart text-danger'
+                                                            : 'mdi-heart-outline',
+                                                        'box-favarite',
+                                                    ]" style="font-size: 24px; cursor: pointer;"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,13 +184,19 @@
                                             </div>
                                             <div class="main-price">
                                                 <del class="old-price">{{
-                                                    Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
+                                                    Number(product.priceOld).toLocaleString('vi-VN') }}₫</del>
                                                 <div class="d-flex align-items-center">
                                                     <b class="price">{{
                                                         Number(product.priceNew).toLocaleString('vi-VN')
-                                                    }}đ</b>
-                                                    <div class="price-saleoff">{{ product.sale }}%</div>
-                                                    <span class="box-favarite mdi mdi-heart-circle"></span>
+                                                    }}₫</b>
+                                                    <div class="price-saleoff">-{{ product.sale }}%</div>
+                                                    <span @click="addFavorite(product.productId)" :class="[
+                                                        'mdi',
+                                                        favoriteProductIds.includes(product.productId)
+                                                            ? 'mdi-heart text-danger'
+                                                            : 'mdi-heart-outline',
+                                                        'box-favarite',
+                                                    ]" style="font-size: 24px; cursor: pointer;"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,17 +222,16 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";  // ✅ Đảm bảo import CSS autoplay
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { useUserStore } from "@/stores/userStore";
+import { storeToRefs } from "pinia";
+import { useProductStore } from "@/stores/productStore";
+import { onMounted, computed } from "vue";
+import Swal from "sweetalert2";
 
 export default {
     components: {
         Swiper,
         SwiperSlide,
-    },
-
-    setup() {
-        return {
-            modules: [Autoplay, Navigation, Pagination], // ✅ Khai báo modules trong setup()
-        };
     },
 
     props: {
@@ -222,6 +240,48 @@ export default {
             required: true,
         },
     },
+
+
+    setup() {
+        const userStore = useUserStore();
+        const { user } = storeToRefs(userStore);
+        const productStore = useProductStore();
+        const { productFavorite } = storeToRefs(productStore);
+
+        // 👉 Tạo computed danh sách các productId đã yêu thích
+        const favoriteProductIds = computed(() => {
+            return productFavorite.value.map(item => item.productId);
+        });
+
+        onMounted(async () => {
+            await userStore.fetchUser(); // Fetch user data when component is mounted
+            if (user.value && user.value.userId) {
+                await productStore.getFavoriteList(user.value.userId);
+            }
+        });
+
+        const addFavorite = async (productId) => {
+            if (!user.value || !user.value.userId) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Cảnh báo",
+                    text: "Bạn cần đăng nhập để thực hiện chức năng này!",
+                });
+                return;
+            }
+
+            await productStore.addFavorite(user.value.userId, productId);
+        };
+
+
+        return {
+            modules: [Autoplay, Navigation, Pagination], // ✅ Khai báo modules trong setup()
+            addFavorite,
+            productFavorite,
+            favoriteProductIds,
+        };
+    },
+
 
 
     computed: {
@@ -497,6 +557,13 @@ a {
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

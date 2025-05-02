@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--  -->
+                    <!-- Danh mục sản phẩm -->
                     <div class="row mb-4">
                         <div class="item-input col-md-4">
                             <label>Danh mục sản phẩm<span>*</span></label>
@@ -116,8 +116,10 @@
                                 <option :value="null">--- Chọn linh kiện ---</option>
                                 <option v-for="component in components" :key="component.componentId"
                                     :value="component.componentId">
-                                    {{ component.name }}
+                                    {{ component.componentType }}: {{ component.name
+                                    }}
                                 </option>
+
                             </select>
                             <div class="note-error text-danger" v-if="error.selectedComponentId">{{
                                 error.selectedComponentId }}</div>
@@ -135,7 +137,8 @@
                             <ul class="list-group">
                                 <li class="list-group-item row d-flex justify-content-between align-items-center"
                                     v-for="(component, index) in selectedComponents" :key="index">
-                                    <span class="col-md-8"> {{ component.name }}</span>
+                                    <span class="col-md-8"> <span class="fw-semibold">{{ component.componentType }}:
+                                        </span> {{ component.name }}</span>
                                     <div class="col-md-3">
                                         Số lượng:
                                         <input type="number" v-model="component.quantity" min="1"

@@ -1,5 +1,5 @@
 <template>
-    <div class="page-cart">
+    <div class="page-cart mb-4">
         <div class="container">
             <!-- breadcrumb -->
             <div id="breadcrumb" class="breadcrumb">
@@ -188,8 +188,7 @@
             </div>
         </div>
 
-        <!-- Dùng component LoadingOverlay -->
-        <LoadingOverlay :isLoading="isLoading" />
+
     </div>
 </template>
 
@@ -200,14 +199,15 @@ import { storeToRefs } from "pinia";
 import CartsRight from "./CartsRight.vue";
 import { useLocationStore } from "@/stores/locationStore";
 import { useCartStore } from "@/stores/cartStore";
-import LoadingOverlay from "@/components/content/common/LoadingOverlay.vue";
+
 import { useToast } from "vue-toastification";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
     components: {
         CartsRight,
-        LoadingOverlay,
+
     },
 
     setup() {
@@ -282,37 +282,54 @@ export default {
                 return;
             }
 
+            const totalAmount = discountedTotal.value;
+
+            if (orderData.value.paymentMethod === "momo" && totalAmount > 50000000) {
+                await Swal.fire({
+                    title: "Thanh toán chỉ áp dụng cho đơn hàng dưới 50 triệu",
+                    text: "Vui lòng chọn hình thức thanh toán khác.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    showCancelButton: false,
+                });
+                return;
+            }
+
             try {
-                isLoading.value = true;
-
-                // 🛒 Lưu lại số tiền trước khi tạo đơn hàng
-                const totalAmount = discountedTotal.value.toString();
-
-                // 🛒 ✅ Tạo đơn hàng trước, lấy orderId từ backend
                 const response = await cartStore.createOrder(orderData.value);
-                const newOrderId = response;
+                const newOrderId = response.orderId;
 
                 if (!newOrderId) {
                     throw new Error("Không thể tạo đơn hàng!");
                 }
 
-                // Nếu chọn thanh toán bằng MoMo, gửi orderId + số tiền lên MoMo
+                await Swal.fire({
+                    icon: "success",
+                    title: "Đặt hàng thành công!",
+                    text: "Cảm ơn bạn đã đặt hàng tại Computer Shop!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+
+                cart.value = []; // Reset giỏ hàng
+
                 if (orderData.value.paymentMethod === "momo") {
-                    handleMoMoPayment(newOrderId, totalAmount);
+                    await handleMoMoPayment(newOrderId, totalAmount.toString());
                     return;
                 }
 
-                // Nếu không dùng MoMo, chuyển đến trang đặt hàng thành công
-                setTimeout(() => {
-                    isLoading.value = false;
-                    router.replace(`/me/cart/buy-success/${newOrderId}`);
-                }, 2000);
+                router.replace(`/me/cart/buy-success/${newOrderId}`);
             } catch (error) {
                 console.error("Lỗi khi đặt hàng:", error);
-                toast.error("Đã xảy ra lỗi, vui lòng thử lại!");
-                isLoading.value = false;
+                await Swal.fire({
+                    icon: "error",
+                    title: "Đặt hàng thất bại!",
+                    text: error.message || "Đã xảy ra lỗi, vui lòng thử lại!",
+                    confirmButtonText: "OK"
+                });
             }
         };
+
 
         // ✅ Xử lý thanh toán MoMo
         const handleMoMoPayment = async (orderId, amount) => {
@@ -351,7 +368,6 @@ export default {
             orderData,
             paymentMethod,
             handleConfirmOrder,
-            isLoading,
             errors,
             handleMoMoPayment,
         };

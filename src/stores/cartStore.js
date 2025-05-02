@@ -244,25 +244,20 @@ export const useCartStore = defineStore("cart", () => {
                 orderData
             );
 
-            orderId.value = response.data.orderId;
-
             if (!response.data.success) {
                 throw new Error(
                     response.data.message || "Tạo đơn hàng thất bại!"
                 );
             }
 
-            if (response.data.success) {
-                orderId.value = response.data.orderId; // ✅ Lấy orderId từ response
-                toast.success("Đặt hàng thành công!");
-                cart.value = []; // Reset giỏ hàng
-                return response.data.orderId;
-            } else {
-                toast.error("Đặt hàng thất bại!, vui lòng thử lại!");
-            }
+            orderId.value = response.data.orderId;
+
+            return response.data; // Trả về luôn toàn bộ response để xử lý sau
         } catch (error) {
             console.error("Lỗi khi tạo đơn hàng:", error);
-            toast.error(error.response?.data?.message || "Đặt hàng thất bại!");
+            throw new Error(
+                error.response?.data?.message || "Đặt hàng thất bại!"
+            ); // 🔥 Ném lỗi ra ngoài để handleConfirmOrder bắt
         }
     };
 

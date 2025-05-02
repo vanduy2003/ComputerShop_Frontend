@@ -7,7 +7,7 @@
                 <h2>Mua hàng thành công</h2>
                 <div class="note fs-6 text-center lh-base mb-4">
                     Thông tin chi tiết về đơn hàng đã được gửi đến địa chỉ email <a
-                        href="mailto:khtncstore@gmail.com">khtncstore@gmail.com</a>. Nếu không
+                        href="mailto:khtncstore@gmail.com">{{ order.email }}</a>. Nếu không
                     tìm thấy email này,
                     xin quý khách vui lòng kiểm tra thư mục Spam. Nếu có yêu cầu đặc biệt, xin quý khách vui lòng liên
                     hệ nhân viên tư vấn
@@ -37,7 +37,7 @@
                     <div class="item d-flex align-items-center mb-2">
                         <b>Giao đến: </b>
                         <span>{{ order.address }} - {{ order.ward }} - {{ order.district }} - {{ order.province
-                            }}</span>
+                        }}</span>
                     </div>
                     <div class="item d-flex align-items-center mb-2">
                         <b>Phương thức thanh toán: </b>
@@ -70,7 +70,7 @@
                                 </a>
                                 <div class="price mt-1">
                                     <b class="text-danger">{{ Number(item.price).toLocaleString('vi-VN')
-                                    }}đ</b>
+                                        }}đ</b>
                                     <div class="d-flex align-items-center ">
                                         <b class="me-1">Số lượng:</b>
                                         <span>{{ item.quantity }}</span>
@@ -90,7 +90,7 @@
                             <b>Tổng chi phí</b>
                             <div class="text-danger fw-semibold fs-5">{{
                                 Number(order.total_price).toLocaleString('vi-VN')
-                            }}đ </div>
+                                }}đ </div>
                         </div>
                         <span class="vat text-end d-block mt-2">
                             Đã bao gồm VAT [nếu có]

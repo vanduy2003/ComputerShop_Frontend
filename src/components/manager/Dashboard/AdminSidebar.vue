@@ -36,13 +36,6 @@
                         <v-list-item-title class="pl-5 fs-6">{{ item.title }}</v-list-item-title>
                     </v-list-item>
                 </v-list-group>
-
-                <v-list-item v-for="(item, index) in singleItems" :key="'single-' + index" link>
-                    <div class="d-flex align-center" @click="navigate(item.route)">
-                        <v-icon class="mr-2">{{ item.icon }}</v-icon>
-                        <v-list-item-title class="fs-6 fw-semibold">{{ item.title }}</v-list-item-title>
-                    </div>
-                </v-list-item>
             </v-list>
         </v-navigation-drawer>
     </div>
@@ -99,18 +92,32 @@ const menuItems = ref([
         ]
     },
     {
+        title: "Quản Lý Linh Kiện",
+        icon: "mdi mdi-cog",
+        children: [
+            { title: "Danh sách linh kiện", route: "/admin/component-list-manage" },
+        ]
+    },
+
+    {
         title: "Thống Kê", icon: "mdi mdi-chart-bar", children: [
             { title: "Thống kê sản phẩm", route: "/admin/statistics/products" },
             { title: "Thống kê đơn hàng", route: "/admin/statistics/orders" },
         ]
     },
 
+    {
+        title: "Quản Lý Khách Hàng",
+        icon: "mdi mdi-account-group",
+
+        children: [
+            { title: "Danh sách khách hàng", route: "/admin/user-list-manage" },
+        ],
+    },
+
 ]);
 
-const singleItems = ref([
-    { title: "Quản Lý Người Dùng", icon: "mdi mdi-account-group", route: "/admin/user-list-manage" },
-    { title: "Cài Đặt", icon: "mdi mdi-cog", route: "" },
-]);
+
 
 const navigate = (route) => {
     if (route) router.push(route);

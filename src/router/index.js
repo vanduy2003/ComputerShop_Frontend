@@ -23,6 +23,10 @@ import UserManager from "@/components/manager/UserManager/UserManager.vue";
 import OrderPage from "@/views/Order/OrderPage.vue";
 import OrderCliendDetail from "@/components/content/OrderStatus/OrderDetail.vue";
 import ContactShop from "@/components/content/contact/ContactShop.vue";
+import ComponentManager from "@/components/manager/ComponentManager/ComponentManager.vue";
+import FavoriteProduct from "@/components/content/favorite/FavoriteProduct.vue";
+import CompareDetail from "@/components/content/social/CompareDetail.vue";
+import UserProfilePage from "@/components/content/contact/UserProfilePage.vue";
 
 const routes = [
     // 🚀 Các route phổ biến
@@ -43,8 +47,14 @@ const routes = [
     { path: "/me/list-order", component: OrderPage },
     // 🚀 Route chi tiết đơn hàng
     { path: "/me/order/order-detail/:id", component: OrderCliendDetail },
-
+    // 🚀 Route liên hệ
     { path: "/contact", component: ContactShop },
+    // 🚀 Route yêu thích
+    { path: "/me/favorite", component: FavoriteProduct },
+    // 🚀 Route so sánh sản phẩm
+    { path: "/compare", component: CompareDetail },
+    // 🚀 Route thông tin cá nhân
+    { path: "/me/user-profile", component: UserProfilePage },
 
     // 🚀 Các route admin (chỉ dành cho admin)
     {
@@ -122,6 +132,12 @@ const routes = [
         path: "/admin/user-list-manage",
         component: UserManager,
         meta: { requiresAdmin: true }, // ✅ Bổ sung meta.requiresAdmin
+    },
+    // 🚀 Route quản lý componen
+    {
+        path: "/admin/component-list-manage",
+        component: ComponentManager,
+        meta: { requiresAdmin: true },
     },
 
     // 🚨 Route bắt tất cả các đường dẫn không hợp lệ

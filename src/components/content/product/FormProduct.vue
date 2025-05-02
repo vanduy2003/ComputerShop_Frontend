@@ -27,7 +27,7 @@
                                                 </span>
                                             </router-link>
                                             <div class="product-info">
-                                                <router-link :to="'/api/v1/data/products/' + product.productId"
+                                                <router-link :to="`/products/${product.productId}`"
                                                     class="product-name line-clamp-2">
                                                     {{ product.name }}
                                                 </router-link>
@@ -41,7 +41,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <b class="price">{{
                                                             Number(product.priceNew).toLocaleString("vi-VN") }}đ</b>
-                                                        <div class="price-saleoff">{{ product.sale }}%</div>
+                                                        <div class="price-saleoff">-{{ product.sale }}%</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -100,7 +100,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .form-product .heading {
     line-height: 48px;
     padding: 0 24px;

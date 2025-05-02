@@ -5,12 +5,97 @@
         <div class="content p-4">
             <h1 class="title text-white">Danh sách đơn hàng</h1>
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div></div>
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                        <i class="mdi mdi-ballot"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Tổng Đơn Hàng</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ countOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-info bubble-shadow-small">
+                                        <i class="mdi mdi-cash-multiple"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Doanh Thu</p>
+                                        <h4 class="card-title mb-0 fs-5 line-clamp-1">{{
+                                            Number(totalOrders).toLocaleString("vi-VN")
+                                        }}
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-success bubble-shadow-small">
+                                        <i class="mdi mdi-marker-check"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Đã Hoàn Thành</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ completedOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-icon">
+                                    <div class="icon-big text-center icon-danger bubble-shadow-small">
+                                        <i class="mdi mdi-note-remove-outline"></i>
+                                    </div>
+                                </div>
+                                <div class="col col-stats ms-3 ms-sm-0">
+                                    <div class="numbers">
+                                        <p class="card-category line-clamp-1">Đã Hủy</p>
+                                        <h4 class="card-title mb-0 fs-5">{{ cancelledOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end  mb-2">
                 <div class="btn-controll">
                     <v-select v-model="selectedStatus" :items="statusOptions" item-title="label" item-value="value"
                         class="custom-select" density="compact" variant="solo-filled" hide-details="true" />
                 </div>
+                <button class="btn-creat excel  p-2 ms-2 fs-6 text-white" @click="exportToExcel">
+                    <v-icon>mdi mdi-file-excel</v-icon>
+                    <span>Xuất Excel</span>
+                </button>
             </div>
 
 
@@ -23,6 +108,9 @@
 
                 <v-data-table :headers="headers" :items="filteredOrders" :search="search" class="elevation-1">
 
+                    <template v-slot:[`item.receiver_name`]="{ item }">
+                        <div class="fw-semibold">{{ item.receiver_name }}</div>
+                    </template>
 
                     <template v-slot:[`item.address`]="{ item }">
                         {{ item.address }}, {{ item.ward }}, {{ item.district }}, {{ item.province }}
@@ -46,7 +134,7 @@
                     <template v-slot:[`item.total_price`]="{ item }">
                         <div class="d-flex justify-center text-center">{{
                             Number(item.total_price).toLocaleString("vi-VN")
-                            }}</div>
+                        }}</div>
                     </template>
 
                     <template v-slot:[`item.phone_number`]="{ item }">
@@ -77,6 +165,8 @@ import AdminNavbar from '../Dashboard/AdminNavbar.vue'
 import AdminSidebar from '../Dashboard/AdminSidebar.vue'
 import { useOrderStore } from '@/stores/oderStore'
 import { ref, onMounted, computed } from 'vue'
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 
 export default {
@@ -88,7 +178,7 @@ export default {
     setup() {
         const search = ref('')
         const orderStore = useOrderStore()
-        const { orders } = storeToRefs(orderStore)
+        const { orders, totalOrders, countOrders, cancelledOrders, completedOrders } = storeToRefs(orderStore)
 
         const dialog = ref(false)
 
@@ -97,6 +187,7 @@ export default {
         })
 
         const selectedStatus = ref(null); // Mặc định không lọc
+
         const filteredOrders = computed(() => {
             if (!selectedStatus.value) {
                 return orders.value; // Nếu không chọn trạng thái nào, hiển thị tất cả đơn hàng
@@ -116,12 +207,37 @@ export default {
             { title: 'Actions', value: 'actions', sortable: false },
         ];
 
+        //
         const formatProductNames = (productNames) => {
             if (!productNames) return "Chưa có sản phẩm";
             return productNames
                 .split(", ")
                 .map((name) => `• ${name}`)
                 .join("<br>");
+        };
+
+        // Xuất dữ liệu ra file Excel
+        const exportToExcel = () => {
+            const worksheet = XLSX.utils.json_to_sheet(filteredOrders.value.map(order => ({
+                "ID": order.orderId,
+                "Họ Tên": order.receiver_name,
+                "Điện thoại": order.phone_number,
+                "Email": order.email,
+                "Địa chỉ": `${order.address}, ${order.ward}, ${order.district}, ${order.province}`,
+                "Tên Sản phẩm": formatProductNames(order.product_names),
+                "Số lượng": order.countItems,
+                "Tổng tiền": Number(order.total_price).toLocaleString("vi-VN"),
+                "Phương thức thanh toán": order.payment_method,
+                "Trạng thái": order.order_status,
+                "Ngay đặt hàng": order.created_at,
+            })));
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Đơn hàng");
+
+            const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+            const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+            saveAs(blob, `don_hang_${new Date().toLocaleDateString()}.xlsx`);
         };
 
 
@@ -142,8 +258,13 @@ export default {
             dialog,
             formatProductNames,
             selectedStatus,
+            completedOrders,
             filteredOrders,
-            statusOptions
+            statusOptions,
+            totalOrders,
+            countOrders,
+            cancelledOrders,
+            exportToExcel
         }
     }
 }

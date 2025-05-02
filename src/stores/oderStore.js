@@ -7,8 +7,28 @@ import Swal from "sweetalert2";
 export const useOrderStore = defineStore("orders", () => {
     const orders = ref([]);
     const order = ref({});
+    const potentialCustomers = ref([]);
 
+    // Tính tổng số đơn hàng
     const countOrders = computed(() => orders.value.length);
+
+    // Tính số đơn hàng đang chờ xử lý
+    const pendingOrders = computed(() => {
+        return orders.value.filter((order) => order.order_status === "pending")
+            .length;
+    });
+
+    // lấy khách hàng tiềm năng
+    const fetchPotentialCustomers = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:3000/api/v1/data/potential-customers"
+            );
+            potentialCustomers.value = response.data.potentialCustomers;
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     // Tính tổng tiền của tất cả đơn hàng (đã hoàn thành)
     const totalOrders = computed(() => {
@@ -20,6 +40,20 @@ export const useOrderStore = defineStore("orders", () => {
             }, 0);
     });
 
+    // Tính số đơn hàng đã hủy
+    const cancelledOrders = computed(() => {
+        return orders.value.filter(
+            (order) => order.order_status === "cancelled"
+        ).length;
+    });
+
+    // Tính số đơn hàng đã hoàn thành
+    const completedOrders = computed(() => {
+        return orders.value.filter(
+            (order) => order.order_status === "completed"
+        ).length;
+    });
+
     // Lấy danh sách đơn hàng
     const fetchOders = async () => {
         try {
@@ -27,9 +61,10 @@ export const useOrderStore = defineStore("orders", () => {
                 "http://localhost:3000/api/v1/data/orders"
             );
 
+            // Giữ lại giá trị gốc của created_at và chỉ định dạng khi cần
             orders.value = response.data.orders.map((order) => ({
                 ...order,
-                created_at: dayjs(order.created_at).format("DD/MM/YYYY, HH:mm"),
+                created_at: dayjs(order.created_at), // Giữ lại dayjs đối tượng
             }));
         } catch (error) {
             console.error(error);
@@ -144,11 +179,16 @@ export const useOrderStore = defineStore("orders", () => {
         order,
         totalOrders,
         countOrders,
+        cancelledOrders,
+        pendingOrders,
+        completedOrders,
         fetchOders,
         fetchOrderById,
         updateOrderStatus,
         deleteOrder,
         fetchOrderByUser,
         cancelOrder,
+        fetchPotentialCustomers,
+        potentialCustomers,
     };
 });

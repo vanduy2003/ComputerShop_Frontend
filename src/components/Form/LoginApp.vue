@@ -168,6 +168,7 @@ export default {
         };
 
 
+        // Hàm đăng nhập bằng Google
         const loginWithGoogle = async () => {
             try {
                 isLoading.value = true; // Hiển thị loading

@@ -44,13 +44,24 @@
 import { useNewStore } from "@/stores/newStore";
 import { storeToRefs } from "pinia";
 import { onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
+
 
 export default {
-    setup() {
+    props: {
+        currentId: {
+            type: Number,
+            required: true
+        },
+        currentType: {
+            type: String,
+            required: true
+        }
+    },
+
+    setup(props) {
         const store = useNewStore();
         const { news } = storeToRefs(store);
-        const route = useRoute();
+
 
         onMounted(() => {
             store.fetchNews();
@@ -58,13 +69,8 @@ export default {
 
         // Lọc tin tức, bỏ bài viết đang xem
         const filteredNews = computed(() => {
-            const currentId = Number(route.params.id); // ID bài viết hiện tại
-            const currentNews = news.value.find(item => item.newId === currentId); // Tìm bài viết hiện tại
-
-            if (!currentNews) return []; // Tránh lỗi nếu chưa có dữ liệu
-
             return news.value
-                .filter(item => item.newId !== currentId && item.type === currentNews.type) // Lọc theo type
+                .filter(item => item.type === props.currentType && item.newId !== props.currentId)
                 .slice(0, 6);
         });
 

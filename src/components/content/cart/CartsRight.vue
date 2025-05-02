@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="content-right">
+        <div class="content-right mb-4">
             <div class="form-voucher background-white">
                 <h2 class="fs-4 fw-semibold">Nhập mã voucher</h2>
                 <div class="d-flex align-items-center">
@@ -204,6 +204,7 @@ export default {
     overflow: hidden;
     outline: none;
     border: none;
+    cursor: pointer;
 }
 
 .page-cart .button-send-cart span {

@@ -10,20 +10,28 @@
                             height: expanded ? 'auto' : '510px',
                             overflow: expanded ? 'visible' : 'hidden',
                         }">
-                            <div class="productDescription fs-5" v-html="product.descHTML">
-
-                            </div>
+                            <div class="productDescription fs-5" v-html="product.descHTML"></div>
                         </div>
 
                         <button @click="toggleContent" class="btn-toggle">
-                            {{ expanded ? "Thu nhỏ" : "Xem thêm"
-                            }}<i class="mdi mdi-chevron-down ms-2"></i>
+                            {{ expanded ? "Thu nhỏ" : "Xem thêm" }}
+                            <i class="mdi mdi-chevron-down ms-2"></i>
                         </button>
                     </div>
 
-                    <CustomerReview />
+                    <div class="comment box-review background-white mt-4 fs-6">
+                        <div class="btn-share-detail d-flex" style="margin-top: 20px;">
+                            <b class="me-2">Chia sẻ bài viết:</b>
+                            <!-- Nút Like -->
+                            <div class="fb-like" :data-href="currentURL" data-width="" data-layout="standard"
+                                data-action="like" data-size="small" data-share="true"></div>
+                        </div>
+                        <!-- Plugin Facebook Comments -->
+                        <div class="fb-comments" :data-href="currentURL" data-width="100%" data-numposts="5"></div>
+                    </div>
                 </div>
-                <!--  end content left -->
+
+                <!-- Content right -->
                 <div class="content-right col-md-4">
                     <div class="box-specifications background-white mb-5">
                         <h4 class="title">Thông số kỹ thuật</h4>
@@ -33,8 +41,8 @@
                                 <tbody>
                                     <tr v-for="component in components" :key="component.id" class="fs-6">
                                         <td class="att-name">
-                                            <a href="#" target="_blank"><strong>{{ component.componentType }}:
-                                                </strong></a>
+                                            <a href="#" target="_blank"><strong>{{ component.componentType
+                                            }}:</strong></a>
                                         </td>
                                         <td class="att-value">
                                             <a href="#" target="_blank">{{ component.name }}</a>
@@ -48,23 +56,23 @@
                             Xem thêm <i class="mdi mdi-chevron-down ms-2"></i>
                         </a>
                     </div>
-                    <!-- end box specifications -->
 
-                    <NewApp />
+                    <NewApp :current-type="'channel'" />
                 </div>
-                <!--  end content right -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
+/* global FB */
+import { ref, computed, onMounted, watchEffect } from 'vue';
+import { useRoute } from 'vue-router'; // Bổ sung
 import NewApp from '../../News/NewApp.vue';
-import CustomerReview from '../../CustomerReviews/CustomerReview.vue';
+
 export default {
     components: {
         NewApp,
-        CustomerReview,
     },
     props: {
         components: {
@@ -76,18 +84,49 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            expanded: false, // Trạng thái ban đầu của nội dung
+    setup() {
+        const expanded = ref(false);
+        const route = useRoute(); // Lấy route từ vue-router
+
+        const toggleContent = () => {
+            expanded.value = !expanded.value;
         };
-    },
-    methods: {
-        toggleContent() {
-            this.expanded = !this.expanded; // Khi click vào button, đảo ngược trạng thái của nội dung
-        },
+
+        const currentURL = computed(() => {
+            if (process.env.NODE_ENV === 'development') {
+                return 'https://example.com/products/' + route.params.id;
+            }
+            return window.location.origin + route.fullPath;
+        });
+
+        const loadFacebookPlugin = () => {
+            if (typeof FB !== 'undefined' && FB.XFBML && typeof FB.XFBML.parse === 'function') {
+                setTimeout(() => {
+                    FB.XFBML.parse();
+                }, 300);
+            }
+        };
+
+        onMounted(() => {
+            loadFacebookPlugin();
+        });
+
+        watchEffect(() => {
+            // Cứ khi currentURL thay đổi thì gọi lại
+            loadFacebookPlugin();
+        });
+
+        return {
+            expanded,
+            toggleContent,
+            currentURL,
+        };
     },
 };
 </script>
+
+
+
 
 <style>
 .box-desciption img {

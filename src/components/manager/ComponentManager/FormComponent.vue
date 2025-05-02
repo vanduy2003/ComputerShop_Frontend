@@ -3,28 +3,35 @@
         <v-container>
             <div class="row mb-4">
                 <div class="item-input col-md-12">
-                    <label>Tên danh mục sản phẩm<span>*</span></label>
-                    <input v-model="formData.name" type="text" class="form-control"
-                        placeholder="Nhập tên danh mục sản phẩm" />
+                    <label>Tên linh kiện điện tử<span>*</span></label>
+                    <input v-model="formData.name" componentType="text" class="form-control"
+                        placeholder="Nhập tên linh kiện điện tử" />
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="item-input col-md-12">
-                    <label>Mô tả danh mục sản phẩm<span>*</span></label>
-                    <input v-model="formData.description" type="text" class="form-control"
-                        placeholder="Nhập mô tả danh mục sản phẩm" />
+                    <label>Loại linh kiện điện tử<span>*</span></label>
+                    <input v-model="formData.componentType" componentType="text" class="form-control"
+                        placeholder="Nhập loại linh kiện điện tử" />
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="item-input col-md-12">
-                    <label>Link ảnh danh mục sản phẩm<span>*</span></label>
-                    <input v-model="formData.imageUrl" type="text" class="form-control"
-                        placeholder="Nhập link ảnh danh mục sản phẩm" />
+                    <label>Thông số kỹ thuật<span>*</span></label>
+                    <input v-model="formData.specifications" componentType="text" class="form-control"
+                        placeholder="Nhập mô tả linh kiện điện tử" />
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="item-input col-md-12">
+                    <label>Link ảnh linh kiện điện tử<span>*</span></label>
+                    <input v-model="formData.imageUrl" componentType="text" class="form-control"
+                        placeholder="Nhập link ảnh linh kiện điện tử" />
                 </div>
             </div>
             <div class="mt-5 text-center">
                 <v-btn variant="outlined" color="primary" @click="submitForm" prepend-icon="mdi-note-plus">
-                    {{ category ? 'Cập nhật danh mục' : 'Thêm danh mục' }}
+                    {{ component ? 'Cập nhật linh kiện' : 'Thêm linh kiện' }}
                 </v-btn>
                 <v-btn class="ms-3" prepend-icon="mdi-backspace-reverse" variant="outlined" color="red"
                     @click="closeForm">
@@ -40,18 +47,18 @@ import { ref, watch } from 'vue'
 
 export default {
     props: {
-        category: Object, // Nhận dữ liệu từ component cha
+        component: Object, // Nhận dữ liệu từ component cha
     },
     setup(props, { emit }) {
-
         const formData = ref({
             name: "",
-            description: "",
+            componentType: "",
+            specifications: "",
             imageUrl: ""
         });
 
         // Nếu là chỉnh sửa, cập nhật dữ liệu vào form
-        watch(() => props.category, (newVal) => {
+        watch(() => props.component, (newVal) => {
             if (newVal) {
                 formData.value = { ...newVal };
             }

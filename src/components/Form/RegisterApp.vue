@@ -82,12 +82,15 @@
                     <div class="social">
                         <p class="desc lh-lg pt-3 px-4 mb-1">Hoặc đăng ký bằng</p>
                         <div class="social-login d-flex justify-content-center gap-2">
-                            <a href="/auth/facebook" class="btn-social btn-facebook bg-primary"><i
-                                    class="mdi mdi-facebook"></i>Facebook</a>
-                            <a href="/auth/google" class="btn-social btn-google bg-danger"><i
-                                    class="mdi mdi-google"></i>Google</a>
-                            <a href="/auth/github" class="btn-social btn-github bg-secondary"><i
-                                    class="mdi mdi-github"></i>Github</a>
+                            <button @click="loginWithGoogle" class=" btn-google bg-primary">
+                                <i class="mdi mdi-facebook"></i> Facebook
+                            </button>
+                            <button @click="loginWithGoogle" class=" btn-google bg-danger">
+                                <i class="mdi mdi-google"></i> Google
+                            </button>
+                            <button @click="loginWithGoogle" class=" btn-google bg-secondary">
+                                <i class="mdi mdi-github"></i> Github
+                            </button>
                         </div>
                     </div>
                     <p class="text-desc mx-auto px-4 py-3">Việc bạn tiếp tục sử dụng trang web này đồng nghĩa bạn
@@ -105,10 +108,14 @@
 import { ref, reactive } from "vue";
 import axios from "axios";
 import { useToast } from "vue-toastification";
+import { signInWithPopup } from "firebase/auth";
+import { useUserStore } from "@/stores/userStore";
+import { auth, provider } from "@/firebase/firebaseConfig";
 
 export default {
     setup(_, { emit }) {
         const toast = useToast();
+        const userStore = useUserStore();
 
         const formData = reactive({
             username: "",
@@ -120,6 +127,7 @@ export default {
         const isVerified = ref(false);
         const isCodeSent = ref(false);
         const message = ref("");
+        const isLoading = ref(false); // Trạng thái loading
 
         const closeForm = () => emit("closeForm");
         const switchToLogin = () => emit("switchToLogin");
@@ -187,6 +195,31 @@ export default {
             }
         };
 
+        // Đăng nhập bằng Google
+        const loginWithGoogle = async () => {
+            try {
+                isLoading.value = true; // Hiển thị loading
+
+                const result = await signInWithPopup(auth, provider);
+                const firebaseUser = result.user; // Lấy thông tin user từ Firebase
+
+                // Gửi dữ liệu lên userStore
+                await userStore.loginWithGoogle(firebaseUser);
+
+                toast.success("Đăng nhập bằng Google thành công!");
+
+                // Đóng form sau khi đăng nhập
+                setTimeout(() => {
+                    isLoading.value = false;
+                    closeForm();
+                }, 2000);
+            } catch (error) {
+                isLoading.value = false;
+                console.error("Lỗi đăng nhập Google:", error);
+                toast.error("Đăng nhập Google thất bại!");
+            }
+        };
+
         return {
             formData,
             verificationCode,
@@ -199,6 +232,7 @@ export default {
             handleRegister,
             sendVerificationCode,
             verifyCode,
+            loginWithGoogle,
         };
     }
 };

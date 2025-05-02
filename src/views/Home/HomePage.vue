@@ -3,6 +3,7 @@
         <v-main style="background-color: #f3f3f3">
             <HeaderApp />
             <BannerApp />
+            <TopsProduct />
             <CatagoryApp />
             <ProductAll />
             <ArticleSale />
@@ -10,6 +11,8 @@
             <BrandApp />
             <FooterApp />
             <SocialIcon />
+            <PopupBanner />
+            <CompareProduct />
         </v-main>
     </v-app>
 </template>
@@ -24,6 +27,9 @@ import FeetBack from "@/components/content/feetback/FeetBack.vue";
 import BrandApp from "@/components/content/brand/BrandApp.vue";
 import FooterApp from "@/components/Footer/FooterApp.vue";
 import SocialIcon from "@/components/content/social/SocialIcon.vue";
+import PopupBanner from "@/components/Header/PopupBanner.vue";
+import CompareProduct from "@/components/content/social/CompareProduct.vue";
+import TopsProduct from "@/components/content/product/TopsProduct.vue";
 
 export default {
     name: "HomePage",
@@ -37,6 +43,9 @@ export default {
         BrandApp,
         FooterApp,
         SocialIcon,
+        PopupBanner,
+        CompareProduct,
+        TopsProduct,
     },
 };
 </script>
