@@ -4,10 +4,14 @@
         <AdminNavbar />
         <div class="content p-4">
             <h1 class="title text-white">Danh sách nhà cung cấp</h1>
-            <div class="btn-controll">
+            <div class="btn-controll d-flex justify-content-end">
                 <button class="btn-creat btn-lish mb-1 p-2 fs-6 text-white" @click="openAddDialog">
                     <v-icon>mdi mdi-file-plus</v-icon>
                     <span>Thêm nhà cung cấp</span>
+                </button>
+                <button class="btn-creat excel mb-1 p-2 fs-6 text-white ms-2" @click="exportToExcel">
+                    <v-icon>mdi mdi-file-excel</v-icon>
+                    <span>Xuất Excel</span>
                 </button>
             </div>
 
@@ -110,6 +114,7 @@ import FormSupplier from './FormSupplier.vue'
 import { useSupplierStore } from '@/stores/supplierStore'
 import { ref, onMounted, } from 'vue'
 import { useToast } from 'vue-toastification'
+import * as XLSX from "xlsx";
 
 
 export default {
@@ -191,6 +196,25 @@ export default {
             }
         }
 
+        // Hàm xuất dữ liệu ra file Excel
+        const exportToExcel = () => {
+            const data = suppliers.value.map(supplier => ({
+                ID: supplier.supplierId,
+                'Nhà cung cấp': supplier.name,
+                'Họ tên': supplier.contactName,
+                'Ảnh': supplier.imageUrl,
+                'Điện thoại': supplier.phone,
+                'Email': supplier.email,
+                'Địa chỉ': supplier.address,
+                'Cập nhật': supplier.updatedAt,
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Nhà cung cấp');
+            XLSX.writeFile(workbook, 'suppliers.xlsx');
+        }
+
         return {
             search,
             headers,
@@ -202,6 +226,7 @@ export default {
             submitForm,
             openEditDialog,
             removeSupplier,
+            exportToExcel,
             currentSupplier,
             dialogSuccess,
             ActionType

@@ -27,7 +27,7 @@
             </div>
 
             <div>
-                <FormProductAll :products="products" />
+                <FormProductAll :products="filteredProducts" :categoryName="categoryName" />
             </div>
 
 

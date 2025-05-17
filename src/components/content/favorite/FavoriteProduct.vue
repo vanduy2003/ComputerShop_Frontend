@@ -29,8 +29,11 @@
                             class="row d-flex align-items-center fs-6 fw-semibold mb-1">
                             <!-- Hình ảnh -->
                             <div class="col-2 text-center">
-                                <v-img :src="item.imageUrl" :alt="item.name" aspect-ratio="1" class="rounded mx-auto"
-                                    width="150px" />
+                                <router-link :to="`/products/${item.productId}`" class="product-image">
+                                    <v-img :src="item.imageUrl" :alt="item.name" aspect-ratio="1"
+                                        class="rounded mx-auto" width="150px" />
+                                </router-link>
+
                             </div>
 
                             <!-- Nội dung -->
@@ -39,9 +42,13 @@
                                     <v-chip color="success">{{ item.highlightType }}</v-chip>
                                 </div>
                                 <div class="d-flex align-center mb-1">
-                                    <span class="">
+                                    <router-link :to="`/products/${item.productId}`"
+                                        class="product-name line-clamp-2 fs-6 fw-semibold text-black">
+
                                         {{ item.name }}
-                                    </span>
+
+                                    </router-link>
+
                                 </div>
                                 <div class="d-flex justify-space-between align-center">
                                     <span class="text-orange">{{ Number(item.priceNew).toLocaleString('vi-VN')

@@ -4,10 +4,14 @@
         <AdminNavbar />
         <div class="content p-4">
             <h1 class="title text-white">Danh sách linh kiện điện tử</h1>
-            <div class="btn-controll">
+            <div class="btn-controll d-flex justify-content-end">
                 <button class="btn-creat btn-lish mb-1 p-2 fs-6 text-white" @click="openAddDialog">
                     <v-icon>mdi mdi-note-plus</v-icon>
                     <span>Thêm linh kiện</span>
+                </button>
+                <button class="btn-creat excel mb-1 p-2 fs-6 text-white ms-2" @click="exportToExcel">
+                    <v-icon>mdi mdi-file-excel</v-icon>
+                    <span>Xuất Excel</span>
                 </button>
             </div>
 
@@ -73,6 +77,7 @@ import AdminSidebar from '../Dashboard/AdminSidebar.vue'
 import { useComponentStore } from '@/stores/componentStore'
 import { storeToRefs } from 'pinia'
 import FormComponent from './FormComponent.vue'
+import * as XLSX from 'xlsx'
 
 export default {
     components: {
@@ -137,6 +142,21 @@ export default {
             })
         }
 
+        const exportToExcel = () => {
+            const data = components.value.map(item => ({
+                componentId: item.componentId,
+                name: item.name,
+                imageUrl: item.imageUrl,
+                componentType: item.componentType,
+                specifications: item.specifications,
+                logoUrl: item.logoUrl,
+            }))
+            const worksheet = XLSX.utils.json_to_sheet(data)
+            const workbook = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Components')
+            XLSX.writeFile(workbook, 'components.xlsx')
+        }
+
         return {
             components,
             headers,
@@ -148,6 +168,7 @@ export default {
             closeDialog,
             submitForm,
             removeComponent,
+            exportToExcel,
         }
     },
 

@@ -62,7 +62,7 @@ export default {
         return {
             activeSlide: 0,
             images: [
-                { src: "/images/1.jpg" },
+                { src: "https://www.tncstore.vn/media/banner/banner-trang-chu-pc-summer-sale.jpg" },
                 { src: "/images/2.jpg" },
                 { src: "/images/3.png" },
                 { src: "/images/4.jpg" },

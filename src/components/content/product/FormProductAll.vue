@@ -2,7 +2,6 @@
     <div class="content-category row">
         <div class="content-left col-md-3">
             <div class="">
-
                 <!-- Lọc theo hãng sản xuất -->
                 <v-expansion-panels v-model="expandedPanels" multiple>
                     <!-- Bộ lọc theo hãng sản xuất -->
@@ -44,8 +43,6 @@
                         </v-expansion-panel-text>
                     </v-expansion-panel>
                 </v-expansion-panels>
-
-
             </div>
         </div>
 
@@ -53,9 +50,9 @@
             <div class="background-white">
 
                 <div class="main-title d-flex justify-content-between align-items-center">
-                    <h1 class="title">Laptop Gaming</h1>
+                    <h1 class="title">{{ categoryName }}</h1>
                     <div class="right-sort d-flex align-items-center fs-6 fw-semibold">
-                        <div class="total-product ">295 sản phẩm</div>
+                        <div class="total-product ">{{ countProducts }} sản phẩm</div>
                         <div class="content-sort d-flex align-items-center ps-2">
                             <p class="mb-0" style="color: #8d94ac">Hiển thị theo: </p>
                             <select v-model="sortOption" class="sort-pro">
@@ -84,7 +81,7 @@
                                         </span>
                                     </router-link>
                                     <div class="product-info">
-                                        <router-link :to="'/api/v1/data/products/' + product.productId"
+                                        <router-link :to="`/products/${product.productId}`"
                                             class="product-name line-clamp-2">
                                             {{ product.name }}
                                         </router-link>
@@ -97,7 +94,7 @@
                                                 Number(product.priceOld).toLocaleString('vi-VN') }}đ</del>
                                             <div class="d-flex align-items-center">
                                                 <b class="price">{{ Number(product.priceNew).toLocaleString('vi-VN')
-                                                }}đ</b>
+                                                    }}đ</b>
                                                 <div class="price-saleoff">-{{ product.sale }}%</div>
                                             </div>
                                         </div>
@@ -125,6 +122,10 @@ export default {
             type: Array,
             required: true,
         },
+        categoryName: {
+            type: String,
+            required: true,
+        },
     },
 
     setup(props) {
@@ -132,6 +133,10 @@ export default {
         const brands = ref([{ name: "TNC Gaming", count: 139 }, { name: "Vivo", count: 25 }, { name: "Realme", count: 25 }, { name: "OnePlus", count: 25 }, { name: "Google", count: 25 }, { name: "BlackBerry", count: 25 }]);
         const selectedBrands = ref([]);
         const expandedPanels = ref(["brand", "price"]); // Mở cả hai panel mặc định
+
+        const countProducts = computed(() => {
+            return props.products.length;
+        });
 
         // Danh sách khoảng giá
         const priceRanges = ref([
@@ -192,7 +197,7 @@ export default {
             sortOption,
             filteredAndSortedProducts: sortedProducts,
             expandedPanels,
-
+            countProducts,
         };
     }
 };

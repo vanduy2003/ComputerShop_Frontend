@@ -34,10 +34,13 @@
 
                 <v-list class="ps-0 bg-black text-white">
                     <v-list-item class="px-3" link>
-                        <div class="d-flex align-center">
-                            <v-icon class="mr-2">mdi mdi-file-account-outline</v-icon>
-                            <v-list-item-title class="fs-6 fw-semibold">Trang Cá Nhân</v-list-item-title>
-                        </div>
+                        <router-link to="/me/user-profile">
+                            <div class="d-flex align-center text-white">
+                                <v-icon class="mr-2">mdi mdi-file-account-outline</v-icon>
+                                <v-list-item-title class="fs-6 fw-semibold">Trang Cá Nhân</v-list-item-title>
+                            </div>
+                        </router-link>
+
                     </v-list-item>
                     <v-list-item class="px-3" link @click="logout">
                         <div class="d-flex align-center">
@@ -72,7 +75,6 @@ export default {
         const isLoading = ref(false);
 
         const logout = async () => {
-
             const result = await userStore.logout();
             if (result) {
                 toast.success("Đăng xuất thành công");

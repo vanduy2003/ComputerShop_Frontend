@@ -4,10 +4,14 @@
         <AdminNavbar />
         <div class="content p-4">
             <h1 class="title text-white">Danh sách danh mục sản phẩm</h1>
-            <div class="btn-controll">
+            <div class="btn-controll d-flex justify-content-end">
                 <button class="btn-creat btn-lish mb-1 p-2 fs-6 text-white" @click="openAddDialog">
                     <v-icon>mdi mdi-package-variant-closed</v-icon>
                     <span>Thêm danh mục</span>
+                </button>
+                <button class="btn-creat excel mb-1 ms-2 p-2 fs-6 text-white" @click="exportToExcel">
+                    <v-icon>mdi mdi-file-excel</v-icon>
+                    <span>Xuất Excel</span>
                 </button>
             </div>
 
@@ -56,6 +60,8 @@ import FormCategory from './FormCategory.vue'
 import { useCategoryStore } from '@/stores/categoryStore'
 import { ref, onMounted, } from 'vue'
 import { useToast } from 'vue-toastification'
+import * as XLSX from "xlsx";
+
 
 export default {
     components: {
@@ -125,6 +131,22 @@ export default {
             }
         }
 
+        // Hàm xuất dữ liệu ra file Excel
+        const exportToExcel = () => {
+            const data = categorys.value.map(category => ({
+                ID: category.categoryId,
+                'Tên danh mục': category.name,
+                'Ảnh': category.imageUrl,
+                'Mô tả': category.description,
+                'Ngày tạo': category.createdAt,
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Danh mục sản phẩm');
+            XLSX.writeFile(workbook, 'danh_muc_san_pham.xlsx');
+        };
+
         return {
             search,
             headers,
@@ -136,6 +158,7 @@ export default {
             submitForm,
             openEditDialog,
             removeCategory,
+            exportToExcel,
             currentCategory,
 
         }

@@ -94,7 +94,7 @@
                 <!-- Biểu đồ Doanh Thu -->
                 <div class="d-flex gap-4 ">
                     <!-- Thống kê tổng doanh thu -->
-                    <div class="col-md-6 revenue">
+                    <div class="col-md-7 revenue">
                         <h3 class="fw-semibold fs-4">Doanh Thu📈</h3>
                         <div class="mb-3">
                             <label for="revenueType" class="form-label">Xem Doanh Thu Theo</label>
@@ -110,7 +110,7 @@
                         <LineChart :chart-data="revenueChartData" :chart-options="chartOptions" />
                     </div>
                     <!-- Thống kê số đơn hàng theo trạng thái -->
-                    <div class="col-md-5 revenue">
+                    <div class="col-md-4 revenue">
                         <h3 class="fw-semibold fs-4">Số Đơn Hàng Theo Trạng Thái</h3>
                         <BarChart :chart-data="orderStatusChartData" :chart-options="chartOptions" />
                     </div>
@@ -119,7 +119,7 @@
                 <!-- Thống kê sản phẩm bán chạy nhất -->
                 <div class="d-flex gap-4 ">
 
-                    <div class="col-md-6  revenue">
+                    <div class="col-md-7  revenue">
                         <h3 class="fw-semibold fs-4">Top 10 Sản Phẩm Bán Chạy Nhất🏆</h3>
                         <div class="topselling card-round">
                             <div class="card-body">
@@ -146,7 +146,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5 revenue">
+                    <div class="col-md-4 revenue">
                         <h3 class="fw-semibold fs-4">Tỷ Lệ Trạng Thái Đơn Hàng</h3>
                         <PieChart :chart-data="orderRateChartData" />
                     </div>
@@ -156,7 +156,7 @@
                 <!-- Thống kê sản phẩm sắp hết hàng -->
                 <div class="d-flex gap-4 ">
 
-                    <div class="col-md-6  revenue">
+                    <div class="col-md-7  revenue">
                         <h3 class="fw-semibold fs-4">Các Sản Phẩm Sắp Hết Hàng</h3>
                         <div class="topselling card-round">
                             <div class="card-body">
@@ -189,7 +189,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5 revenue">
+                    <div class="col-md-4 revenue">
                         <h3 class="fw-semibold fs-4">Khách Hàng Tiềm Năng⭐</h3>
                         <div class="topselling card-round">
                             <ul class="potential-customers-list legend">

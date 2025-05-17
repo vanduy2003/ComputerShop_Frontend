@@ -1,7 +1,7 @@
 <template>
     <div class="social-icon">
         <div class="zalo-button">
-            <a href="https://zalo.me/2645761204946529607">
+            <a href="https://zalo.me/0559056745">
                 <img src="https://i.imgur.com/dXhNYR9.png" alt="">
             </a>
         </div>
