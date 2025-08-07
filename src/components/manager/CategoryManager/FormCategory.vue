@@ -24,7 +24,7 @@
             </div>
             <div class="mt-5 text-center">
                 <v-btn variant="outlined" color="primary" @click="submitForm" prepend-icon="mdi-note-plus">
-                    {{ category ? 'Cập nhật danh mục' : 'Thêm danh mục' }}
+                    {{ isEdit ? 'Cập nhật danh mục' : 'Thêm danh mục' }}
                 </v-btn>
                 <v-btn class="ms-3" prepend-icon="mdi-backspace-reverse" variant="outlined" color="red"
                     @click="closeForm">
@@ -41,6 +41,10 @@ import { ref, watch } from 'vue'
 export default {
     props: {
         category: Object, // Nhận dữ liệu từ component cha
+        isEdit: {
+            type: Boolean,
+            default: false
+        }
     },
     setup(props, { emit }) {
 

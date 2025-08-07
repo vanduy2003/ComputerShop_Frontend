@@ -148,7 +148,7 @@
 
                     <div class="col-md-4 revenue">
                         <h3 class="fw-semibold fs-4">Tỷ Lệ Trạng Thái Đơn Hàng</h3>
-                        <PieChart :chart-data="orderRateChartData" />
+                        <PieChart class="mt-4" :chart-data="orderRateChartData" />
                     </div>
 
                 </div>
@@ -487,6 +487,10 @@ export default {
 </script>
 
 <style>
+#bar-chart {
+    height: 450px !important;
+}
+
 .btn-in {
     display: inline-block;
     border: 1px solid #007bff;

@@ -24,7 +24,7 @@
             <div class="contact-content background-white fs-5">
                 <h1 class="title">GIỚI THIỆU VỀ TNC STORE</h1>
                 <ul>
-                    <li>Tên công ty: Công ty TNHH Thương mại và Tin học Tú Nguyệt</li>
+                    <li>Tên công ty: Công ty TNHH Thương mại và Tin học Văn Duy</li>
                     <li>Tên quốc tế: TU NGUYET INFORMATICS AND TRADING COMPANY LIMITED</li>
                     <li>Tên viết tắt: TU NGUYET CO., LTD</li>
                     <li>MST: 0101488721</li>
@@ -37,7 +37,7 @@
                             href="https://masothue.com/0101488721-cong-ty-tnhh-thuong-mai-va-tin-hoc-tu-nguyet"
                             target="_blank" rel="noopener">tại đ&acirc;y</a></strong></p>
                 <h2 class="fs-4 fw-semibold my-3"><strong>Giới thiệu chung</strong></h2>
-                <p>Công ty TNHH Thương mại và Tin học Tú Nguyệt (viết tắt là “TNC”) được thành lập vào ngày 09/04/2004,
+                <p>Công ty TNHH Thương mại và Tin học Văn Duy (viết tắt là “TNC”) được thành lập vào ngày 09/04/2004,
                     với quy mô ban đầu chỉ có 6 nhân viên chủ chốt. Sau hơn 19 năm hoạt động, hiện nay công ty đã có gần
                     100 nhân viên, cộng tác viên đa dạng trong các vị trí. Với các sản phẩm chủ yếu trong lĩnh vực bán
                     lẻ như máy tính, thiết bị văn phòng và máy tính chơi game, linh kiện máy tính, gaming gear.</p>
@@ -91,7 +91,7 @@
                 <v-col cols="12" md="5">
                     <v-card class="pa-5  fs-6">
                         <h3 class="font-weight-bold mb-3">
-                            Công ty TNHH Thương mại &amp; Tin học Tú Nguyệt
+                            Công ty TNHH Thương mại &amp; Tin học Văn Duy
                         </h3>
                         <v-divider></v-divider>
 

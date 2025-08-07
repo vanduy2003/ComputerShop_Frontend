@@ -38,9 +38,9 @@ export const useCartStore = defineStore("cart", () => {
     // ✅ Hàm áp dụng mã giảm giá
     const applyVoucher = (voucherCode) => {
         const voucherList = [
-            { code: "SALE100", discount: 100000 },
-            { code: "DISCOUNT50", discount: 50000 },
-            { code: "FREESHIP", discount: 20000 },
+            { code: "SALE1000", discount: 1000000 },
+            { code: "DISCOUNT500", discount: 500000 },
+            { code: "FREESHIP", discount: 50000 },
         ];
 
         const foundVoucher = voucherList.find(

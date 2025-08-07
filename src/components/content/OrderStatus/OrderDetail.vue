@@ -212,6 +212,18 @@ export default {
                 return;
             }
 
+            // kiểm tra đơn hàng đã thành công thì không cho hủy
+            if (order.value.order_status === "completed") {
+                Swal.fire("Thông báo!", "Đơn hàng này đã hoàn thành, không thể hủy!", "info");
+                return;
+            }
+
+            // kiểm tra đơn hàng đang giao hàng thì không cho hủy
+            if (order.value.order_status === "shiping") {
+                Swal.fire("Thông báo!", "Đơn hàng này đang giao hàng, không thể hủy!", "info");
+                return;
+            }
+
             try {
                 const confirm = await Swal.fire({
                     title: "Bạn có chắc muốn hủy đơn hàng?",

@@ -104,7 +104,6 @@ export const useCategoryStore = defineStore("category", () => {
         }
     };
 
-    // Xóa danh mục
     const deleteCategory = async (categoryId) => {
         const result = await Swal.fire({
             title: "Bạn có chắc chắn muốn xóa danh mục này không?",
@@ -113,23 +112,47 @@ export const useCategoryStore = defineStore("category", () => {
             confirmButtonText: "Có, chắc chắn!",
             cancelButtonText: "Hủy",
         });
+
         if (!result.isConfirmed) {
             return;
         }
 
         try {
-            await axios.delete(
+            const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/category/delete-category/${categoryId}`
             );
 
-            // 🔥 Xóa danh mục trực tiếp trong danh sách mà không cần gọi API lại
-            categorys.value = categorys.value.filter(
-                (category) => category.categoryId !== categoryId
-            );
-            return true;
+            if (response.data.success) {
+                // ✅ Xóa khỏi danh sách local
+                categorys.value = categorys.value.filter(
+                    (category) => category.categoryId !== categoryId
+                );
+
+                // ✅ Hiển thị thông báo thành công
+                await Swal.fire({
+                    icon: "success",
+                    title: "Thành công",
+                    text: "Xóa danh mục thành công",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
         } catch (err) {
-            error.value = "Không thể xóa danh mục";
-            console.error(err);
+            console.error("🚨 Lỗi khi xóa danh mục:", err);
+
+            if (err.response && err.response.status === 409) {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Không thể xóa danh mục",
+                    text: "Danh mục đang được sử dụng trong sản phẩm!",
+                });
+            } else {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Lỗi server",
+                    text: "Không thể xóa danh mục, vui lòng thử lại.",
+                });
+            }
         }
     };
 

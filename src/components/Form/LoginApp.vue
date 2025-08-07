@@ -56,13 +56,13 @@
                             Hoặc đăng nhập bằng
                         </p>
                         <div class="social-login d-flex justify-content-center gap-2">
-                            <button @click="loginWithGoogle" class=" btn-google bg-primary">
+                            <button @click="loginWithFacebook" class=" btn-google bg-primary">
                                 <i class="mdi mdi-facebook"></i> Facebook
                             </button>
                             <button @click="loginWithGoogle" class=" btn-google bg-danger">
                                 <i class="mdi mdi-google"></i> Google
                             </button>
-                            <button @click="loginWithGoogle" class=" btn-google bg-secondary">
+                            <button @click="loginWithGithub" class=" btn-google bg-secondary">
                                 <i class="mdi mdi-github"></i> Github
                             </button>
                         </div>
@@ -91,6 +91,7 @@ import LoadingOverlay from "@/components/content/common/LoadingOverlay.vue";
 import { auth, provider } from "@/firebase/firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
 import { useRouter } from "vue-router";
+
 
 
 
@@ -193,6 +194,14 @@ export default {
             }
         };
 
+        const loginWithFacebook = () => {
+            toast.info("Chức năng này đang được phát triển! Vui lòng quay lại sau.");
+        }
+
+        const loginWithGithub = () => {
+            toast.info("Chức năng này đang được phát triển! Vui lòng quay lại sau.");
+        }
+
         return {
             email,
             password,
@@ -202,7 +211,9 @@ export default {
             switchToRegister,
             switchToForgot,
             handleLogin,
-            loginWithGoogle
+            loginWithGoogle,
+            loginWithFacebook,
+            loginWithGithub,
         };
     },
 };

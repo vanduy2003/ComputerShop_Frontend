@@ -42,6 +42,7 @@ export default {
     align-items: center;
     z-index: 1000;
     height: 100vh;
+
 }
 
 .popup-content {
@@ -53,7 +54,7 @@ export default {
 }
 
 .popup-content img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
     border-radius: 10px;
 }
@@ -67,7 +68,7 @@ export default {
     cursor: pointer;
     position: absolute;
     top: 45px;
-    right: 25px;
+    right: 100px;
     border-radius: 50%;
 
 }

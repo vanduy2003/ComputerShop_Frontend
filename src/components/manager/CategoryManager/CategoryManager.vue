@@ -44,7 +44,8 @@
                         {{ isEdit ? "Cập nhật danh mục sản phẩm" : "Thêm danh mục sản phẩm" }}
                     </v-card-title>
                     <v-card-text>
-                        <FormCategory :category="currentCategory" @submit="submitForm" @close="closeDialog" />
+                        <FormCategory :category="currentCategory" :isEdit="isEdit" @submit="submitForm"
+                            @close="closeDialog" />
                     </v-card-text>
                 </v-card>
             </v-dialog>

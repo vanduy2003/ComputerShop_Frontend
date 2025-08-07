@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export const useSupplierStore = defineStore("supplier", () => {
     const suppliers = ref([]); // Danh sách nhà cung cấp
@@ -68,25 +69,64 @@ export const useSupplierStore = defineStore("supplier", () => {
         }
     };
 
-    // Xóa nhà cung cấp
+    // 🟢 Xóa nhà cung cấp
     const deleteSupplier = async (supplierId) => {
+        // Hiển thị thông báo xác nhận trước khi xóa
+        const result = await Swal.fire({
+            title: "Bạn có chắc chắn muốn xóa nhà cung cấp này không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Có, xóa ngay!",
+            cancelButtonText: "Hủy",
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
         try {
             const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/suppliers/delete-supplier/${supplierId}`
             );
 
             if (response.data.success) {
+                // ✅ Cập nhật danh sách nhà cung cấp
                 suppliers.value = suppliers.value.filter(
                     (supplier) => supplier.supplierId !== supplierId
                 );
-                return true;
+
+                // ✅ Hiển thị thông báo thành công
+                Swal.fire({
+                    icon: "success",
+                    title: "Thành công",
+                    text: "Xóa nhà cung cấp thành công!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
             } else {
-                console.error("⚠️ Dữ liệu trả về không hợp lệ:", response.data);
-                return false;
+                console.error("⚠️ Xóa không thành công:", response.data);
             }
-        } catch (error) {
-            console.error("🚨 Lỗi khi xóa nhà cung cấp:", error);
-            return false;
+        } catch (err) {
+            if (
+                err.response &&
+                err.response.status === 409 &&
+                err.response.data.errorCode === "ER_ROW_IS_REFERENCED_2"
+            ) {
+                // ⚠️ Lỗi do nhà cung cấp đang được tham chiếu bởi sản phẩm
+                Swal.fire({
+                    icon: "error",
+                    title: "Không thể xóa",
+                    text: "Nhà cung cấp này đang được sử dụng trong sản phẩm. Vui lòng xóa hoặc cập nhật sản phẩm trước.",
+                });
+            } else {
+                // ⚠️ Lỗi khác
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Đã xảy ra lỗi khi xóa nhà cung cấp.",
+                });
+                console.error("🚨 Lỗi khi xóa nhà cung cấp:", err);
+            }
         }
     };
 

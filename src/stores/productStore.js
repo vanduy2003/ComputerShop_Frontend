@@ -251,19 +251,42 @@ export const useProductStore = defineStore("product", () => {
             cancelButtonText: "Hủy",
         });
 
-        if (!confirm.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
+        if (!confirm.isConfirmed) return;
 
         try {
+            loading.value = true;
+
             const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/product-delete/${productId}`
             );
-            if (response.status === 200) {
-                fetchProducts(); // Cập nhật danh sách sản phẩm
-                return true;
+
+            if (response.status === 200 && response.data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Thành công",
+                    text: "Xóa sản phẩm thành công",
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+
+                fetchProducts(); // Hoặc cập nhật lại danh sách sản phẩm thủ công nếu không gọi API
             }
         } catch (err) {
-            error.value = "Không thể xóa sản phẩm";
-            console.error(err);
+            if (err.response?.data?.code === "FOREIGN_KEY_CONSTRAINT") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Không thể xóa sản phẩm",
+                    text: "Sản phẩm đang được tham chiếu ở nơi khác (đơn hàng, yêu thích, linh kiện...)",
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Không thể xóa sản phẩm. Vui lòng thử lại sau.",
+                });
+            }
+
+            console.error("Lỗi xóa sản phẩm:", err);
         } finally {
             loading.value = false;
         }

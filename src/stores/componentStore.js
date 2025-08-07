@@ -98,38 +98,57 @@ export const useComponentStore = defineStore("component", () => {
     const deleteComponent = async (componentId) => {
         // Hiển thị thông báo xác nhận trước khi xóa
         const result = await Swal.fire({
-            title: "Bạn có chắc chắn muốn xóa danh mục này không?",
+            title: "Bạn có chắc chắn muốn xóa linh kiện này không?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Có, chắc chắn!",
+            confirmButtonText: "Có, xóa ngay!",
             cancelButtonText: "Hủy",
         });
 
-        if (!result.isConfirmed) {
-            return;
-        }
+        if (!result.isConfirmed) return;
 
         try {
             const response = await axios.delete(
                 `http://localhost:3000/api/v1/data/components/delete-component/${componentId}`
             );
-            // Hiển thị thông báo thành công
+
+            // 🟢 Hiển thị thông báo thành công
             Swal.fire({
                 icon: "success",
-                title: "Thành công",
-                text: "Xóa linh kiện thành công",
+                title: "Đã xóa",
+                text: "Xóa linh kiện thành công!",
                 showConfirmButton: false,
                 timer: 1500,
             });
 
+            // 🧹 Cập nhật danh sách sau khi xóa
             if (response.data.success) {
                 components.value = components.value.filter(
                     (component) => component.componentId !== componentId
                 );
             }
         } catch (err) {
-            error.value = "Không thể xóa linh kiện";
-            console.error(err);
+            console.error("Lỗi xóa linh kiện:", err);
+
+            // 🟥 Trường hợp linh kiện đang được sử dụng trong sản phẩm
+            if (
+                err.response &&
+                err.response.data &&
+                err.response.data.errorCode === "ER_ROW_IS_REFERENCED_2"
+            ) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Không thể xóa",
+                    text: "Linh kiện này đang được sử dụng trong một số sản phẩm. Vui lòng xóa hoặc cập nhật sản phẩm trước.",
+                });
+            } else {
+                // 🔧 Lỗi khác (mạng, server, v.v.)
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Không thể xóa linh kiện. Vui lòng thử lại.",
+                });
+            }
         }
     };
 

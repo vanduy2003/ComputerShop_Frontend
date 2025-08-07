@@ -528,12 +528,10 @@ export default {
 }
 
 .preview-content {
-    height: 400px;
     overflow-y: auto;
-
     border: 1px solid #ddd;
     padding: 10px;
-    min-height: 400px;
+    min-height: 500px;
     background: #fff;
 }
 </style>

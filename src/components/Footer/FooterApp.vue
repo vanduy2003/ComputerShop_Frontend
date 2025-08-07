@@ -92,7 +92,7 @@
                             title="TNC Store"></iframe>
                     </div>
                     <div class="right col-md-6">
-                        <h3>Công ty TNHH Thương mại &amp; Tin học Tú Nguyệt</h3>
+                        <h3>Công ty TNHH Thương mại &amp; Tin học Văn Duy</h3>
                         <div class="box">
                             <p>
                                 Showroom: 172 Lê Thanh Nghị, Phường Đồng Tâm, Quận Hai Bà Trưng, Hà Nội
@@ -148,7 +148,7 @@
         <div class="footer-bottom py-3">
             <div class="container">
                 <div class="d-flex align-items-center justify-content-between">
-                    <p>© 2020 - Bản quyền của Công ty TNHH Thương mại &amp; Tin học Tú Nguyệt</p>
+                    <p>© 2025 - Bản quyền của Công ty TNHH Thương mại &amp; Tin học Văn Duy</p>
                     <div class="right d-flex">
                         <a href="http://online.gov.vn/Home/WebDetails/63325">
                             <i class="icon_2023 bct"></i>

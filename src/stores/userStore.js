@@ -105,7 +105,7 @@ export const useUserStore = defineStore("user", () => {
     };
 
     const deleteUser = async (userId) => {
-        // Hiển thị thông báo xác nhận trước khi xóa
+        // Hiển thị thông báo xác nhận
         const confirm = await Swal.fire({
             title: "Bạn có chắc chắn muốn xóa người dùng này không?",
             icon: "warning",
@@ -114,7 +114,7 @@ export const useUserStore = defineStore("user", () => {
             cancelButtonText: "Hủy",
         });
 
-        if (!confirm.isConfirmed) return; // Nếu người dùng không xác nhận thì không làm gì cả
+        if (!confirm.isConfirmed) return;
 
         try {
             const response = await axios.delete(
@@ -125,11 +125,35 @@ export const useUserStore = defineStore("user", () => {
             if (response.data.success) {
                 users.value = users.value.filter(
                     (user) => user.userId !== userId
-                ); // Cập nhật danh sách người dùng sau khi xóa
-                return true; // Trả về true để thông báo xóa thành công
+                );
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Xóa thành công",
+                    text: "Người dùng đã được xóa",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+
+                return true;
             }
         } catch (error) {
-            console.error("Lỗi xóa người dùng:", error);
+            console.error("🚨 Lỗi xóa người dùng:", error);
+
+            // ✅ Hiển thị lỗi cụ thể nếu là lỗi ràng buộc khóa ngoại
+            if (error.response && error.response.status === 409) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Không thể xóa",
+                    text: "Người dùng đang được sử dụng các dịch vụ trong hệ thống, không thể xóa",
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Đã xảy ra lỗi khi xóa người dùng",
+                });
+            }
         }
     };
 

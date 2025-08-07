@@ -113,7 +113,7 @@ import AdminSidebar from '../Dashboard/AdminSidebar.vue'
 import FormSupplier from './FormSupplier.vue'
 import { useSupplierStore } from '@/stores/supplierStore'
 import { ref, onMounted, } from 'vue'
-import { useToast } from 'vue-toastification'
+
 import * as XLSX from "xlsx";
 
 
@@ -128,7 +128,7 @@ export default {
         const supplierStore = useSupplierStore()
         const { suppliers } = storeToRefs(supplierStore)
         const dialog = ref(false)
-        const toast = useToast()
+
         const currentSupplier = ref(null)
         const isEdit = ref(false)
         const dialogSuccess = ref(false)
@@ -185,15 +185,7 @@ export default {
         };
 
         const removeSupplier = async (supplierId) => {
-            const confirmed = confirm('Bạn có chắc chắn muốn xóa danh mục này?');
-            if (!confirmed) return;
-
-            const success = await supplierStore.deleteSupplier(supplierId);
-            if (success) {
-                toast.success('Xóa danh mục thành công!');
-            } else {
-                toast.error('Lỗi khi xóa danh mục!');
-            }
+            await supplierStore.deleteSupplier(supplierId);
         }
 
         // Hàm xuất dữ liệu ra file Excel
